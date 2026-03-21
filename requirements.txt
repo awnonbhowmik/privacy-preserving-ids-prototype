@@ -1,0 +1,31 @@
+# ── Core data ──────────────────────────────────────────────────────────────────
+pandas
+numpy
+pyarrow                   # Parquet read/write
+
+# ── Machine learning ───────────────────────────────────────────────────────────
+scikit-learn
+xgboost
+imbalanced-learn          # Handle class imbalance in IDS datasets
+
+# ── Differential privacy ───────────────────────────────────────────────────────
+diffprivlib               # IBM DP library — sklearn-compatible
+
+# ── Explainability ─────────────────────────────────────────────────────────────
+shap
+
+# ── Frontend ───────────────────────────────────────────────────────────────────
+streamlit
+
+# ── Visualisation ──────────────────────────────────────────────────────────────
+plotly
+matplotlib
+seaborn
+
+# ── Persistence & config ───────────────────────────────────────────────────────
+joblib
+pyyaml
+
+# ── Dev utilities ──────────────────────────────────────────────────────────────
+ipykernel                 # Jupyter support for notebooks/
+tqdm                      # Progress bars during preprocessing
