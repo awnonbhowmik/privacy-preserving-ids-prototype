@@ -1,0 +1,42 @@
+# ── Virtual environment ────────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── Raw and processed data (too large for git) ─────────────────────────────────
+data/raw/
+data/processed/
+data/subsets/
+!data/.gitkeep
+
+# ── Saved models and results ───────────────────────────────────────────────────
+results/*.pkl
+results/*.joblib
+results/models/*.pkl
+results/models/*.joblib
+!results/models/.gitkeep
+
+# ── Python cache ───────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# ── Jupyter ────────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# ── Environment variables ──────────────────────────────────────────────────────
+.env
+.env.local
+
+# ── OS noise ───────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── IDE ────────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+
+# ── Streamlit ──────────────────────────────────────────────────────────────────
+.streamlit/secrets.toml
