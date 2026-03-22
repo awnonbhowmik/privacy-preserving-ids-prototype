@@ -8,6 +8,12 @@ The home page shows a pipeline status overview for both datasets so the
 user can see at a glance which stages have been completed and what to run next.
 """
 
+import sys
+from pathlib import Path
+_root = Path(__file__).resolve().parent.parent
+if str(_root) not in sys.path:
+    sys.path.insert(0, str(_root))
+
 from app._path_setup import setup_path
 setup_path()
 
