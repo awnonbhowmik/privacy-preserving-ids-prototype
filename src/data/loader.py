@@ -39,6 +39,20 @@ log = get_logger(__name__)
 # This list may need adjusting depending on which days of data are present.
 _CIC_USELESS_COLS: list[str] = []  # populated dynamically if needed
 
+# UNSW-NB15_1-4.csv are headerless; these are the 49 official column names
+# from the NUSW-NB15_features.csv features description file.
+UNSW_NB15_COLUMNS: list[str] = [
+    "srcip", "sport", "dstip", "dsport", "proto", "state", "dur",
+    "sbytes", "dbytes", "sttl", "dttl", "sloss", "dloss", "service",
+    "Sload", "Dload", "Spkts", "Dpkts", "swin", "dwin", "stcpb", "dtcpb",
+    "smeansz", "dmeansz", "trans_depth", "res_bdy_len", "Sjit", "Djit",
+    "Stime", "Ltime", "Sintpkt", "Dintpkt", "tcprtt", "synack", "ackdat",
+    "is_sm_ips_ports", "ct_state_ttl", "ct_flw_http_mthd", "is_ftp_login",
+    "ct_ftp_cmd", "ct_srv_src", "ct_srv_dst", "ct_dst_ltm", "ct_src_ltm",
+    "ct_src_dport_ltm", "ct_dst_sport_ltm", "ct_dst_src_ltm",
+    "attack_cat", "label",
+]
+
 
 def list_raw_files(dataset_name: str) -> list[Path]:
     """
@@ -121,14 +135,25 @@ def read_csv_chunked(
         raise ValueError(f"chunk_size must be a positive integer, got {chunk_size}")
 
     ds_cfg = get_dataset_config(dataset_name)
-    encoding  = ds_cfg.get("encoding", "utf-8")
-    separator = ds_cfg.get("separator", ",")
+    encoding   = ds_cfg.get("encoding", "utf-8")
+    separator  = ds_cfg.get("separator", ",")
+    has_header = ds_cfg.get("has_header", True)
+
+    # For headerless files, supply known column names and skip the header row.
+    if not has_header and dataset_name == "unsw_nb15":
+        read_kwargs: dict = dict(
+            header=None,
+            names=UNSW_NB15_COLUMNS,
+        )
+    else:
+        read_kwargs = {}
 
     log.info(
-        "Reading '%s' in chunks of %d rows (encoding=%s)",
+        "Reading '%s' in chunks of %d rows (encoding=%s, has_header=%s)",
         filepath.name,
         chunk_size,
         encoding,
+        has_header,
     )
 
     try:
@@ -139,6 +164,7 @@ def read_csv_chunked(
             chunksize=chunk_size,
             low_memory=False,      # avoid mixed-type inference warnings
             on_bad_lines="warn",   # log malformed rows instead of crashing
+            **read_kwargs,
         )
 
         chunk_index = 0

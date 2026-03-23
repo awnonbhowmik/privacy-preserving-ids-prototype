@@ -94,10 +94,11 @@ PATHS: dict[str, Path] = {
 }
 
 # ── Typed config sections ──────────────────────────────────────────────────────
-DATASET_CFG:  dict = cfg["datasets"]
-SAMPLING_CFG: dict = cfg["sampling"]
-PRIVACY_CFG:  dict = cfg["privacy"]
-MODEL_CFG:    dict = cfg["models"]
+DATASET_CFG:    dict = cfg["datasets"]
+SAMPLING_CFG:   dict = cfg["sampling"]
+PRIVACY_CFG:    dict = cfg["privacy"]
+MODEL_CFG:      dict = cfg["models"]
+DP_SGD_CFG:     dict = cfg.get("dp_sgd", {})
 
 # ── Create output directories on import ───────────────────────────────────────
 # This means any module that imports config.py will automatically ensure that

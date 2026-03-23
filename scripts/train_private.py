@@ -66,7 +66,7 @@ def parse_args() -> argparse.Namespace:
         nargs="+",
         type=float,
         default=None,
-        metavar="ε",
+        metavar="eps",
         help=(
             "One or more epsilon values to train at. "
             "If omitted, uses the full list from config.yaml "
@@ -86,7 +86,7 @@ def main() -> None:
     epsilon_values = args.epsilon or PRIVACY_CFG["epsilon_values"]
 
     log.info("=" * 60)
-    log.info("Differentially Private Training (ε sweep)")
+    log.info("Differentially Private Training (eps sweep)")
     log.info("  Dataset  : %s", args.dataset)
     log.info("  Label    : %s", args.label)
     log.info("  Epsilons : %s", epsilon_values)

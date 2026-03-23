@@ -109,7 +109,8 @@ empirical finding.
                          │
 ┌────────────────────────▼────────────────────────────────────┐
 │                   Model Layer                                │
-│    baseline.py (LR · RF · XGBoost)    dp_model.py (DP-LR)   │
+│  baseline.py (LR · RF · XGBoost)    dp_model.py (DP-LR)     │
+│                              dp_sgd_model.py (DP-SGD/MLP) │
 └────────────────────────┬────────────────────────────────────┘
                          │
 ┌────────────────────────▼────────────────────────────────────┐
@@ -159,6 +160,7 @@ privacy-preserving-ids-prototype/
 ├── scripts/                        # Terminal pipeline scripts
 │   ├── train_baseline.py           # Train LR, RF, XGBoost
 │   ├── train_private.py            # Run DP-LR epsilon sweep
+│   ├── train_dp_sgd.py          # Run DP-SGD (DP-SGD) epsilon sweep
 │   └── evaluate.py                 # Generate reports and CSV exports
 │
 ├── src/                            # Core Python library
@@ -169,7 +171,8 @@ privacy-preserving-ids-prototype/
 │   │   └── label_mapping.py        # Shared label taxonomy for both datasets
 │   ├── models/
 │   │   ├── baseline.py             # LR, RF, XGBoost — training + persistence
-│   │   ├── dp_model.py             # DP-LR — training + epsilon sweep
+│   │   ├── dp_model.py             # DP-LR — training + epsilon sweep (diffprivlib)
+│   │   ├── dp_sgd_model.py      # DP-SGD MLP — DP-SGD via Opacus (Phase 2)
 │   │   └── model_utils.py          # Pipeline status, model registry
 │   ├── evaluation/
 │   │   ├── metrics.py              # Model-agnostic metric computation
@@ -274,40 +277,64 @@ Pr[M(D) ∈ S] ≤ exp(ε) · Pr[M(D′) ∈ S] + δ
 Smaller ε provides a stronger privacy guarantee at the cost of greater noise
 magnitude and, typically, lower model utility (Dwork et al., 2017).
 
-### Implementation
+### Implementation — Phase 1: DP-LR
 
 The prototype uses **IBM diffprivlib** (`diffprivlib.models.LogisticRegression`),
 which provides a scikit-learn-compatible Differentially Private Logistic Regression
 via output perturbation of the optimisation objective (Holohan et al., 2019).
 
-> **Note on DP-SGD:** The dissertation prospectus proposes DP-SGD via PyTorch Opacus
-> for application to deep neural networks. For this prototype, diffprivlib's DP-LR
-> was selected because it is sklearn-compatible, requires no additional training
-> infrastructure, and provides the same formal (ε, δ)-DP guarantee with a single
-> interpretable parameter. A production implementation would extend this to DP-SGD
-> applied to a neural network classifier using Opacus, as originally proposed.
+### Implementation — Phase 2: DP-SGD (DP-SGD)
+
+A 2-hidden-layer MLP (128→64 neurons, ReLU) is trained with **DP-SGD** via
+**PyTorch Opacus**. Per-sample gradient clipping (max_grad_norm=1.0) and Gaussian
+noise injection at each step enforce (ε, δ)-DP. The **Rényi Differential Privacy
+(RDP) accountant** tracks the actual ε consumed; `make_private_with_epsilon()` sets
+the noise multiplier to achieve the target ε in the given number of epochs.
+
+| Component | Value |
+|---|---|
+| Architecture | MLP: input → 128 → 64 → output |
+| Activation | ReLU (no BatchNorm — incompatible with Opacus) |
+| DP mechanism | Opacus DP-SGD (`make_private_with_epsilon`) |
+| Max grad norm | 1.0 |
+| Epochs | 20 |
+| Batch size | 256 |
+| Delta (δ) | 1e-5 |
+| Class balancing | WeightedRandomSampler (inverse-frequency weights) |
+| Device | CUDA (RTX 2060, cu126) / CPU fallback |
 
 ### Privacy budget sweep
 
+**DP-LR sweep (13 values):**
+
 | ε | Privacy interpretation |
 |---|---|
-| 0.1 | Very strong — heavy noise; model utility substantially reduced |
-| 0.5 | Strong — significant noise |
-| 1.0 | Standard DP convention; widely cited threshold in the literature |
-| 2.0 | Moderate |
-| 5.0 | Weak — approaching non-private performance |
-| 10.0 | Near-negligible noise; near-baseline utility expected |
+| 0.01 | Extreme — near-random outputs expected |
+| 0.05 | Very strong — severe noise |
+| 0.1 | Strong |
+| 0.2 | Strong–moderate boundary |
+| 0.5 | Moderate |
+| 0.75 | Moderate |
+| 1.0 | Standard DP convention; widely cited threshold |
+| 1.5 | Moderate–weak boundary |
+| 2.0 | Weak-moderate |
+| 3.0 | Weak |
+| 5.0 | Near-non-private |
+| 7.0 | Near-non-private |
+| 10.0 | Negligible noise; near-baseline utility expected |
+
+**DP-SGD sweep (6 values):** ε ∈ {0.1, 0.5, 1.0, 2.0, 5.0, 10.0}
 
 The core experimental result is the **privacy–utility tradeoff curve**: F1 score
-plotted against ε, with non-private baseline performance as horizontal reference
-lines. This curve directly answers the research question by showing at what privacy
-budget the DP model achieves acceptable detection performance.
+plotted against ε (log scale), with non-private baseline performance as horizontal
+reference lines. This curve directly answers the research question by showing at
+what privacy budget the DP model achieves acceptable detection performance.
 
 ### Class balancing under DP
 
 `diffprivlib` does not natively support `class_weight='balanced'`. This is handled
 by computing inverse-frequency sample weights and passing them via `sample_weight`
-to `.fit()`, reproducing sklearn's balanced weighting behaviour.
+to `.fit()`. The DP-SGD uses `WeightedRandomSampler` for the same effect.
 
 ---
 
@@ -315,12 +342,13 @@ to `.fit()`, reproducing sklearn's balanced weighting behaviour.
 
 ### Prerequisites
 
-| Requirement | Minimum |
-|---|---|
-| Python | 3.10+ |
-| RAM | 16 GB (for full CIC-IDS2018 preprocessing) |
-| Disk | 30 GB free (raw data + Parquet + models) |
-| OS | Linux or macOS |
+| Requirement | Minimum | Notes |
+|---|---|---|
+| Python | 3.10+ | Tested on 3.12 (conda env) |
+| RAM | 16 GB | For full CIC-IDS2018 preprocessing |
+| Disk | 30 GB free | Raw data + Parquet + models |
+| OS | Windows / Linux / macOS | Tested on Windows 11 |
+| GPU | Optional (CUDA 12.x) | RTX 2060+ recommended for DP-SGD training |
 
 ### Step 1 — Clone
 
@@ -329,15 +357,20 @@ git clone <your-repo-url>
 cd privacy-preserving-ids-prototype
 ```
 
-### Step 2 — Virtual environment
+### Step 2 — Environment
 
+**Option A — conda (recommended on Windows):**
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+conda create -n py312 python=3.12
+conda activate py312
 ```
 
-You should see `(.venv)` in your terminal prompt. Run `source .venv/bin/activate`
-at the start of every session.
+**Option B — venv:**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate   # Linux/macOS
+.venv\Scripts\activate      # Windows
+```
 
 ### Step 3 — Install dependencies
 
@@ -345,6 +378,15 @@ at the start of every session.
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
+**For GPU-accelerated DP-SGD training (CUDA 12.6):**
+```bash
+pip uninstall torch -y
+pip install torch --index-url https://download.pytorch.org/whl/cu126
+```
+
+**Note on scikit-learn compatibility:** diffprivlib requires scikit-learn ≤ 1.7.x.
+The requirements.txt pins `scikit-learn==1.7.2` which is the latest compatible version.
 
 ### Step 4 — Place raw datasets
 
@@ -411,7 +453,7 @@ python scripts/train_baseline.py --dataset cic_ids2018 --label binary
 python scripts/train_baseline.py --dataset unsw_nb15   --label binary
 ```
 
-### Step 4 — Run the DP epsilon sweep
+### Step 4 — Run the DP-LR epsilon sweep
 
 ```bash
 python scripts/train_private.py --dataset cic_ids2018 --label binary
@@ -422,6 +464,15 @@ To run specific ε values only:
 ```bash
 python scripts/train_private.py --dataset cic_ids2018 --epsilon 0.1 1.0 10.0
 ```
+
+### Step 4b — Run the DP-SGD sweep (Phase 2 — requires torch + opacus)
+
+```bash
+python scripts/train_dp_sgd.py --dataset cic_ids2018 --label binary
+python scripts/train_dp_sgd.py --dataset unsw_nb15   --label binary
+```
+
+GPU is used automatically when CUDA is available (check with `python -c "import torch; print(torch.cuda.is_available())"`).
 
 ### Step 5 — Generate evaluation report
 
@@ -461,12 +512,16 @@ and for running the DP epsilon sweep with a configurable multiselect. Shows a
 live-updating results table as each model completes.
 
 **Compare Results** — The central dissertation demonstration page. Displays:
-- Table 1: Baseline model comparison (F1, AUC, MCC, FPR, Detection Rate)
-- Privacy–utility tradeoff curve (interactive Plotly, with baseline reference lines)
+- Executive summary metrics (best baseline, best DP-LR, best DP-SGD, min ε ≤5% loss)
+- Table 1: Baseline model comparison with grouped bar chart and radar/spider chart
+- Privacy–utility tradeoff curve (log-scale ε axis, DP-LR + DP-SGD traces, baseline reference lines)
 - Table 2: Tradeoff table (colour-coded: green ≤5% loss, yellow 5–15%, red >15%)
-- Confusion matrix viewer (select any trained model)
+- Table 3: DP-LR vs DP-SGD head-to-head at each shared ε with winner highlighting
+- Privacy budget analysis: actual ε vs target ε for DP-SGD (Opacus RDP accountant)
+- Detection analysis: FPR vs Detection Rate scatter plot
+- Confusion matrix viewer with normalised toggle + TN/FP/FN/TP breakdown
 - Feature importance chart (Random Forest)
-- CSV export buttons for dissertation tables
+- CSV export buttons for all dissertation tables
 
 ---
 
@@ -474,22 +529,19 @@ live-updating results table as each model completes.
 
 ### Experiment matrix
 
-| Run | Model | ε | Dataset | Label |
+| Group | Model | ε values | Datasets | Labels |
 |---|---|---|---|---|
-| B1 | Logistic Regression | — | CIC-IDS2018 | Binary |
-| B2 | Random Forest | — | CIC-IDS2018 | Binary |
-| B3 | XGBoost | — | CIC-IDS2018 | Binary |
-| P1 | DP-LR | 0.1 | CIC-IDS2018 | Binary |
-| P2 | DP-LR | 0.5 | CIC-IDS2018 | Binary |
-| P3 | DP-LR | 1.0 | CIC-IDS2018 | Binary |
-| P4 | DP-LR | 2.0 | CIC-IDS2018 | Binary |
-| P5 | DP-LR | 5.0 | CIC-IDS2018 | Binary |
-| P6 | DP-LR | 10.0 | CIC-IDS2018 | Binary |
-| B4–B6 | LR, RF, XGB | — | UNSW-NB15 | Binary |
-| P7–P12 | DP-LR | 0.1→10.0 | UNSW-NB15 | Binary |
+| Baselines | LR, RF, XGBoost | — | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
+| Phase 1 | DP-LR (diffprivlib) | 0.01, 0.05, 0.1, 0.2, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 7.0, 10.0 | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
+| Phase 2 | DP-SGD / MLP (Opacus) | 0.1, 0.5, 1.0, 2.0, 5.0, 10.0 | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
+
+Total experiment runs: 3 baselines × 2 datasets × 2 labels
+                     + 13 DP-LR × 2 datasets × 2 labels
+                     + 6 DP-SGD × 2 datasets × 2 labels
+                     = **12 + 52 + 24 = 88 model evaluations**
 
 **Fixed across all runs:** dataset subset, split assignments, random seed (42),
-StandardScaler fitted on training split only, `class_weight='balanced'`.
+StandardScaler fitted on training split only.
 
 **Variable:** model type; ε value (DP runs only).
 
@@ -540,14 +592,26 @@ sampling:
   random_seed: 42           # fixed for reproducibility
   test_split: 0.2           # 20% test, 20% val, 60% train
 
+datasets:
+  unsw_nb15:
+    has_header: false         # UNSW-NB15 CSVs have no column header row
+
 privacy:
-  epsilon_values: [0.1, 0.5, 1.0, 2.0, 5.0, 10.0]
+  epsilon_values: [0.01, 0.05, 0.1, 0.2, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 7.0, 10.0]
   default_epsilon: 1.0
 
 models:
   n_estimators: 100
   max_depth: 10
   n_jobs: -1                # use all CPU cores
+
+dp_sgd:
+  hidden_layers: [128, 64]  # MLP architecture
+  epochs: 20
+  batch_size: 256
+  max_grad_norm: 1.0        # Opacus per-sample gradient clipping
+  delta: 1.0e-5
+  epsilon_values: [0.1, 0.5, 1.0, 2.0, 5.0, 10.0]
 ```
 
 **Common adjustments:**
@@ -604,6 +668,15 @@ importances for dissertation analysis.
 `estimate_data_norm(X_train)` computes the L2 norm bound required by diffprivlib.
 `train_dp_model(dataset_name, epsilon, label, force)` trains at a single ε.
 
+### `src/models/dp_sgd_model.py`
+Phase 2 implementation. `train_dp_sgd_model(dataset_name, epsilon, label, force)`
+trains a 2-layer MLP with DP-SGD (Opacus). `run_dp_sgd_sweep()` sweeps all ε
+values from `dp_sgd.epsilon_values` in config.yaml. The result dict includes
+`actual_epsilon` (Opacus RDP accountant output) alongside the target ε, enabling
+privacy budget utilisation analysis. `DPNeuralNetWrapper` provides a sklearn-
+compatible interface with `.predict()` and `.predict_proba()` for model-agnostic
+evaluation via `metrics.py`.
+
 ### `src/evaluation/metrics.py`
 `evaluate_model(model, X, y, label_type)` is model-agnostic and called
 identically for baseline and DP models. Returns all metrics as a plain Python
@@ -650,6 +723,19 @@ python scripts/train_private.py --dataset {cic_ids2018|unsw_nb15}
 
 Runs the DP-LR epsilon sweep. Defaults to all values from `config.yaml`.
 Results saved to `results/{dataset}_dp_sweep_{label}.json`.
+
+### `scripts/train_dp_sgd.py`
+
+```
+python scripts/train_dp_sgd.py --dataset {cic_ids2018|unsw_nb15}
+                                   [--label {binary|multiclass}]
+                                   [--epsilon eps [eps ...]]
+                                   [--force]
+```
+
+Runs the DP-SGD (DP-SGD MLP) epsilon sweep. Requires `torch` and `opacus`.
+Saves to `results/{dataset}_dp_sgd_sweep_{label}.json` and updates
+`results/{dataset}_combined_{label}.json`.
 
 ### `scripts/evaluate.py`
 
@@ -702,16 +788,16 @@ python scripts/evaluate.py       --dataset cic_ids2018 --export-csv
    centralised dataset. A federated architecture — where DP protects distributed
    training across multiple clients — is not implemented (Naseri et al., 2020).
 
-2. **Prototype privacy mechanism.** The implementation uses diffprivlib's output
-   perturbation DP-LR. The proposed full implementation would use DP-SGD via
-   Opacus applied to neural network classifiers, which may exhibit different
-   privacy–utility characteristics (Mironov & Talwar, 2023; Tian et al., 2023).
+2. **DP-SGD noise floor at low ε.** At ε ≤ 0.1, the Opacus noise multiplier (~6×)
+   overwhelms gradient signal; additional epochs do not meaningfully improve utility
+   as the noise floor (not iteration count) is the binding constraint. DP-LR at
+   ε ≤ 0.05 similarly produces near-random outputs. Both are empirical evidence of
+   the privacy–utility tension at strong privacy budgets, consistent with the
+   literature (Wang & Zhang, 2024; Mironov & Talwar, 2023).
 
-3. **Convergence at very low ε.** At ε ≤ 0.5, the DP optimiser may not converge
-   within the iteration limit, producing near-random outputs. This is consistent
-   with published findings on the limits of DP at strong privacy budgets
-   (Wang & Zhang, 2024) and is interpreted as empirical evidence of the
-   privacy–utility tension rather than an implementation failure.
+3. **DP-SGD security mode disabled.** Opacus `secure_mode=False` (default) is used
+   for training speed. For a production or security-critical deployment, retrain
+   with `secure_mode=True` to use a cryptographically secure RNG (Tian et al., 2023).
 
 4. **Subset-based evaluation.** All experiments use a 300K-row stratified subset.
    Results may differ at full dataset scale, though stratified sampling preserves
@@ -761,16 +847,22 @@ Mironov, I., & Talwar, K. (2023). Calibrating privacy budgets for deep learning
 systems. *Proceedings of Privacy Enhancing Technologies, 2023*(4), 54–72.
 https://doi.org/10.56553/popets-2023-0110
 
+Leevy, J. L., & Khoshgoftaar, T. M. (2020). A survey and analysis of intrusion
+detection models based on CSE-CIC-IDS2018 big data. *Journal of Big Data, 7*(1), 94.
+https://doi.org/10.1186/s40537-020-00379-6
+
 Moustafa, N., & Slay, J. (2015). UNSW-NB15: A comprehensive data set for network
-intrusion detection systems. *Military Communications and Information Systems
-Conference (MilCIS)*, 1–6. https://doi.org/10.1109/MilCIS.2015.7348942
+intrusion detection systems. *Proceedings of the Military Communications and
+Information Systems Conference (MilCIS)*, 1–6.
+https://doi.org/10.1109/MilCIS.2015.7348942
 
 Naseri, M., Hayes, J., & De Cristofaro, E. (2020). Local and central differential
 privacy for federated learning in practice. *USENIX Security Symposium 2020*, 1–16.
 
 Sharafaldin, I., Lashkari, A. H., & Ghorbani, A. A. (2018). Toward generating a
-new intrusion detection dataset and intrusion traffic characterization. *ICISSP
-2018*, 108–116. https://doi.org/10.5220/0006639801080116
+new intrusion detection dataset and intrusion traffic characterization.
+*Proceedings of the 4th International Conference on Information Systems Security
+and Privacy (ICISSP)*, 108–116. https://doi.org/10.5220/0006639801080116
 
 Shokri, R., Stronati, M., Song, C., & Shmatikov, V. (2022). Membership inference
 attacks against machine learning models: A survey. *ACM Computing Surveys, 54*(7),

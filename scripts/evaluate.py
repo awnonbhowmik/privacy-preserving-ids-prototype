@@ -6,7 +6,8 @@ privacy–utility tradeoff, and exports CSV files to results/. Also prints
 a formatted summary to stdout suitable for copying into a dissertation draft.
 
 Usage:
-    source .venv/bin/activate
+    # Linux/macOS:  source .venv/bin/activate
+    # Windows:      .venv\\Scripts\\activate
 
     # Full evaluation report for CIC-IDS2018 (binary)
     python scripts/evaluate.py --dataset cic_ids2018

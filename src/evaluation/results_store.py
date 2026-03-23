@@ -152,11 +152,13 @@ def save_combined_results(
     label: str = "binary",
 ) -> Path:
     """
-    Merge baseline and DP sweep results into a single combined JSON file.
+    Merge baseline, DP-LR sweep, and DP-SGD sweep results into a single
+    combined JSON file.
 
-    Reads baselines and dp_sweep JSON files for the given dataset and label,
-    merges them, and writes a combined JSON. This single file is used by the
-    Streamlit comparison page to build all summary tables and tradeoff plots.
+    Reads baselines, dp_sweep, and dp_sgd_sweep JSON files for the given
+    dataset and label, merges them, and writes a combined JSON. This single
+    file is used by the Streamlit comparison page to build all summary tables
+    and tradeoff plots.
 
     Args:
         dataset_name: Key matching config.yaml 'datasets' entry.
@@ -165,9 +167,10 @@ def save_combined_results(
     Returns:
         Path to the written combined JSON file.
     """
-    baselines = load_results(dataset_name, "baselines", label)
-    dp_sweep  = load_results(dataset_name, "dp_sweep",  label)
-    combined  = baselines + dp_sweep
+    baselines  = load_results(dataset_name, "baselines",     label)
+    dp_sweep   = load_results(dataset_name, "dp_sweep",      label)
+    dp_sgd     = load_results(dataset_name, "dp_sgd_sweep",  label)
+    combined   = baselines + dp_sweep + dp_sgd
 
     if not combined:
         log.warning(
@@ -178,8 +181,8 @@ def save_combined_results(
 
     path = save_results(combined, dataset_name, "combined", label)
     log.info(
-        "Combined results written (%d baseline + %d DP = %d total)",
-        len(baselines), len(dp_sweep), len(combined)
+        "Combined results written (%d baseline + %d DP-LR + %d DP-SGD = %d total)",
+        len(baselines), len(dp_sweep), len(dp_sgd), len(combined)
     )
     return path
 
@@ -241,6 +244,10 @@ def build_comparison_table(
             val = split_metrics.get(key)
             # Round floats to 4 decimal places for clean display
             row[key] = round(val, 4) if isinstance(val, float) else val
+
+        # Training time
+        t = r.get("train_time_s")
+        row["Train Time (s)"] = round(t, 1) if isinstance(t, float) else t
 
         # Privacy cost columns (present only in augmented dp results)
         if "metric_loss_pct" in r:
@@ -348,7 +355,7 @@ def export_to_csv(
         Path to the written CSV.
     """
     output_path = PATHS["results"] / filename
-    df.to_csv(output_path, index=False)
+    df.to_csv(output_path, index=False, encoding="utf-8")
     log.info("Exported %d rows to %s", len(df), output_path)
     return output_path
 
@@ -365,6 +372,7 @@ def _display_name(model_name: str) -> str:
         "random_forest":          "Random Forest",
         "xgboost":                "XGBoost",
         "dp_logistic_regression": "DP-LR",
+        "dp_sgd":                 "DP-SGD",
     }
     return display_map.get(model_name, model_name)
 

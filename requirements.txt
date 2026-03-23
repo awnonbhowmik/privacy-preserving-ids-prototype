@@ -9,7 +9,9 @@ xgboost
 imbalanced-learn          # Handle class imbalance in IDS datasets
 
 # ── Differential privacy ───────────────────────────────────────────────────────
-diffprivlib               # IBM DP library — sklearn-compatible
+diffprivlib               # IBM DP library — sklearn-compatible (DP-LR)
+torch                     # PyTorch — required for DP-SGD neural network
+opacus                    # DP-SGD for PyTorch (Phase 2 DP-NN)
 
 # ── Explainability ─────────────────────────────────────────────────────────────
 shap
