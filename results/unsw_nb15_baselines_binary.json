@@ -1,0 +1,161 @@
+[
+  {
+    "model_name": "logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "train_time_s": 91.89,
+    "epsilon": null,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9834497241620693,
+        "f1_macro": 0.9210139315491583,
+        "f1_weighted": 0.9846002637567471,
+        "precision_macro": 0.8706022663471535,
+        "recall_macro": 0.9904765230164688,
+        "mcc": 0.8526938747756434,
+        "confusion_matrix": [
+          [
+            56175,
+            988
+          ],
+          [
+            5,
+            2831
+          ]
+        ],
+        "roc_auc": 0.9931944670039777,
+        "false_positive_rate": 0.017283907422633523,
+        "detection_rate": 0.9982369534555712,
+        "false_negative_rate": 0.001763046544428773
+      },
+      "test": {
+        "accuracy": 0.9833833333333334,
+        "f1_macro": 0.9207630776828124,
+        "f1_weighted": 0.9845444243331339,
+        "precision_macro": 0.8701604754051153,
+        "recall_macro": 0.9906092450306785,
+        "mcc": 0.852300771743639,
+        "confusion_matrix": [
+          [
+            56171,
+            993
+          ],
+          [
+            4,
+            2832
+          ]
+        ],
+        "roc_auc": 0.9929119385206882,
+        "false_positive_rate": 0.017371072703099854,
+        "detection_rate": 0.998589562764457,
+        "false_negative_rate": 0.0014104372355430183
+      }
+    }
+  },
+  {
+    "model_name": "random_forest",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "train_time_s": 3.48,
+    "epsilon": null,
+    "metrics": {
+      "val": {
+        "accuracy": 0.98649977499625,
+        "f1_macro": 0.9339130506440076,
+        "f1_weighted": 0.9872917052633957,
+        "precision_macro": 0.8890541944706325,
+        "recall_macro": 0.9925798819879321,
+        "mcc": 0.8755347376301049,
+        "confusion_matrix": [
+          [
+            56355,
+            808
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9987099192280843,
+        "false_positive_rate": 0.014135017406364256,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      },
+      "test": {
+        "accuracy": 0.9863666666666666,
+        "f1_macro": 0.9332604035078179,
+        "f1_weighted": 0.9871664059907957,
+        "precision_macro": 0.8884695585464376,
+        "recall_macro": 0.991839799951028,
+        "mcc": 0.8742191715183191,
+        "confusion_matrix": [
+          [
+            56352,
+            812
+          ],
+          [
+            6,
+            2830
+          ]
+        ],
+        "roc_auc": 0.9986592315391966,
+        "false_positive_rate": 0.014204744244629487,
+        "detection_rate": 0.9978843441466855,
+        "false_negative_rate": 0.0021156558533145277
+      }
+    }
+  },
+  {
+    "model_name": "xgboost",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "train_time_s": 2.43,
+    "epsilon": null,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9929665494424907,
+        "f1_macro": 0.9605840790850233,
+        "f1_weighted": 0.9929332041261232,
+        "precision_macro": 0.9649978638176859,
+        "recall_macro": 0.956262501829882,
+        "mcc": 0.9212189505020144,
+        "confusion_matrix": [
+          [
+            56980,
+            183
+          ],
+          [
+            239,
+            2597
+          ]
+        ],
+        "roc_auc": 0.9992046350910951,
+        "false_positive_rate": 0.0032013715165404195,
+        "detection_rate": 0.9157263751763046,
+        "false_negative_rate": 0.08427362482369534
+      },
+      "test": {
+        "accuracy": 0.9927666666666667,
+        "f1_macro": 0.9596136907454289,
+        "f1_weighted": 0.9927459315726429,
+        "precision_macro": 0.9622656802138827,
+        "recall_macro": 0.9569953581208803,
+        "mcc": 0.9192459302631384,
+        "confusion_matrix": [
+          [
+            56964,
+            200
+          ],
+          [
+            234,
+            2602
+          ]
+        ],
+        "roc_auc": 0.9991501575305712,
+        "false_positive_rate": 0.0034987054789727802,
+        "detection_rate": 0.9174894217207334,
+        "false_negative_rate": 0.08251057827926657
+      }
+    }
+  }
+]

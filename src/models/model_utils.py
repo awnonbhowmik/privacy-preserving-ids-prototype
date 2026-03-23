@@ -17,15 +17,27 @@ import joblib
 from pathlib import Path
 from typing import Any
 
-from src.utils.config import PATHS, PRIVACY_CFG
+from src.utils.config import PATHS, PRIVACY_CFG, DP_SGD_CFG
 from src.utils.logger import get_logger
 from src.models.baseline import BASELINE_MODELS, _model_path as _baseline_path
 from src.models.dp_model  import _dp_model_path, DP_MODEL_NAME
 
 log = get_logger(__name__)
 
-SUPPORTED_DATASETS = ["cic_ids2018", "unsw_nb15"]
-SUPPORTED_LABELS   = ["binary", "multiclass"]
+SUPPORTED_DATASETS   = ["cic_ids2018", "unsw_nb15"]
+SUPPORTED_LABELS     = ["binary", "multiclass"]
+DP_SGD_MODEL_NAME = "dp_sgd"
+
+
+def _dp_sgd_model_path(dataset_name: str, epsilon: float, label: str) -> Path:
+    """Construct the .joblib save path for a DP-SGD model at a given epsilon.
+
+    Defined here (mirroring the function in dp_sgd_model.py) so that
+    model_utils does not need to import torch at the top level — keeping the
+    module importable even when PyTorch is not installed.
+    """
+    eps_str = f"{epsilon:.3f}".replace(".", "_")
+    return PATHS["models"] / f"dp_sgd_{dataset_name}_{label}_eps{eps_str}.joblib"
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -70,29 +82,38 @@ def get_pipeline_status(dataset_name: str, label: str = "binary") -> dict[str, A
         for model in BASELINE_MODELS
     }
 
-    # DP model status per epsilon value
+    # DP-LR model status per epsilon value
     epsilon_values = PRIVACY_CFG.get("epsilon_values", [])
     dp_trained = {
         eps: _dp_model_path(dataset_name, eps, label).exists()
         for eps in epsilon_values
     }
 
+    # DP-SGD model status per epsilon value
+    dp_sgd_eps = DP_SGD_CFG.get("epsilon_values", [])
+    dp_sgd_trained = {
+        eps: _dp_sgd_model_path(dataset_name, eps, label).exists()
+        for eps in dp_sgd_eps
+    }
+
     # Results JSON status
     results_dir = PATHS["results"]
     results_exist = {
-        "baselines": (results_dir / f"{dataset_name}_baselines_{label}.json").exists(),
-        "dp_sweep":  (results_dir / f"{dataset_name}_dp_sweep_{label}.json").exists(),
-        "combined":  (results_dir / f"{dataset_name}_combined_{label}.json").exists(),
+        "baselines":      (results_dir / f"{dataset_name}_baselines_{label}.json").exists(),
+        "dp_sweep":       (results_dir / f"{dataset_name}_dp_sweep_{label}.json").exists(),
+        "dp_sgd_sweep":   (results_dir / f"{dataset_name}_dp_sgd_sweep_{label}.json").exists(),
+        "combined":       (results_dir / f"{dataset_name}_combined_{label}.json").exists(),
     }
 
     return {
-        "raw_files_exist":   len(raw_files) > 0,
-        "raw_file_count":    len(raw_files),
-        "processed_exists":  processed_path.exists(),
-        "subset_exists":     subset_path.exists(),
-        "baselines_trained": baselines_trained,
-        "dp_trained":        dp_trained,
-        "results_exist":     results_exist,
+        "raw_files_exist":    len(raw_files) > 0,
+        "raw_file_count":     len(raw_files),
+        "processed_exists":   processed_path.exists(),
+        "subset_exists":      subset_path.exists(),
+        "baselines_trained":  baselines_trained,
+        "dp_trained":         dp_trained,
+        "dp_sgd_trained":     dp_sgd_trained,
+        "results_exist":      results_exist,
     }
 
 
@@ -199,12 +220,24 @@ def list_trained_models(
                 "size_kb":    round(path.stat().st_size / 1024, 1),
             })
 
-    # Check DP models across all configured epsilon values
+    # Check DP-LR models across all configured epsilon values
     for eps in sorted(PRIVACY_CFG.get("epsilon_values", [])):
         path = _dp_model_path(dataset_name, eps, label)
         if path.exists():
             found.append({
                 "model_name": DP_MODEL_NAME,
+                "epsilon":    eps,
+                "label":      label,
+                "path":       str(path),
+                "size_kb":    round(path.stat().st_size / 1024, 1),
+            })
+
+    # Check DP-SGD models across all configured epsilon values
+    for eps in sorted(DP_SGD_CFG.get("epsilon_values", [])):
+        path = _dp_sgd_model_path(dataset_name, eps, label)
+        if path.exists():
+            found.append({
+                "model_name": DP_SGD_MODEL_NAME,
                 "epsilon":    eps,
                 "label":      label,
                 "path":       str(path),

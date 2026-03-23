@@ -26,9 +26,8 @@ from src.models.model_utils import (
     SUPPORTED_DATASETS,
 )
 from src.models.baseline import BASELINE_MODELS
-from src.utils.config import PRIVACY_CFG
+from src.utils.config import PRIVACY_CFG, DP_SGD_CFG
 
-st.set_page_config(page_title="Train Models", page_icon="🤖", layout="wide")
 st.title("Train Models")
 
 # ── Dataset and label selectors ───────────────────────────────────────────────
@@ -220,6 +219,108 @@ if run_dp and selected_eps:
 
     except Exception as exc:
         st.error(f"DP training failed: {exc}")
+        st.exception(exc)
+
+st.divider()
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Section 3: Phase 2 — DP-SGD (Opacus)
+# ═══════════════════════════════════════════════════════════════════════════════
+st.subheader("Phase 2: DP-SGD (Opacus)")
+st.caption(
+    "Trains a 2-hidden-layer MLP (128 → 64) with DP-SGD via Opacus at each ε. "
+    "Hyperparameters are set under `dp_sgd` in `config.yaml`."
+)
+
+dp_sgd_eps_values = DP_SGD_CFG.get("epsilon_values", [0.1, 0.5, 1.0, 2.0, 5.0, 10.0])
+
+# Status per epsilon
+dp_sgd_done  = sum(status.get("dp_sgd_trained", {}).values())
+dp_sgd_total = len(status.get("dp_sgd_trained", {}))
+st.markdown(f"**DP-SGD ε sweep status:** {dp_sgd_done} / {dp_sgd_total} models trained")
+
+nn_status_cols = st.columns(min(len(dp_sgd_eps_values), 6))
+for i, eps in enumerate(sorted(dp_sgd_eps_values)):
+    trained = status.get("dp_sgd_trained", {}).get(eps, False)
+    with nn_status_cols[i % 6]:
+        icon = "✅" if trained else "⏳"
+        st.markdown(f"{icon} **ε={eps}**")
+
+# Custom epsilon selector
+st.markdown("**Select ε values to train:**")
+selected_nn_eps = st.multiselect(
+    "DP-SGD epsilon values",
+    options=sorted(dp_sgd_eps_values),
+    default=sorted(dp_sgd_eps_values),
+    key="selected_nn_eps",
+    label_visibility="collapsed",
+)
+
+col_btn5, col_btn6, _ = st.columns([2, 2, 4])
+with col_btn5:
+    run_dp_nn = st.button(
+        "Train DP-SGD Models",
+        type="primary",
+        key="btn_run_dp_nn",
+        disabled=not selected_nn_eps,
+    )
+with col_btn6:
+    force_dp_nn = st.checkbox("Force re-train DP-SGD", key="force_dp_nn", value=False)
+
+if run_dp_nn and selected_nn_eps:
+    nn_progress_bar      = st.progress(0, text="Starting DP-SGD training...")
+    nn_results_placeholder = st.empty()
+
+    try:
+        from src.models.dp_sgd_model import train_dp_sgd_model
+        from src.evaluation.results_store import save_results, load_results
+
+        dp_sgd_results = []
+        for i, eps in enumerate(sorted(selected_nn_eps)):
+            nn_progress_bar.progress(
+                i / len(selected_nn_eps),
+                text=f"Training DP-SGD at ε={eps}... (epoch logs in terminal)"
+            )
+            result = train_dp_sgd_model(
+                dataset, eps,
+                label=label_type,
+                force=force_dp_nn,
+            )
+            dp_sgd_results.append(result)
+
+            # Live results table
+            rows = []
+            for r in dp_sgd_results:
+                m = r["metrics"]["test"]
+                rows.append({
+                    "ε":              r["epsilon"],
+                    "Actual ε":       r.get("actual_epsilon", "—"),
+                    "F1 (macro)":     f"{m.get('f1_macro', 0):.4f}",
+                    "AUC":            f"{m.get('roc_auc', 0):.4f}" if m.get("roc_auc") else "—",
+                    "MCC":            f"{m.get('mcc', 0):.4f}",
+                    "Train Time (s)": f"{r['train_time_s']:.1f}",
+                })
+            nn_results_placeholder.dataframe(
+                pd.DataFrame(rows), use_container_width=False, hide_index=True
+            )
+
+        nn_progress_bar.progress(1.0, text="DP-SGD sweep complete.")
+
+        # Save dp_sgd_sweep results and update combined
+        save_results(dp_sgd_results, dataset, "dp_sgd_sweep", label=label_type)
+        baselines = load_results(dataset, "baselines",  label=label_type)
+        dp_sweep  = load_results(dataset, "dp_sweep",   label=label_type)
+        save_results(baselines + dp_sweep + dp_sgd_results, dataset, "combined", label=label_type)
+
+        st.success(f"DP-SGD sweep complete. {len(dp_sgd_results)} model(s) trained and saved.")
+
+    except ImportError:
+        st.error(
+            "PyTorch and Opacus are required for DP-SGD training. "
+            "Install them with:  `pip install torch opacus`"
+        )
+    except Exception as exc:
+        st.error(f"DP-SGD training failed: {exc}")
         st.exception(exc)
 
 st.divider()

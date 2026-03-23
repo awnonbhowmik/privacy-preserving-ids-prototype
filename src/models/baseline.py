@@ -30,11 +30,15 @@ import time
 from pathlib import Path
 from typing import Any
 
+import shutil
+
 import joblib
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from xgboost import XGBClassifier
+
+_gpu_available = shutil.which("nvidia-smi") is not None
 
 from src.utils.config import PATHS, MODEL_CFG, SAMPLING_CFG
 from src.utils.logger import get_logger
@@ -102,6 +106,7 @@ def _build_xgboost(seed: int, n_classes: int) -> XGBClassifier:
     multiclass, XGBoost handles imbalance via sample_weight at fit time,
     but we approximate it here via the eval_metric setting.
     """
+    device_kwargs = {"device": "cuda", "tree_method": "hist"} if _gpu_available else {}
     if n_classes == 2:
         return XGBClassifier(
             n_estimators=MODEL_CFG.get("n_estimators", 100),
@@ -112,6 +117,7 @@ def _build_xgboost(seed: int, n_classes: int) -> XGBClassifier:
             random_state=seed,
             n_jobs=MODEL_CFG.get("n_jobs", -1),
             verbosity=0,
+            **device_kwargs,
         )
     else:
         return XGBClassifier(
@@ -124,6 +130,7 @@ def _build_xgboost(seed: int, n_classes: int) -> XGBClassifier:
             random_state=seed,
             n_jobs=MODEL_CFG.get("n_jobs", -1),
             verbosity=0,
+            **device_kwargs,
         )
 
 

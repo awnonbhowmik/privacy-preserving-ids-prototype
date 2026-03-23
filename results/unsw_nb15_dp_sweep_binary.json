@@ -1,0 +1,326 @@
+[
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.1,
+    "data_norm": 20.8732,
+    "train_time_s": 0.75,
+    "metrics": {
+      "val": {
+        "accuracy": 0.8954815913598559,
+        "f1_macro": 0.6767205446242096,
+        "f1_weighted": 0.9175145997746972,
+        "precision_macro": 0.6337755538329395,
+        "recall_macro": 0.8362355557747699,
+        "mcc": 0.42417023795686587,
+        "confusion_matrix": [
+          [
+            51542,
+            5621
+          ],
+          [
+            650,
+            2186
+          ]
+        ],
+        "roc_auc": 0.8633537178849674,
+        "false_positive_rate": 0.09833283767471966,
+        "detection_rate": 0.7708039492242595,
+        "false_negative_rate": 0.22919605077574048
+      },
+      "test": {
+        "accuracy": 0.8961,
+        "f1_macro": 0.6779454291875512,
+        "f1_weighted": 0.9179499150953458,
+        "precision_macro": 0.6346713748804645,
+        "recall_macro": 0.8375653934701424,
+        "mcc": 0.4264288716805608,
+        "confusion_matrix": [
+          [
+            51574,
+            5590
+          ],
+          [
+            644,
+            2192
+          ]
+        ],
+        "roc_auc": 0.855354565179008,
+        "false_positive_rate": 0.09778881813728921,
+        "detection_rate": 0.7729196050775741,
+        "false_negative_rate": 0.22708039492242596
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.5,
+    "data_norm": 20.8732,
+    "train_time_s": 1.89,
+    "metrics": {
+      "val": {
+        "accuracy": 0.96561609360156,
+        "f1_macro": 0.8327287917144242,
+        "f1_weighted": 0.9677257708389694,
+        "precision_macro": 0.7970529101964565,
+        "recall_macro": 0.8802475640207067,
+        "mcc": 0.6721715420559379,
+        "confusion_matrix": [
+          [
+            55707,
+            1456
+          ],
+          [
+            607,
+            2229
+          ]
+        ],
+        "roc_auc": 0.9473762574679732,
+        "false_positive_rate": 0.025471021464933612,
+        "detection_rate": 0.785966149506347,
+        "false_negative_rate": 0.21403385049365303
+      },
+      "test": {
+        "accuracy": 0.9660166666666666,
+        "f1_macro": 0.8352462967871512,
+        "f1_weighted": 0.9681523421489381,
+        "precision_macro": 0.7985422317191921,
+        "recall_macro": 0.8844790985163417,
+        "mcc": 0.677593530430897,
+        "confusion_matrix": [
+          [
+            55708,
+            1456
+          ],
+          [
+            583,
+            2253
+          ]
+        ],
+        "roc_auc": 0.9470677844084853,
+        "false_positive_rate": 0.02547057588692184,
+        "detection_rate": 0.7944287729196051,
+        "false_negative_rate": 0.20557122708039494
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 1.0,
+    "data_norm": 20.8732,
+    "train_time_s": 2.99,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9748995816596944,
+        "f1_macro": 0.8687234282550247,
+        "f1_weighted": 0.975623702278181,
+        "precision_macro": 0.8487672855668683,
+        "recall_macro": 0.8914867906629909,
+        "mcc": 0.7390203929928216,
+        "confusion_matrix": [
+          [
+            56226,
+            937
+          ],
+          [
+            569,
+            2267
+          ]
+        ],
+        "roc_auc": 0.9662929884740312,
+        "false_positive_rate": 0.016391721918023898,
+        "detection_rate": 0.7993653032440057,
+        "false_negative_rate": 0.20063469675599435
+      },
+      "test": {
+        "accuracy": 0.9754166666666667,
+        "f1_macro": 0.8720075878414203,
+        "f1_weighted": 0.9761778875654749,
+        "precision_macro": 0.8504953320101072,
+        "recall_macro": 0.8967848204344928,
+        "mcc": 0.7458450975229597,
+        "confusion_matrix": [
+          [
+            56228,
+            936
+          ],
+          [
+            539,
+            2297
+          ]
+        ],
+        "roc_auc": 0.9690320738766712,
+        "false_positive_rate": 0.016373941641592612,
+        "detection_rate": 0.8099435825105783,
+        "false_negative_rate": 0.19005641748942173
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 2.0,
+    "data_norm": 20.8732,
+    "train_time_s": 5.35,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9784996416606944,
+        "f1_macro": 0.8861948988421646,
+        "f1_weighted": 0.9789984477105326,
+        "precision_macro": 0.8691742593425306,
+        "recall_macro": 0.9051051663139237,
+        "mcc": 0.7734452785550519,
+        "confusion_matrix": [
+          [
+            56372,
+            791
+          ],
+          [
+            499,
+            2337
+          ]
+        ],
+        "roc_auc": 0.9795127779869444,
+        "false_positive_rate": 0.013837622238161049,
+        "detection_rate": 0.8240479548660085,
+        "false_negative_rate": 0.17595204513399154
+      },
+      "test": {
+        "accuracy": 0.9788,
+        "f1_macro": 0.887925436628519,
+        "f1_weighted": 0.9793045970424862,
+        "precision_macro": 0.8704077684816189,
+        "recall_macro": 0.9074409816745801,
+        "mcc": 0.7769666783332252,
+        "confusion_matrix": [
+          [
+            56378,
+            786
+          ],
+          [
+            486,
+            2350
+          ]
+        ],
+        "roc_auc": 0.981881131432005,
+        "false_positive_rate": 0.013749912532363026,
+        "detection_rate": 0.8286318758815233,
+        "false_negative_rate": 0.17136812411847674
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 5.0,
+    "data_norm": 20.8732,
+    "train_time_s": 6.69,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9777329622160369,
+        "f1_macro": 0.8813065195316813,
+        "f1_weighted": 0.978175162659568,
+        "precision_macro": 0.8668162742515547,
+        "recall_macro": 0.8971627099472823,
+        "mcc": 0.7633760424181859,
+        "confusion_matrix": [
+          [
+            56371,
+            792
+          ],
+          [
+            544,
+            2292
+          ]
+        ],
+        "roc_auc": 0.9664610767017742,
+        "false_positive_rate": 0.013855116071584767,
+        "detection_rate": 0.8081805359661495,
+        "false_negative_rate": 0.1918194640338505
+      },
+      "test": {
+        "accuracy": 0.9780666666666666,
+        "f1_macro": 0.8833449926290169,
+        "f1_weighted": 0.9785256811785201,
+        "precision_macro": 0.8680290118135222,
+        "recall_macro": 0.9001862505513298,
+        "mcc": 0.7675419215437409,
+        "confusion_matrix": [
+          [
+            56375,
+            789
+          ],
+          [
+            527,
+            2309
+          ]
+        ],
+        "roc_auc": 0.9695296247088154,
+        "false_positive_rate": 0.013802393114547618,
+        "detection_rate": 0.8141748942172073,
+        "false_negative_rate": 0.18582510578279265
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 10.0,
+    "data_norm": 20.8732,
+    "train_time_s": 7.37,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9833497224953749,
+        "f1_macro": 0.9112037527892787,
+        "f1_weighted": 0.9836765551305955,
+        "precision_macro": 0.8957469652983875,
+        "recall_macro": 0.928092563080259,
+        "mcc": 0.823204306854188,
+        "confusion_matrix": [
+          [
+            56541,
+            622
+          ],
+          [
+            377,
+            2459
+          ]
+        ],
+        "roc_auc": 0.9928380671589006,
+        "false_positive_rate": 0.010881164389552682,
+        "detection_rate": 0.8670662905500706,
+        "false_negative_rate": 0.13293370944992947
+      },
+      "test": {
+        "accuracy": 0.9833666666666666,
+        "f1_macro": 0.9122065806252451,
+        "f1_weighted": 0.9837750421465593,
+        "precision_macro": 0.893033194112194,
+        "recall_macro": 0.9336308154135298,
+        "mcc": 0.8256665294111292,
+        "confusion_matrix": [
+          [
+            56510,
+            654
+          ],
+          [
+            344,
+            2492
+          ]
+        ],
+        "roc_auc": 0.9943760715093949,
+        "false_positive_rate": 0.01144076691624099,
+        "detection_rate": 0.8787023977433004,
+        "false_negative_rate": 0.12129760225669958
+      }
+    }
+  }
+]

@@ -1,0 +1,326 @@
+[
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.1,
+    "data_norm": 22.5009,
+    "train_time_s": 3.9,
+    "metrics": {
+      "val": {
+        "accuracy": 0.827163786063101,
+        "f1_macro": 0.7888534769627458,
+        "f1_weighted": 0.8304286392626383,
+        "precision_macro": 0.7795471877210353,
+        "recall_macro": 0.8015357446325073,
+        "mcc": 0.5806667526538287,
+        "confusion_matrix": [
+          [
+            37593,
+            6274
+          ],
+          [
+            4096,
+            12036
+          ]
+        ],
+        "roc_auc": 0.8592160176865341,
+        "false_positive_rate": 0.1430232293067682,
+        "detection_rate": 0.7460947185717828,
+        "false_negative_rate": 0.2539052814282172
+      },
+      "test": {
+        "accuracy": 0.8276166666666667,
+        "f1_macro": 0.7897649794128242,
+        "f1_weighted": 0.8310020428352907,
+        "precision_macro": 0.7801323905826322,
+        "recall_macro": 0.8030796936263336,
+        "mcc": 0.5827604623259769,
+        "confusion_matrix": [
+          [
+            37558,
+            6310
+          ],
+          [
+            4033,
+            12099
+          ]
+        ],
+        "roc_auc": 0.8593199895032572,
+        "false_positive_rate": 0.1438406127473329,
+        "detection_rate": 0.75,
+        "false_negative_rate": 0.25
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.5,
+    "data_norm": 22.5009,
+    "train_time_s": 8.42,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9298988316471941,
+        "f1_macro": 0.911308904173515,
+        "f1_weighted": 0.9300788498753058,
+        "precision_macro": 0.9092297288029463,
+        "recall_macro": 0.9134551062879352,
+        "mcc": 0.8226739840748705,
+        "confusion_matrix": [
+          [
+            41631,
+            2236
+          ],
+          [
+            1970,
+            14162
+          ]
+        ],
+        "roc_auc": 0.9277412007185731,
+        "false_positive_rate": 0.050972257049718465,
+        "detection_rate": 0.8778824696255889,
+        "false_negative_rate": 0.12211753037441112
+      },
+      "test": {
+        "accuracy": 0.9293833333333333,
+        "f1_macro": 0.9107504516257275,
+        "f1_weighted": 0.9296015042262074,
+        "precision_macro": 0.908260657083428,
+        "recall_macro": 0.9133375121419529,
+        "mcc": 0.8215824835141097,
+        "confusion_matrix": [
+          [
+            41589,
+            2279
+          ],
+          [
+            1958,
+            14174
+          ]
+        ],
+        "roc_auc": 0.9259083102439434,
+        "false_positive_rate": 0.051951308470867145,
+        "detection_rate": 0.8786263327547731,
+        "false_negative_rate": 0.12137366724522688
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 1.0,
+    "data_norm": 22.5009,
+    "train_time_s": 8.41,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9439157319288655,
+        "f1_macro": 0.928597776319948,
+        "f1_weighted": 0.9438854157158936,
+        "precision_macro": 0.9290626277369107,
+        "recall_macro": 0.928135913624943,
+        "mcc": 0.8571980404281407,
+        "confusion_matrix": [
+          [
+            42212,
+            1655
+          ],
+          [
+            1710,
+            14422
+          ]
+        ],
+        "roc_auc": 0.9377882422993187,
+        "false_positive_rate": 0.037727676841361385,
+        "detection_rate": 0.8939995040912472,
+        "false_negative_rate": 0.1060004959087528
+      },
+      "test": {
+        "accuracy": 0.9426833333333333,
+        "f1_macro": 0.9271680619113237,
+        "f1_weighted": 0.9427074244997344,
+        "precision_macro": 0.9268098759380033,
+        "recall_macro": 0.9275280618358015,
+        "mcc": 0.8543376359078501,
+        "confusion_matrix": [
+          [
+            42127,
+            1741
+          ],
+          [
+            1698,
+            14434
+          ]
+        ],
+        "roc_auc": 0.9361915599377987,
+        "false_positive_rate": 0.039687243548828306,
+        "detection_rate": 0.8947433672204315,
+        "false_negative_rate": 0.10525663277956857
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 2.0,
+    "data_norm": 22.5009,
+    "train_time_s": 11.51,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9483824730412174,
+        "f1_macro": 0.934232744528946,
+        "f1_weighted": 0.9483341717760837,
+        "precision_macro": 0.9350499300448237,
+        "recall_macro": 0.9334245692993142,
+        "mcc": 0.8684729784014572,
+        "confusion_matrix": [
+          [
+            42366,
+            1501
+          ],
+          [
+            1596,
+            14536
+          ]
+        ],
+        "roc_auc": 0.9460587009758002,
+        "false_positive_rate": 0.03421706521986915,
+        "detection_rate": 0.9010662038184974,
+        "false_negative_rate": 0.09893379618150261
+      },
+      "test": {
+        "accuracy": 0.94755,
+        "f1_macro": 0.9332055594574301,
+        "f1_weighted": 0.9475144032944637,
+        "precision_macro": 0.9337959484135196,
+        "recall_macro": 0.932619910200588,
+        "mcc": 0.8664150604601372,
+        "confusion_matrix": [
+          [
+            42329,
+            1539
+          ],
+          [
+            1608,
+            14524
+          ]
+        ],
+        "roc_auc": 0.9445706174663113,
+        "false_positive_rate": 0.03508252028813714,
+        "detection_rate": 0.9003223406893132,
+        "false_negative_rate": 0.09967765931068684
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 5.0,
+    "data_norm": 22.5009,
+    "train_time_s": 13.53,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9430990516508608,
+        "f1_macro": 0.92750813751352,
+        "f1_weighted": 0.9430486228180717,
+        "precision_macro": 0.9282699124389668,
+        "recall_macro": 0.9267543665211093,
+        "mcc": 0.8550229357928179,
+        "confusion_matrix": [
+          [
+            42205,
+            1662
+          ],
+          [
+            1752,
+            14380
+          ]
+        ],
+        "roc_auc": 0.9434089786174947,
+        "false_positive_rate": 0.03788725009688376,
+        "detection_rate": 0.8913959831391024,
+        "false_negative_rate": 0.1086040168608976
+      },
+      "test": {
+        "accuracy": 0.9428333333333333,
+        "f1_macro": 0.9272204113574494,
+        "f1_weighted": 0.9428029951618078,
+        "precision_macro": 0.9276752998885907,
+        "recall_macro": 0.9267683977478498,
+        "mcc": 0.8544432163456739,
+        "confusion_matrix": [
+          [
+            42180,
+            1688
+          ],
+          [
+            1742,
+            14390
+          ]
+        ],
+        "roc_auc": 0.9421168071364647,
+        "false_positive_rate": 0.03847907358438953,
+        "detection_rate": 0.8920158690800892,
+        "false_negative_rate": 0.10798413091991074
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 10.0,
+    "data_norm": 22.5009,
+    "train_time_s": 8.76,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9475991266521109,
+        "f1_macro": 0.9330349200738712,
+        "f1_weighted": 0.9474710828074218,
+        "precision_macro": 0.9351817822003081,
+        "recall_macro": 0.930948834554798,
+        "mcc": 0.866120273076904,
+        "confusion_matrix": [
+          [
+            42418,
+            1449
+          ],
+          [
+            1695,
+            14437
+          ]
+        ],
+        "roc_auc": 0.9546973789950057,
+        "false_positive_rate": 0.03303166389313151,
+        "detection_rate": 0.8949293330027275,
+        "false_negative_rate": 0.10507066699727251
+      },
+      "test": {
+        "accuracy": 0.9459166666666666,
+        "f1_macro": 0.9310603768683605,
+        "f1_weighted": 0.9458542609686665,
+        "precision_macro": 0.9320619903096843,
+        "recall_macro": 0.930072380769656,
+        "mcc": 0.862132075293715,
+        "confusion_matrix": [
+          [
+            42304,
+            1564
+          ],
+          [
+            1681,
+            14451
+          ]
+        ],
+        "roc_auc": 0.9526198176161829,
+        "false_positive_rate": 0.035652411780796936,
+        "detection_rate": 0.8957971733201091,
+        "false_negative_rate": 0.1042028266798909
+      }
+    }
+  }
+]

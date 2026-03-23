@@ -5,7 +5,7 @@ Implements the privacy-preserving variant of the experiment using IBM's
 diffprivlib library. diffprivlib.models.LogisticRegression is a drop-in
 replacement for sklearn's equivalent, with two additional parameters:
 
-    epsilon   : privacy budget (ε). Smaller = stronger privacy = more noise.
+    epsilon   : privacy budget (eps). Smaller = stronger privacy = more noise.
     data_norm : L2 norm bound on feature vectors. Used internally to
                 calibrate the Gaussian mechanism noise scale. Must be
                 set manually because the DP guarantee requires knowing the
@@ -136,7 +136,7 @@ def train_dp_model(
 
     Args:
         dataset_name: Key matching config.yaml 'datasets' entry.
-        epsilon:      Privacy budget ε > 0. Typical dissertation values:
+        epsilon:      Privacy budget eps > 0. Typical dissertation values:
                       [0.1, 0.5, 1.0, 2.0, 5.0, 10.0].
         label:        'binary' or 'multiclass'.
         data_norm:    L2 norm bound for training samples. If None, estimated
@@ -189,14 +189,14 @@ def train_dp_model(
     # ── Load or train ─────────────────────────────────────────────────────────
     if saved_path.exists() and not force:
         log.info(
-            "Loading saved DP-LR model for '%s' (ε=%.2f, label=%s)",
+            "Loading saved DP-LR model for '%s' (eps=%.2f, label=%s)",
             dataset_name, epsilon, label
         )
         model = joblib.load(saved_path)
         train_time = 0.0
     else:
         log.info(
-            "Training DP-LR on '%s' — ε=%.2f, data_norm=%.2f, "
+            "Training DP-LR on '%s' — eps=%.2f, data_norm=%.2f, "
             "label=%s, %d train samples, %d features",
             dataset_name, epsilon, data_norm, label,
             X_train.shape[0], X_train.shape[1]
@@ -226,7 +226,7 @@ def train_dp_model(
 
         train_time = time.perf_counter() - t0
         log.info(
-            "DP-LR training complete — ε=%.2f, %.1f seconds",
+            "DP-LR training complete — eps=%.2f, %.1f seconds",
             epsilon, train_time
         )
 
@@ -236,10 +236,10 @@ def train_dp_model(
         log.info("DP model saved to: %s", saved_path)
 
     # ── Evaluate ──────────────────────────────────────────────────────────────
-    log.info("Evaluating DP-LR (ε=%.2f) on val split...", epsilon)
+    log.info("Evaluating DP-LR (eps=%.2f) on val split...", epsilon)
     val_metrics  = evaluate_model(model, X_val,  y_val,  label_type=label)
 
-    log.info("Evaluating DP-LR (ε=%.2f) on test split...", epsilon)
+    log.info("Evaluating DP-LR (eps=%.2f) on test split...", epsilon)
     test_metrics = evaluate_model(model, X_test, y_test, label_type=label)
 
     result = {
@@ -256,7 +256,7 @@ def train_dp_model(
     }
 
     log.info(
-        "DP-LR | ε=%.2f | %s | test F1=%.4f | AUC=%s | MCC=%.4f",
+        "DP-LR | eps=%.2f | %s | test F1=%.4f | AUC=%s | MCC=%.4f",
         epsilon,
         dataset_name,
         test_metrics.get("f1_macro", 0),
@@ -323,7 +323,7 @@ def run_epsilon_sweep(
     all_results = []
     for eps in epsilon_values:
         log.info("-" * 50)
-        log.info("Running DP-LR with ε = %.2f", eps)
+        log.info("Running DP-LR with eps = %.2f", eps)
         result = train_dp_model(
             dataset_name=dataset_name,
             epsilon=eps,
@@ -338,7 +338,7 @@ def run_epsilon_sweep(
     log.info("Epsilon sweep complete for '%s'. Summary (test F1 macro):", dataset_name)
     for r in all_results:
         log.info(
-            "  ε=%5.2f → F1=%.4f | AUC=%s | MCC=%.4f",
+            "  eps=%5.2f → F1=%.4f | AUC=%s | MCC=%.4f",
             r["epsilon"],
             r["metrics"]["test"].get("f1_macro", 0),
             f"{r['metrics']['test']['roc_auc']:.4f}"
@@ -376,7 +376,7 @@ def load_dp_model(
             f"Run train_dp_model('{dataset_name}', epsilon={epsilon}) first."
         )
 
-    log.info("Loading DP model (ε=%.2f): %s", epsilon, saved_path)
+    log.info("Loading DP model (eps=%.2f): %s", epsilon, saved_path)
     return joblib.load(saved_path)
 
 

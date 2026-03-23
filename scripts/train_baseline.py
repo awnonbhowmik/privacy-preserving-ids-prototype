@@ -7,7 +7,8 @@ the terminal without opening the Streamlit app.
 
 Usage:
     # Activate the virtual environment first
-    source .venv/bin/activate
+    # Linux/macOS:  source .venv/bin/activate
+    # Windows:      .venv\\Scripts\\activate
 
     # Train all baselines for CIC-IDS2018 (binary classification)
     python scripts/train_baseline.py --dataset cic_ids2018

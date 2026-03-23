@@ -1,0 +1,704 @@
+[
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 1.0,
+    "actual_epsilon": 0.9971,
+    "train_time_s": 200.03,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9597159952665878,
+        "f1_macro": 0.9484569999408895,
+        "f1_weighted": 0.959592733317904,
+        "precision_macro": 0.951250358431053,
+        "recall_macro": 0.945760782806216,
+        "mcc": 0.8969943433841971,
+        "confusion_matrix": [
+          [
+            42812,
+            1055
+          ],
+          [
+            1362,
+            14770
+          ]
+        ],
+        "roc_auc": 0.9777287029520534,
+        "false_positive_rate": 0.024049969225157862,
+        "detection_rate": 0.9155715348375899,
+        "false_negative_rate": 0.08442846516241012
+      },
+      "test": {
+        "accuracy": 0.9585833333333333,
+        "f1_macro": 0.947043077209305,
+        "f1_weighted": 0.9584708519908413,
+        "precision_macro": 0.9495098117062255,
+        "recall_macro": 0.9446528645513215,
+        "mcc": 0.8941494850842296,
+        "confusion_matrix": [
+          [
+            42762,
+            1106
+          ],
+          [
+            1379,
+            14753
+          ]
+        ],
+        "roc_auc": 0.9760265082547872,
+        "false_positive_rate": 0.025211999635269444,
+        "detection_rate": 0.9145177287379123,
+        "false_negative_rate": 0.08548227126208778
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.1,
+    "actual_epsilon": 0.0923,
+    "train_time_s": 212.21,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9459490991516525,
+        "f1_macro": 0.9320806215119196,
+        "f1_weighted": 0.9462677794987149,
+        "precision_macro": 0.9271691167144354,
+        "recall_macro": 0.937364963513593,
+        "mcc": 0.8644739559892889,
+        "confusion_matrix": [
+          [
+            41934,
+            1933
+          ],
+          [
+            1310,
+            14822
+          ]
+        ],
+        "roc_auc": 0.9685593976497642,
+        "false_positive_rate": 0.04406501470353569,
+        "detection_rate": 0.9187949417307215,
+        "false_negative_rate": 0.08120505826927846
+      },
+      "test": {
+        "accuracy": 0.9442333333333334,
+        "f1_macro": 0.9300178185175303,
+        "f1_weighted": 0.9445981572103456,
+        "precision_macro": 0.924617385455214,
+        "recall_macro": 0.9358779458091154,
+        "mcc": 0.8604216494883332,
+        "confusion_matrix": [
+          [
+            41848,
+            2020
+          ],
+          [
+            1326,
+            14806
+          ]
+        ],
+        "roc_auc": 0.9659865533360446,
+        "false_positive_rate": 0.046047232606911646,
+        "detection_rate": 0.9178031242251425,
+        "false_negative_rate": 0.08219687577485743
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.5,
+    "actual_epsilon": 0.4967,
+    "train_time_s": 196.59,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9561159352655878,
+        "f1_macro": 0.944176198385411,
+        "f1_weighted": 0.9561103414721813,
+        "precision_macro": 0.9442895197540309,
+        "recall_macro": 0.9440630475226972,
+        "mcc": 0.8883525384088695,
+        "confusion_matrix": [
+          [
+            42557,
+            1310
+          ],
+          [
+            1323,
+            14809
+          ]
+        ],
+        "roc_auc": 0.9765529100199077,
+        "false_positive_rate": 0.02986299496204436,
+        "detection_rate": 0.9179890900074387,
+        "false_negative_rate": 0.08201090999256137
+      },
+      "test": {
+        "accuracy": 0.9544333333333334,
+        "f1_macro": 0.9420953188822225,
+        "f1_weighted": 0.9544511525338693,
+        "precision_macro": 0.94175035092659,
+        "recall_macro": 0.9424418918681523,
+        "mcc": 0.8841919723620673,
+        "confusion_matrix": [
+          [
+            42481,
+            1387
+          ],
+          [
+            1347,
+            14785
+          ]
+        ],
+        "roc_auc": 0.974696707506375,
+        "false_positive_rate": 0.03161758001276557,
+        "detection_rate": 0.9165013637490702,
+        "false_negative_rate": 0.08349863625092983
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 2.0,
+    "actual_epsilon": 1.9947,
+    "train_time_s": 221.64,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9612493541559026,
+        "f1_macro": 0.9502818141636956,
+        "f1_weighted": 0.9610761619878213,
+        "precision_macro": 0.9544110647952355,
+        "recall_macro": 0.9463586942873006,
+        "mcc": 0.9007337665519224,
+        "confusion_matrix": [
+          [
+            42927,
+            940
+          ],
+          [
+            1385,
+            14747
+          ]
+        ],
+        "roc_auc": 0.9785785389227184,
+        "false_positive_rate": 0.021428408598718855,
+        "detection_rate": 0.9141457971733201,
+        "false_negative_rate": 0.0858542028266799
+      },
+      "test": {
+        "accuracy": 0.96,
+        "f1_macro": 0.9487287320442821,
+        "f1_weighted": 0.9598413400358856,
+        "precision_macro": 0.9523705619497416,
+        "recall_macro": 0.9452493472121162,
+        "mcc": 0.8975916608482961,
+        "confusion_matrix": [
+          [
+            42866,
+            1002
+          ],
+          [
+            1398,
+            14734
+          ]
+        ],
+        "roc_auc": 0.9771872944193805,
+        "false_positive_rate": 0.022841251025804688,
+        "detection_rate": 0.9133399454500372,
+        "false_negative_rate": 0.08666005454996281
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 5.0,
+    "actual_epsilon": 4.9924,
+    "train_time_s": 227.96,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9653327555459258,
+        "f1_macro": 0.9552781288057226,
+        "f1_weighted": 0.9650804091192497,
+        "precision_macro": 0.9621824545426763,
+        "recall_macro": 0.9489160717705121,
+        "mcc": 0.9110019361879568,
+        "confusion_matrix": [
+          [
+            43184,
+            683
+          ],
+          [
+            1397,
+            14735
+          ]
+        ],
+        "roc_auc": 0.9793861987114298,
+        "false_positive_rate": 0.015569790503111679,
+        "detection_rate": 0.9134019340441358,
+        "false_negative_rate": 0.08659806595586413
+      },
+      "test": {
+        "accuracy": 0.9648166666666667,
+        "f1_macro": 0.9546201970442996,
+        "f1_weighted": 0.9645639149672268,
+        "precision_macro": 0.96142095698182,
+        "recall_macro": 0.9483473553677284,
+        "mcc": 0.9096743720124149,
+        "confusion_matrix": [
+          [
+            43165,
+            703
+          ],
+          [
+            1408,
+            14724
+          ]
+        ],
+        "roc_auc": 0.9786671060676564,
+        "false_positive_rate": 0.016025348773593507,
+        "detection_rate": 0.9127200595090503,
+        "false_negative_rate": 0.08727994049094967
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 10.0,
+    "actual_epsilon": 9.9973,
+    "train_time_s": 203.26,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9668661144352406,
+        "f1_macro": 0.9571827689482623,
+        "f1_weighted": 0.9665952943427649,
+        "precision_macro": 0.9650048041803194,
+        "recall_macro": 0.9500430808505644,
+        "mcc": 0.914925559121887,
+        "confusion_matrix": [
+          [
+            43272,
+            595
+          ],
+          [
+            1393,
+            14739
+          ]
+        ],
+        "roc_auc": 0.9797490765244001,
+        "false_positive_rate": 0.013563726719401828,
+        "detection_rate": 0.9136498884205306,
+        "false_negative_rate": 0.08635011157946938
+      },
+      "test": {
+        "accuracy": 0.9662833333333334,
+        "f1_macro": 0.9564336644993738,
+        "f1_weighted": 0.9660095492054167,
+        "precision_macro": 0.964189866987323,
+        "recall_macro": 0.9493503643948096,
+        "mcc": 0.913419697355234,
+        "confusion_matrix": [
+          [
+            43253,
+            615
+          ],
+          [
+            1408,
+            14724
+          ]
+        ],
+        "roc_auc": 0.9792730838583419,
+        "false_positive_rate": 0.01401933071943102,
+        "detection_rate": 0.9127200595090503,
+        "false_negative_rate": 0.08727994049094967
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.01,
+    "actual_epsilon": 0.01,
+    "train_time_s": 217.72,
+    "metrics": {
+      "val": {
+        "accuracy": 0.4107401790029834,
+        "f1_macro": 0.40366353366652297,
+        "f1_weighted": 0.3736343478637797,
+        "precision_macro": 0.6264125591252636,
+        "recall_macro": 0.5863993949635117,
+        "mcc": 0.20901644551768583,
+        "confusion_matrix": [
+          [
+            9054,
+            34813
+          ],
+          [
+            542,
+            15590
+          ]
+        ],
+        "roc_auc": 0.8752104209447069,
+        "false_positive_rate": 0.7936033920714888,
+        "detection_rate": 0.9664021819985122,
+        "false_negative_rate": 0.03359781800148773
+      },
+      "test": {
+        "accuracy": 0.412,
+        "f1_macro": 0.40489053067581326,
+        "f1_weighted": 0.37482218038980497,
+        "precision_macro": 0.629321999418516,
+        "recall_macro": 0.5882235044515464,
+        "mcc": 0.2136280879601961,
+        "confusion_matrix": [
+          [
+            9081,
+            34787
+          ],
+          [
+            493,
+            15639
+          ]
+        ],
+        "roc_auc": 0.8759428870996371,
+        "false_positive_rate": 0.7929926142062551,
+        "detection_rate": 0.9694396231093478,
+        "false_negative_rate": 0.03056037689065212
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.05,
+    "actual_epsilon": 0.0412,
+    "train_time_s": 214.53,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9427990466507775,
+        "f1_macro": 0.9279404779099072,
+        "f1_weighted": 0.9430662772869687,
+        "precision_macro": 0.9240559214220774,
+        "recall_macro": 0.932055735177604,
+        "mcc": 0.8560742792221522,
+        "confusion_matrix": [
+          [
+            41906,
+            1961
+          ],
+          [
+            1471,
+            14661
+          ]
+        ],
+        "roc_auc": 0.9626027278621557,
+        "false_positive_rate": 0.04470330772562518,
+        "detection_rate": 0.9088147780808331,
+        "false_negative_rate": 0.09118522191916688
+      },
+      "test": {
+        "accuracy": 0.94105,
+        "f1_macro": 0.9258760020755852,
+        "f1_weighted": 0.9413792255047513,
+        "precision_macro": 0.9212820616859557,
+        "recall_macro": 0.9308006831621253,
+        "mcc": 0.8520295769003758,
+        "confusion_matrix": [
+          [
+            41805,
+            2063
+          ],
+          [
+            1474,
+            14658
+          ]
+        ],
+        "roc_auc": 0.9600539885497397,
+        "false_positive_rate": 0.04702744597428649,
+        "detection_rate": 0.9086288122985371,
+        "false_negative_rate": 0.09137118770146294
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.2,
+    "actual_epsilon": 0.1952,
+    "train_time_s": 199.47,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9504658410973517,
+        "f1_macro": 0.9374745730250742,
+        "f1_weighted": 0.9506491980565055,
+        "precision_macro": 0.9343080924889503,
+        "recall_macro": 0.9407869813421947,
+        "mcc": 0.8750710898222868,
+        "confusion_matrix": [
+          [
+            42188,
+            1679
+          ],
+          [
+            1293,
+            14839
+          ]
+        ],
+        "roc_auc": 0.9724856594198463,
+        "false_positive_rate": 0.03827478514600953,
+        "detection_rate": 0.9198487478303992,
+        "false_negative_rate": 0.0801512521696008
+      },
+      "test": {
+        "accuracy": 0.9485833333333333,
+        "f1_macro": 0.9351932388519869,
+        "f1_weighted": 0.9488106502308093,
+        "precision_macro": 0.9314482189322392,
+        "recall_macro": 0.9391467264087419,
+        "mcc": 0.8705609064481933,
+        "confusion_matrix": [
+          [
+            42094,
+            1774
+          ],
+          [
+            1311,
+            14821
+          ]
+        ],
+        "roc_auc": 0.970537062718711,
+        "false_positive_rate": 0.04043950031913924,
+        "detection_rate": 0.9187329531366228,
+        "false_negative_rate": 0.08126704686337714
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.75,
+    "actual_epsilon": 0.7474,
+    "train_time_s": 201.32,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9586659777662961,
+        "f1_macro": 0.9472028346396246,
+        "f1_weighted": 0.958574951627078,
+        "precision_macro": 0.9491978883807094,
+        "recall_macro": 0.9452582614374262,
+        "mcc": 0.894447473744004,
+        "confusion_matrix": [
+          [
+            42738,
+            1129
+          ],
+          [
+            1351,
+            14781
+          ]
+        ],
+        "roc_auc": 0.9776885581058192,
+        "false_positive_rate": 0.025736886497822964,
+        "detection_rate": 0.9162534093726754,
+        "false_negative_rate": 0.08374659062732458
+      },
+      "test": {
+        "accuracy": 0.9568666666666666,
+        "f1_macro": 0.9449780785762504,
+        "f1_weighted": 0.9568010215406028,
+        "precision_macro": 0.9463446254546574,
+        "recall_macro": 0.9436356598140114,
+        "mcc": 0.8899761624178812,
+        "confusion_matrix": [
+          [
+            42651,
+            1217
+          ],
+          [
+            1371,
+            14761
+          ]
+        ],
+        "roc_auc": 0.9759448546595539,
+        "false_positive_rate": 0.027742317862678945,
+        "detection_rate": 0.9150136374907017,
+        "false_negative_rate": 0.0849863625092983
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 1.5,
+    "actual_epsilon": 1.4907,
+    "train_time_s": 203.59,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9607160119335322,
+        "f1_macro": 0.949639976039069,
+        "f1_weighted": 0.9605573779700142,
+        "precision_macro": 0.9533565415340468,
+        "recall_macro": 0.9460919364543812,
+        "mcc": 0.8994191403726829,
+        "confusion_matrix": [
+          [
+            42890,
+            977
+          ],
+          [
+            1380,
+            14752
+          ]
+        ],
+        "roc_auc": 0.9780019893213381,
+        "false_positive_rate": 0.022271867235051406,
+        "detection_rate": 0.9144557401438136,
+        "false_negative_rate": 0.08554425985618647
+      },
+      "test": {
+        "accuracy": 0.9596666666666667,
+        "f1_macro": 0.9483387048176859,
+        "f1_weighted": 0.9595215190917225,
+        "precision_macro": 0.9516331702522913,
+        "recall_macro": 0.9451781623526214,
+        "mcc": 0.8967881015945821,
+        "confusion_matrix": [
+          [
+            42838,
+            1030
+          ],
+          [
+            1390,
+            14742
+          ]
+        ],
+        "roc_auc": 0.9766468626287763,
+        "false_positive_rate": 0.02347952949758366,
+        "detection_rate": 0.9138358542028266,
+        "false_negative_rate": 0.08616414579717332
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 3.0,
+    "actual_epsilon": 2.9965,
+    "train_time_s": 203.83,
+    "metrics": {
+      "val": {
+        "accuracy": 0.963582726378773,
+        "f1_macro": 0.9531434998860759,
+        "f1_weighted": 0.9633670855772819,
+        "precision_macro": 0.9586929620079978,
+        "recall_macro": 0.9479544268425244,
+        "mcc": 0.9065837918096539,
+        "confusion_matrix": [
+          [
+            43067,
+            800
+          ],
+          [
+            1385,
+            14747
+          ]
+        ],
+        "roc_auc": 0.9789791359904356,
+        "false_positive_rate": 0.018236943488271366,
+        "detection_rate": 0.9141457971733201,
+        "false_negative_rate": 0.0858542028266799
+      },
+      "test": {
+        "accuracy": 0.96285,
+        "f1_macro": 0.9522253569990473,
+        "f1_weighted": 0.9626400980584014,
+        "precision_macro": 0.9575021211140341,
+        "recall_macro": 0.9472767619857974,
+        "mcc": 0.904721100303335,
+        "confusion_matrix": [
+          [
+            43033,
+            835
+          ],
+          [
+            1394,
+            14738
+          ]
+        ],
+        "roc_auc": 0.9778091113217479,
+        "false_positive_rate": 0.01903437585483724,
+        "detection_rate": 0.913587899826432,
+        "false_negative_rate": 0.08641210017356807
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 7.0,
+    "actual_epsilon": 6.9968,
+    "train_time_s": 209.83,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9657494291571527,
+        "f1_macro": 0.9557949124192218,
+        "f1_weighted": 0.9654917556942468,
+        "precision_macro": 0.9629481263271675,
+        "recall_macro": 0.9492206202198855,
+        "mcc": 0.9120654459814254,
+        "confusion_matrix": [
+          [
+            43208,
+            659
+          ],
+          [
+            1396,
+            14736
+          ]
+        ],
+        "roc_auc": 0.9795899724191102,
+        "false_positive_rate": 0.015022682198463538,
+        "detection_rate": 0.9134639226382346,
+        "false_negative_rate": 0.08653607736176544
+      },
+      "test": {
+        "accuracy": 0.96515,
+        "f1_macro": 0.9550373018639603,
+        "f1_weighted": 0.9648944726775677,
+        "precision_macro": 0.9619903449732345,
+        "recall_macro": 0.9486341013663808,
+        "mcc": 0.9105264922164789,
+        "confusion_matrix": [
+          [
+            43182,
+            686
+          ],
+          [
+            1405,
+            14727
+          ]
+        ],
+        "roc_auc": 0.9788994551956028,
+        "false_positive_rate": 0.015637822558584844,
+        "detection_rate": 0.9129060252913463,
+        "false_negative_rate": 0.08709397470865361
+      }
+    }
+  }
+]

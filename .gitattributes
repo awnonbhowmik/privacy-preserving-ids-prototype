@@ -1,0 +1,22 @@
+# Enforce LF line endings for all text files across Windows and Linux
+* text=auto eol=lf
+
+# Python source files
+*.py    text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.toml  text eol=lf
+*.txt   text eol=lf
+*.cfg   text eol=lf
+*.ini   text eol=lf
+*.sh    text eol=lf
+
+# Binary files — no line-ending conversion
+*.joblib binary
+*.parquet binary
+*.pkl    binary
+*.png    binary
+*.jpg    binary
+*.pdf    binary

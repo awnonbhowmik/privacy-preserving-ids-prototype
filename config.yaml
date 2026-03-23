@@ -16,6 +16,7 @@ datasets:
     label_column: "label"
     encoding: "utf-8"
     separator: ","
+    has_header: false
 
 sampling:
   subset_size: 300000             # rows per dataset after stratified sampling
@@ -23,10 +24,18 @@ sampling:
   test_split: 0.2
 
 privacy:
-  epsilon_values: [0.1, 0.5, 1.0, 2.0, 5.0, 10.0]
+  epsilon_values: [0.01, 0.05, 0.1, 0.2, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 7.0, 10.0]
   default_epsilon: 1.0
 
 models:
   n_estimators: 100
   max_depth: 10
   n_jobs: -1
+
+dp_sgd:
+  hidden_layers: [128, 64]
+  epochs: 20
+  batch_size: 256
+  max_grad_norm: 1.0
+  delta: 1.0e-5
+  epsilon_values: [0.01, 0.05, 0.1, 0.2, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 7.0, 10.0]
