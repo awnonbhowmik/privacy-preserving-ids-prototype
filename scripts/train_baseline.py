@@ -84,12 +84,16 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
+    from src.models.baseline import _gpu_available
+    xgb_device = "cuda" if _gpu_available else "cpu"
+
     log.info("=" * 60)
     log.info("Baseline Training")
-    log.info("  Dataset : %s", args.dataset)
-    log.info("  Label   : %s", args.label)
-    log.info("  Model   : %s", args.model or "all")
-    log.info("  Force   : %s", args.force)
+    log.info("  Dataset    : %s", args.dataset)
+    log.info("  Label      : %s", args.label)
+    log.info("  Model      : %s", args.model or "all")
+    log.info("  Force      : %s", args.force)
+    log.info("  XGBoost    : %s", xgb_device)
     log.info("=" * 60)
 
     if args.model:

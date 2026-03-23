@@ -111,12 +111,24 @@ def main() -> None:
     args = parse_args()
     epsilon_values = args.epsilon or DP_SGD_CFG.get("epsilon_values", [0.1, 0.5, 1.0, 2.0, 5.0, 10.0])
 
+    try:
+        import torch
+        if torch.cuda.is_available():
+            _gpu_info = f"CUDA ({torch.cuda.get_device_name(0)})"
+        elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+            _gpu_info = "MPS (Apple Silicon) — not used by Opacus, falling back to CPU"
+        else:
+            _gpu_info = "CPU (no CUDA device found)"
+    except ImportError:
+        _gpu_info = "torch not installed"
+
     log.info("=" * 60)
     log.info("Differentially Private Neural Network Training via DP-SGD (eps sweep)")
     log.info("  Dataset  : %s", args.dataset)
     log.info("  Label    : %s", args.label)
     log.info("  Epsilons : %s", sorted(epsilon_values))
     log.info("  Force    : %s", args.force)
+    log.info("  Device   : %s", _gpu_info)
     log.info("=" * 60)
 
     # Run the epsilon sweep

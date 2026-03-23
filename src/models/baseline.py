@@ -30,15 +30,36 @@ import time
 from pathlib import Path
 from typing import Any
 
-import shutil
-
 import joblib
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from xgboost import XGBClassifier
 
-_gpu_available = shutil.which("nvidia-smi") is not None
+
+def _probe_xgb_cuda() -> bool:
+    """
+    Return True only if XGBoost can actually execute a tree on the CUDA device.
+
+    Checking nvidia-smi or torch.cuda.is_available() is not sufficient —
+    XGBoost needs its own CUDA-capable build and drivers. A minimal DMatrix
+    train call is the only reliable cross-platform test.
+    """
+    try:
+        import numpy as _np
+        import xgboost as _xgb
+        _dm = _xgb.DMatrix(_np.zeros((10, 2)), label=_np.zeros(10))
+        _xgb.train(
+            {"device": "cuda", "tree_method": "hist", "verbosity": 0},
+            _dm,
+            num_boost_round=1,
+        )
+        return True
+    except Exception:
+        return False
+
+
+_gpu_available = _probe_xgb_cuda()
 
 from src.utils.config import PATHS, MODEL_CFG, SAMPLING_CFG
 from src.utils.logger import get_logger
@@ -203,9 +224,10 @@ def train_baseline(
         model = joblib.load(saved_path)
         train_time = 0.0   # not re-measured for loaded models
     else:
+        device_info = "cuda" if (_gpu_available and model_name == XGBOOST) else "cpu"
         log.info(
-            "Training %s on '%s' (label=%s) — %d train samples, %d features",
-            model_name, dataset_name, label, X_train.shape[0], X_train.shape[1]
+            "Training %s on '%s' (label=%s) — %d train samples, %d features | device=%s",
+            model_name, dataset_name, label, X_train.shape[0], X_train.shape[1], device_info,
         )
 
         if model_name == LOGISTIC_REGRESSION:
