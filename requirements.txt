@@ -5,13 +5,27 @@ pyarrow                   # Parquet read/write
 
 # ── Machine learning ───────────────────────────────────────────────────────────
 scikit-learn
-xgboost
+xgboost                   # GPU-accelerated automatically when CUDA is present
 imbalanced-learn          # Handle class imbalance in IDS datasets
 
 # ── Differential privacy ───────────────────────────────────────────────────────
 diffprivlib               # IBM DP library — sklearn-compatible (DP-LR)
-torch                     # PyTorch — required for DP-SGD neural network
-opacus                    # DP-SGD for PyTorch (Phase 2 DP-NN)
+
+# PyTorch is installed as CPU-only by default via pip.
+# For GPU-accelerated DP-SGD training, install the CUDA build manually:
+#
+#   Windows / Linux (CUDA 12.x):
+#     pip install torch --index-url https://download.pytorch.org/whl/cu121
+#
+#   macOS (Apple Silicon — MPS backend):
+#     pip install torch          (MPS is included in the standard macOS wheel)
+#
+#   CPU-only fallback (all platforms):
+#     pip install torch
+#
+# The training code detects the available device automatically (CUDA → MPS → CPU).
+torch
+opacus                    # DP-SGD for PyTorch — per-sample gradient clipping + noise
 
 # ── Explainability ─────────────────────────────────────────────────────────────
 shap

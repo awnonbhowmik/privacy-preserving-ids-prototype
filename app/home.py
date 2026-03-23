@@ -169,19 +169,28 @@ st.divider()
 st.subheader("Quick Start")
 with st.expander("Show CLI commands"):
     st.code(
-        """# 1. Preprocess raw CSVs into Parquet  (one-time)
-python scripts/preprocess.py --dataset cic_ids2018
+        """# Linux / macOS — activate virtual environment
+source .venv/bin/activate
 
-# 2. Train all baseline models
+# Windows (PowerShell)
+# .venv\\Scripts\\activate
+
+# 1. Preprocess raw CSVs into Parquet  (one-time, Stage A)
+python -c "from src.data.preprocessor import run_preprocessing_pipeline; run_preprocessing_pipeline('cic_ids2018')"
+
+# 2. Create stratified subset  (one-time, Stage B)
+python -c "from src.data.sampler import run_sampling_pipeline; run_sampling_pipeline('cic_ids2018')"
+
+# 3. Train all baseline models
 python scripts/train_baseline.py --dataset cic_ids2018
 
-# 3. DP-LR epsilon sweep
-python scripts/train_private.py  --dataset cic_ids2018
+# 4. DP-LR epsilon sweep
+python scripts/train_private.py --dataset cic_ids2018
 
-# 4. DP-SGD sweep  (requires torch + opacus + CUDA)
+# 5. DP-SGD sweep  (GPU-accelerated when CUDA is available)
 python scripts/train_dp_sgd.py --dataset cic_ids2018
 
-# 5. Export comparison tables
+# 6. Export comparison tables
 python scripts/evaluate.py --dataset cic_ids2018 --export-csv
 """,
         language="bash",

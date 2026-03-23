@@ -123,6 +123,8 @@ class DPSGDWrapper:
         """Return integer class predictions for feature matrix X."""
         import torch
         self.model.eval()
+        # Inference always runs on CPU (model was moved to CPU after training)
+        # for portability across platforms including macOS MPS.
         X_t = torch.from_numpy(X.astype(np.float32))
         with torch.no_grad():
             logits = self.model(X_t)
@@ -234,8 +236,10 @@ def train_dp_sgd_model(
     delta          = DP_SGD_CFG.get("delta",          1e-5)
 
     saved_path = _dp_sgd_model_path(dataset_name, epsilon, label)
-    device     = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    seed       = SAMPLING_CFG["random_seed"]
+    # Opacus (DP-SGD) only supports CUDA and CPU — MPS is not yet supported.
+    # Fall back to CPU on macOS Apple Silicon even if MPS is available.
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    seed   = SAMPLING_CFG["random_seed"]
 
     # ── Load split arrays ─────────────────────────────────────────────────────
     splits   = get_split_arrays(dataset_name, label=label, scale=True)
@@ -249,9 +253,12 @@ def train_dp_sgd_model(
 
     log.info(
         "DP-SGD | dataset=%s | eps=%.2f | label=%s | "
-        "input=%d | layers=%s | output=%d | device=%s",
+        "input=%d | layers=%s | output=%d | device=%s%s",
         dataset_name, epsilon, label,
         input_size, hidden_layers, output_size, device,
+        " (MPS available but not used — Opacus requires CUDA/CPU)"
+        if (hasattr(torch.backends, "mps") and torch.backends.mps.is_available()
+            and device.type == "cpu") else "",
     )
 
     # ── Load or train ─────────────────────────────────────────────────────────

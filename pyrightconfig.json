@@ -1,7 +1,7 @@
 {
   "pythonVersion": "3.12",
-  "venvPath": "C:/Users/awnon/miniconda3/envs",
-  "venv": "py312",
+  "venvPath": ".",
+  "venv": ".venv",
   "typeCheckingMode": "basic",
   "extraPaths": [
     "."
