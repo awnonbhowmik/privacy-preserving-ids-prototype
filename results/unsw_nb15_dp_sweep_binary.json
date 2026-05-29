@@ -5,7 +5,7 @@
     "label_type": "binary",
     "epsilon": 0.1,
     "data_norm": 20.8732,
-    "train_time_s": 0.75,
+    "train_time_s": 0.42,
     "metrics": {
       "val": {
         "accuracy": 0.8954815913598559,
@@ -59,7 +59,7 @@
     "label_type": "binary",
     "epsilon": 0.5,
     "data_norm": 20.8732,
-    "train_time_s": 1.89,
+    "train_time_s": 1.02,
     "metrics": {
       "val": {
         "accuracy": 0.96561609360156,
@@ -113,7 +113,7 @@
     "label_type": "binary",
     "epsilon": 1.0,
     "data_norm": 20.8732,
-    "train_time_s": 2.99,
+    "train_time_s": 1.66,
     "metrics": {
       "val": {
         "accuracy": 0.9748995816596944,
@@ -132,7 +132,7 @@
             2267
           ]
         ],
-        "roc_auc": 0.9662929884740312,
+        "roc_auc": 0.9662931365177554,
         "false_positive_rate": 0.016391721918023898,
         "detection_rate": 0.7993653032440057,
         "false_negative_rate": 0.20063469675599435
@@ -154,7 +154,7 @@
             2297
           ]
         ],
-        "roc_auc": 0.9690320738766712,
+        "roc_auc": 0.9690324254743657,
         "false_positive_rate": 0.016373941641592612,
         "detection_rate": 0.8099435825105783,
         "false_negative_rate": 0.19005641748942173
@@ -167,51 +167,51 @@
     "label_type": "binary",
     "epsilon": 2.0,
     "data_norm": 20.8732,
-    "train_time_s": 5.35,
+    "train_time_s": 2.52,
     "metrics": {
       "val": {
-        "accuracy": 0.9784996416606944,
-        "f1_macro": 0.8861948988421646,
-        "f1_weighted": 0.9789984477105326,
-        "precision_macro": 0.8691742593425306,
-        "recall_macro": 0.9051051663139237,
-        "mcc": 0.7734452785550519,
+        "accuracy": 0.9784829747162452,
+        "f1_macro": 0.8860885767548838,
+        "f1_weighted": 0.9789805461465281,
+        "precision_macro": 0.8691251103302888,
+        "recall_macro": 0.9049288616594808,
+        "mcc": 0.7732254800146569,
         "confusion_matrix": [
           [
             56372,
             791
           ],
           [
-            499,
-            2337
+            500,
+            2336
           ]
         ],
-        "roc_auc": 0.9795127779869444,
+        "roc_auc": 0.9793702797337988,
         "false_positive_rate": 0.013837622238161049,
-        "detection_rate": 0.8240479548660085,
-        "false_negative_rate": 0.17595204513399154
+        "detection_rate": 0.8236953455571228,
+        "false_negative_rate": 0.1763046544428773
       },
       "test": {
-        "accuracy": 0.9788,
-        "f1_macro": 0.887925436628519,
-        "f1_weighted": 0.9793045970424862,
-        "precision_macro": 0.8704077684816189,
-        "recall_macro": 0.9074409816745801,
-        "mcc": 0.7769666783332252,
+        "accuracy": 0.9788166666666667,
+        "f1_macro": 0.8879602092255089,
+        "f1_weighted": 0.979316090476332,
+        "precision_macro": 0.8705983854420766,
+        "recall_macro": 0.9072821705475321,
+        "mcc": 0.7770150959260956,
         "confusion_matrix": [
           [
-            56378,
-            786
+            56380,
+            784
           ],
           [
-            486,
-            2350
+            487,
+            2349
           ]
         ],
-        "roc_auc": 0.981881131432005,
-        "false_positive_rate": 0.013749912532363026,
-        "detection_rate": 0.8286318758815233,
-        "false_negative_rate": 0.17136812411847674
+        "roc_auc": 0.9817311904362664,
+        "false_positive_rate": 0.013714925477573298,
+        "detection_rate": 0.8282792665726375,
+        "false_negative_rate": 0.1717207334273625
       }
     }
   },
@@ -221,51 +221,51 @@
     "label_type": "binary",
     "epsilon": 5.0,
     "data_norm": 20.8732,
-    "train_time_s": 6.69,
+    "train_time_s": 2.71,
     "metrics": {
       "val": {
-        "accuracy": 0.9777329622160369,
-        "f1_macro": 0.8813065195316813,
-        "f1_weighted": 0.978175162659568,
-        "precision_macro": 0.8668162742515547,
-        "recall_macro": 0.8971627099472823,
-        "mcc": 0.7633760424181859,
+        "accuracy": 0.9776162936048934,
+        "f1_macro": 0.8806272672632645,
+        "f1_weighted": 0.9780556692095993,
+        "precision_macro": 0.866323004472779,
+        "recall_macro": 0.8962636928416443,
+        "mcc": 0.761998704789528,
         "confusion_matrix": [
           [
-            56371,
-            792
+            56369,
+            794
           ],
           [
-            544,
-            2292
+            549,
+            2287
           ]
         ],
-        "roc_auc": 0.9664610767017742,
-        "false_positive_rate": 0.013855116071584767,
-        "detection_rate": 0.8081805359661495,
-        "false_negative_rate": 0.1918194640338505
+        "roc_auc": 0.9662171746659585,
+        "false_positive_rate": 0.013890103738432203,
+        "detection_rate": 0.8064174894217208,
+        "false_negative_rate": 0.19358251057827927
       },
       "test": {
-        "accuracy": 0.9780666666666666,
-        "f1_macro": 0.8833449926290169,
-        "f1_weighted": 0.9785256811785201,
-        "precision_macro": 0.8680290118135222,
-        "recall_macro": 0.9001862505513298,
-        "mcc": 0.7675419215437409,
+        "accuracy": 0.9778,
+        "f1_macro": 0.8824149774363876,
+        "f1_weighted": 0.978308343569547,
+        "precision_macro": 0.8657695844201898,
+        "recall_macro": 0.9008840917858982,
+        "mcc": 0.7658490912789364,
         "confusion_matrix": [
           [
-            56375,
-            789
+            56354,
+            810
           ],
           [
-            527,
-            2309
+            522,
+            2314
           ]
         ],
-        "roc_auc": 0.9695296247088154,
-        "false_positive_rate": 0.013802393114547618,
-        "detection_rate": 0.8141748942172073,
-        "false_negative_rate": 0.18582510578279265
+        "roc_auc": 0.969281661976888,
+        "false_positive_rate": 0.01416975718983976,
+        "detection_rate": 0.8159379407616361,
+        "false_negative_rate": 0.18406205923836388
       }
     }
   },
@@ -275,51 +275,429 @@
     "label_type": "binary",
     "epsilon": 10.0,
     "data_norm": 20.8732,
-    "train_time_s": 7.37,
+    "train_time_s": 3.18,
     "metrics": {
       "val": {
-        "accuracy": 0.9833497224953749,
-        "f1_macro": 0.9112037527892787,
-        "f1_weighted": 0.9836765551305955,
-        "precision_macro": 0.8957469652983875,
-        "recall_macro": 0.928092563080259,
-        "mcc": 0.823204306854188,
+        "accuracy": 0.9832497208286805,
+        "f1_macro": 0.9108988476790341,
+        "f1_weighted": 0.983598989831234,
+        "precision_macro": 0.8945355488689962,
+        "recall_macro": 0.9288778702686429,
+        "mcc": 0.8226969452822958,
         "confusion_matrix": [
           [
-            56541,
-            622
+            56530,
+            633
           ],
           [
-            377,
-            2459
+            372,
+            2464
           ]
         ],
-        "roc_auc": 0.9928380671589006,
-        "false_positive_rate": 0.010881164389552682,
-        "detection_rate": 0.8670662905500706,
-        "false_negative_rate": 0.13293370944992947
+        "roc_auc": 0.9939118406283647,
+        "false_positive_rate": 0.011073596557213582,
+        "detection_rate": 0.8688293370944993,
+        "false_negative_rate": 0.1311706629055007
       },
       "test": {
-        "accuracy": 0.9833666666666666,
-        "f1_macro": 0.9122065806252451,
-        "f1_weighted": 0.9837750421465593,
-        "precision_macro": 0.893033194112194,
-        "recall_macro": 0.9336308154135298,
-        "mcc": 0.8256665294111292,
+        "accuracy": 0.9834166666666667,
+        "f1_macro": 0.9126227170944979,
+        "f1_weighted": 0.983837442821844,
+        "precision_macro": 0.8928228344980864,
+        "recall_macro": 0.9348299609398402,
+        "mcc": 0.8265860821017498,
         "confusion_matrix": [
           [
-            56510,
-            654
+            56506,
+            658
           ],
           [
-            344,
-            2492
+            337,
+            2499
           ]
         ],
-        "roc_auc": 0.9943760715093949,
-        "false_positive_rate": 0.01144076691624099,
-        "detection_rate": 0.8787023977433004,
-        "false_negative_rate": 0.12129760225669958
+        "roc_auc": 0.9945381765516859,
+        "false_positive_rate": 0.011510741025820446,
+        "detection_rate": 0.8811706629055007,
+        "false_negative_rate": 0.11882933709449929
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.01,
+    "data_norm": 20.8732,
+    "train_time_s": 0.32,
+    "metrics": {
+      "val": {
+        "accuracy": 0.5545425757095952,
+        "f1_macro": 0.4188498028471758,
+        "f1_weighted": 0.673119300339472,
+        "precision_macro": 0.5270485532378614,
+        "recall_macro": 0.649600971581354,
+        "mcc": 0.12722405188098734,
+        "confusion_matrix": [
+          [
+            31132,
+            26031
+          ],
+          [
+            696,
+            2140
+          ]
+        ],
+        "roc_auc": 0.6849293703130437,
+        "false_positive_rate": 0.4553819778528069,
+        "detection_rate": 0.7545839210155149,
+        "false_negative_rate": 0.2454160789844852
+      },
+      "test": {
+        "accuracy": 0.55315,
+        "f1_macro": 0.4173693463227307,
+        "f1_weighted": 0.6720453812952384,
+        "precision_macro": 0.5260648466250866,
+        "recall_macro": 0.6441786056084495,
+        "mcc": 0.1226049467485402,
+        "confusion_matrix": [
+          [
+            31077,
+            26087
+          ],
+          [
+            724,
+            2112
+          ]
+        ],
+        "roc_auc": 0.6774130075750675,
+        "false_positive_rate": 0.4563536491498146,
+        "detection_rate": 0.7447108603667136,
+        "false_negative_rate": 0.2552891396332863
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.05,
+    "data_norm": 20.8732,
+    "train_time_s": 0.45,
+    "metrics": {
+      "val": {
+        "accuracy": 0.8209970166169436,
+        "f1_macro": 0.5949677639502178,
+        "f1_weighted": 0.8689351276776048,
+        "precision_macro": 0.5834229483467258,
+        "recall_macro": 0.8026749903345953,
+        "mcc": 0.3178052238999773,
+        "confusion_matrix": [
+          [
+            47040,
+            10123
+          ],
+          [
+            617,
+            2219
+          ]
+        ],
+        "roc_auc": 0.834016281651409,
+        "false_positive_rate": 0.17709007574829871,
+        "detection_rate": 0.7824400564174894,
+        "false_negative_rate": 0.21755994358251057
+      },
+      "test": {
+        "accuracy": 0.8229833333333333,
+        "f1_macro": 0.5963817500553281,
+        "f1_weighted": 0.8702169885349301,
+        "precision_macro": 0.5840241773993018,
+        "recall_macro": 0.8023769410536719,
+        "mcc": 0.31879130312197623,
+        "confusion_matrix": [
+          [
+            47168,
+            9996
+          ],
+          [
+            625,
+            2211
+          ]
+        ],
+        "roc_auc": 0.8254226463359473,
+        "false_positive_rate": 0.17486529983905955,
+        "detection_rate": 0.7796191819464033,
+        "false_negative_rate": 0.2203808180535966
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.2,
+    "data_norm": 20.8732,
+    "train_time_s": 0.67,
+    "metrics": {
+      "val": {
+        "accuracy": 0.93843230720512,
+        "f1_macro": 0.7541169697095724,
+        "f1_weighted": 0.9468768853951871,
+        "precision_macro": 0.7028801480022294,
+        "recall_macro": 0.8576034559771136,
+        "mcc": 0.5387045278248385,
+        "confusion_matrix": [
+          [
+            54126,
+            3037
+          ],
+          [
+            657,
+            2179
+          ]
+        ],
+        "roc_auc": 0.9097930726245514,
+        "false_positive_rate": 0.05312877210783199,
+        "detection_rate": 0.7683356840620592,
+        "false_negative_rate": 0.23166431593794076
+      },
+      "test": {
+        "accuracy": 0.9387,
+        "f1_macro": 0.7556328510310397,
+        "f1_weighted": 0.947146215992637,
+        "precision_macro": 0.7039148622245093,
+        "recall_macro": 0.8604247951530148,
+        "mcc": 0.5422028124085083,
+        "confusion_matrix": [
+          [
+            54127,
+            3037
+          ],
+          [
+            641,
+            2195
+          ]
+        ],
+        "roc_auc": 0.9036750064323873,
+        "false_positive_rate": 0.053127842698201665,
+        "detection_rate": 0.7739774330042313,
+        "false_negative_rate": 0.2260225669957687
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.75,
+    "data_norm": 20.8732,
+    "train_time_s": 1.36,
+    "metrics": {
+      "val": {
+        "accuracy": 0.971432857214287,
+        "f1_macro": 0.8545980400733348,
+        "f1_weighted": 0.9726146087068529,
+        "precision_macro": 0.8278220553641484,
+        "recall_macro": 0.886986508183228,
+        "mcc": 0.7123558450965939,
+        "confusion_matrix": [
+          [
+            56034,
+            1129
+          ],
+          [
+            585,
+            2251
+          ]
+        ],
+        "roc_auc": 0.9580425117177224,
+        "false_positive_rate": 0.01975053793537778,
+        "detection_rate": 0.7937235543018336,
+        "false_negative_rate": 0.20627644569816644
+      },
+      "test": {
+        "accuracy": 0.97185,
+        "f1_macro": 0.856958246816586,
+        "f1_weighted": 0.9730358167298977,
+        "precision_macro": 0.8295540384925554,
+        "recall_macro": 0.8902213920623699,
+        "mcc": 0.7172141539605609,
+        "confusion_matrix": [
+          [
+            56042,
+            1122
+          ],
+          [
+            567,
+            2269
+          ]
+        ],
+        "roc_auc": 0.9602494163725006,
+        "false_positive_rate": 0.019627737737037295,
+        "detection_rate": 0.8000705218617772,
+        "false_negative_rate": 0.19992947813822284
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 1.5,
+    "data_norm": 20.8732,
+    "train_time_s": 2.19,
+    "metrics": {
+      "val": {
+        "accuracy": 0.977282954715912,
+        "f1_macro": 0.8799645582772939,
+        "f1_weighted": 0.9778287764640405,
+        "precision_macro": 0.8626538615269509,
+        "recall_macro": 0.8992723515242964,
+        "mcc": 0.7610457544227739,
+        "confusion_matrix": [
+          [
+            56330,
+            833
+          ],
+          [
+            530,
+            2306
+          ]
+        ],
+        "roc_auc": 0.9746294601287038,
+        "false_positive_rate": 0.01457236324195721,
+        "detection_rate": 0.81311706629055,
+        "false_negative_rate": 0.18688293370944992
+      },
+      "test": {
+        "accuracy": 0.9775,
+        "f1_macro": 0.8813916536917434,
+        "f1_weighted": 0.9780658665825963,
+        "precision_macro": 0.8632483593103204,
+        "recall_macro": 0.901731997383817,
+        "mcc": 0.7640117510408578,
+        "confusion_matrix": [
+          [
+            56330,
+            834
+          ],
+          [
+            516,
+            2320
+          ]
+        ],
+        "roc_auc": 0.9775286727302999,
+        "false_positive_rate": 0.014589601847316494,
+        "detection_rate": 0.8180535966149506,
+        "false_negative_rate": 0.18194640338504936
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 3.0,
+    "data_norm": 20.8732,
+    "train_time_s": 3.48,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9801330022167036,
+        "f1_macro": 0.8939299387263147,
+        "f1_weighted": 0.9805123090833625,
+        "precision_macro": 0.8795122935959121,
+        "recall_macro": 0.9096486343817682,
+        "mcc": 0.7885852973589049,
+        "confusion_matrix": [
+          [
+            56448,
+            715
+          ],
+          [
+            477,
+            2359
+          ]
+        ],
+        "roc_auc": 0.983528158668921,
+        "false_positive_rate": 0.01250809089795847,
+        "detection_rate": 0.831805359661495,
+        "false_negative_rate": 0.16819464033850492
+      },
+      "test": {
+        "accuracy": 0.9804333333333334,
+        "f1_macro": 0.8963627503831224,
+        "f1_weighted": 0.980881377890877,
+        "precision_macro": 0.8791081237985747,
+        "recall_macro": 0.9155031538189826,
+        "mcc": 0.7937773518479979,
+        "confusion_matrix": [
+          [
+            56433,
+            731
+          ],
+          [
+            443,
+            2393
+          ]
+        ],
+        "roc_auc": 0.9851690201670517,
+        "false_positive_rate": 0.012787768525645511,
+        "detection_rate": 0.8437940761636107,
+        "false_negative_rate": 0.1562059238363893
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 7.0,
+    "data_norm": 20.8732,
+    "train_time_s": 3.0,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9811996866614443,
+        "f1_macro": 0.8989110640207261,
+        "f1_weighted": 0.9814945898220359,
+        "precision_macro": 0.8868253720525556,
+        "recall_macro": 0.9118840144286374,
+        "mcc": 0.7983161958118046,
+        "confusion_matrix": [
+          [
+            56502,
+            661
+          ],
+          [
+            467,
+            2369
+          ]
+        ],
+        "roc_auc": 0.986968670148145,
+        "false_positive_rate": 0.01156342389307769,
+        "detection_rate": 0.8353314527503526,
+        "false_negative_rate": 0.16466854724964738
+      },
+      "test": {
+        "accuracy": 0.9816666666666667,
+        "f1_macro": 0.9018962538495909,
+        "f1_weighted": 0.9819969300939738,
+        "precision_macro": 0.8879839115133232,
+        "recall_macro": 0.9169882037863197,
+        "mcc": 0.8044494126044996,
+        "confusion_matrix": [
+          [
+            56502,
+            662
+          ],
+          [
+            438,
+            2398
+          ]
+        ],
+        "roc_auc": 0.9884702541935364,
+        "false_positive_rate": 0.011580715135399901,
+        "detection_rate": 0.8455571227080395,
+        "false_negative_rate": 0.15444287729196052
       }
     }
   }

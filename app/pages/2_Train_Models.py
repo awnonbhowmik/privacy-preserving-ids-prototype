@@ -29,6 +29,16 @@ from src.models.baseline import BASELINE_MODELS
 from src.utils.config import PRIVACY_CFG, DP_SGD_CFG
 
 st.title("Train Models")
+st.markdown(
+    "Train non-private baseline models and differentially private models on the fixed "
+    "training split. All models use the same preprocessed data so their performance is "
+    "directly comparable."
+)
+
+from app.glossary import render_glossary
+render_glossary(sections=["dp"])
+
+st.divider()
 
 # ── Dataset and label selectors ───────────────────────────────────────────────
 col_ds, col_lb, _ = st.columns([2, 2, 4])
@@ -63,11 +73,28 @@ st.divider()
 # ═══════════════════════════════════════════════════════════════════════════════
 # Section 1: Baseline Models
 # ═══════════════════════════════════════════════════════════════════════════════
-st.subheader("Baseline Models")
+st.subheader("Baseline Models (Non-Private)")
 st.caption(
-    "Trains Logistic Regression, Random Forest, and XGBoost on the fixed "
-    "train split. Results are saved to `results/` and can be loaded without retraining."
+    "Trains Logistic Regression, Random Forest, and XGBoost on the fixed train split "
+    "**without any privacy mechanism**. These are the performance ceilings — the best "
+    "achievable detection rates when privacy is not a constraint. "
+    "Results are saved to `results/` and can be loaded without retraining."
 )
+with st.expander("About each baseline model"):
+    st.markdown(
+        "**Logistic Regression (LR)** — Linear classifier. Fast, interpretable, "
+        "and used as the DP-LR comparison target because diffprivlib implements "
+        "a differentially private version of the same algorithm.\n\n"
+        "**Random Forest (RF)** — Ensemble of decision trees. Handles non-linear "
+        "decision boundaries, provides feature importances, and is typically the "
+        "strongest non-deep-learning baseline on tabular IDS data.\n\n"
+        "**XGBoost** — Gradient-boosted trees. GPU-accelerated when CUDA is available. "
+        "Typically the best-performing non-private model, making it the hardest "
+        "performance ceiling for the DP models to match. "
+        "No DP-XGBoost library exists — the XGBoost library itself has no DP support "
+        "because data-driven split selection (its core advantage) is fundamentally "
+        "difficult to privatise. DP-RF is the closest DP equivalent."
+    )
 
 # Training status indicators
 st.markdown("**Current status:**")
@@ -127,11 +154,23 @@ st.divider()
 # ═══════════════════════════════════════════════════════════════════════════════
 # Section 2: Differential Privacy Experiment
 # ═══════════════════════════════════════════════════════════════════════════════
-st.subheader("Differential Privacy Experiment (ε sweep)")
+st.subheader("DP-LR Experiment — ε Sweep (diffprivlib)")
 st.caption(
-    "Trains DP-Logistic Regression at each ε value from `config.yaml`. "
-    "Smaller ε = stronger privacy = more noise = lower accuracy."
+    "Trains Differentially Private Logistic Regression at each ε value. "
+    "Uses IBM diffprivlib, which adds calibrated noise to the objective function. "
+    "**Smaller ε = stronger privacy guarantee = more noise = lower accuracy.** "
+    "The sweep across ε values produces the privacy–utility tradeoff curve shown on the Compare Results page."
 )
+with st.expander("How DP-LR privacy works"):
+    st.markdown(
+        "Logistic regression minimises a loss function over the training data. "
+        "diffprivlib adds **Gaussian noise** to the gradient proportional to the "
+        "sensitivity of the gradient (bounded by `data_norm`) divided by ε. "
+        "A smaller ε means more noise, which prevents the model from memorising "
+        "any individual training record — at the cost of accuracy.\n\n"
+        "The **data norm** is estimated from the 99th percentile of training sample "
+        "L2 norms to bound how much any single sample can shift the gradient."
+    )
 
 epsilon_values = PRIVACY_CFG.get("epsilon_values", [0.1, 0.5, 1.0, 2.0, 5.0, 10.0])
 
@@ -224,13 +263,134 @@ if run_dp and selected_eps:
 st.divider()
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# Section 2b: DP-RF — Differentially Private Random Forest (diffprivlib)
+# ═══════════════════════════════════════════════════════════════════════════════
+st.subheader("DP-RF — Differentially Private Random Forest (diffprivlib)")
+st.caption(
+    "Trains a DP Random Forest using IBM diffprivlib. "
+    "Uses **random split selection** (not data-driven) and the PermuteAndFlip mechanism "
+    "for leaf predictions. Provides **pure ε-DP** — a stronger formal guarantee than "
+    "DP-SGD's (ε, δ)-DP because there is no failure probability δ."
+)
+with st.expander("How DP-RF differs from regular Random Forest and from DP-SGD"):
+    st.markdown(
+        "**Standard Random Forest** selects the best split threshold by computing "
+        "information gain across all training samples — this leaks information about "
+        "individual records.\n\n"
+        "**DP-RF (diffprivlib)** instead:\n"
+        "1. Chooses split features and thresholds **uniformly at random** — the tree "
+        "structure uses no information from the data, so it costs zero privacy budget.\n"
+        "2. At each leaf, applies the **PermuteAndFlip mechanism** to the class labels "
+        "of records reaching that leaf. This is where the ε budget is spent.\n\n"
+        "**Why not DP-XGBoost?** XGBoost uses data-driven split selection "
+        "(gradient/hessian statistics). Making that step private (via the exponential "
+        "mechanism or noisy histograms) is research-level work with no established "
+        "pip package. diffprivlib's DP-RF avoids the problem by randomising splits "
+        "rather than optimising them.\n\n"
+        "**Privacy type comparison:**\n"
+        "- DP-LR: pure ε-DP (no δ)\n"
+        "- DP-RF: pure ε-DP (no δ) — same as DP-LR, stronger than DP-SGD\n"
+        "- DP-SGD: (ε, δ)-DP — δ=1e-5 failure probability\n"
+    )
+
+dp_rf_eps = PRIVACY_CFG.get("epsilon_values", [])
+dp_rf_done  = sum(status.get("dp_rf_trained", {}).values())
+dp_rf_total = len(status.get("dp_rf_trained", {}))
+st.markdown(f"**DP-RF ε sweep status:** {dp_rf_done} / {dp_rf_total} models trained")
+
+rf_status_cols = st.columns(min(len(dp_rf_eps), 6))
+for i, eps in enumerate(sorted(dp_rf_eps)):
+    trained = status.get("dp_rf_trained", {}).get(eps, False)
+    with rf_status_cols[i % 6]:
+        st.markdown(f"{'✅' if trained else '⏳'} **ε={eps}**")
+
+st.markdown("**Select ε values to train:**")
+selected_rf_eps = st.multiselect(
+    "DP-RF epsilon values",
+    options=sorted(dp_rf_eps),
+    default=sorted(dp_rf_eps),
+    key="selected_rf_eps",
+    label_visibility="collapsed",
+)
+
+col_rf1, col_rf2, _ = st.columns([2, 2, 4])
+with col_rf1:
+    run_dp_rf = st.button(
+        "Train DP-RF Models",
+        type="primary",
+        key="btn_run_dp_rf",
+        disabled=not selected_rf_eps,
+    )
+with col_rf2:
+    force_dp_rf = st.checkbox("Force re-train DP-RF", key="force_dp_rf", value=False)
+
+if run_dp_rf and selected_rf_eps:
+    rf_progress = st.progress(0, text="Starting DP-RF training...")
+    rf_placeholder = st.empty()
+    try:
+        from src.models.dp_rf_model import train_dp_rf_model, estimate_feature_bounds
+        from src.data.sampler import get_split_arrays
+        from src.evaluation.results_store import save_results, save_combined_results
+
+        splits   = get_split_arrays(dataset, label=label_type)
+        X_train, _ = splits["train"]
+        bounds   = estimate_feature_bounds(X_train)
+
+        rf_results = []
+        for i, eps in enumerate(sorted(selected_rf_eps)):
+            rf_progress.progress(i / len(selected_rf_eps), text=f"Training DP-RF at ε={eps}...")
+            r = train_dp_rf_model(
+                dataset, eps, label=label_type, bounds=bounds, force=force_dp_rf
+            )
+            rf_results.append(r)
+            rows = []
+            for res in rf_results:
+                m = res["metrics"]["test"]
+                rows.append({
+                    "ε":           res["epsilon"],
+                    "F1 (macro)":  f"{m.get('f1_macro', 0):.4f}",
+                    "AUC":         f"{m.get('roc_auc', 0):.4f}" if m.get("roc_auc") else "—",
+                    "MCC":         f"{m.get('mcc', 0):.4f}",
+                    "Train Time":  f"{res['train_time_s']:.1f}s",
+                })
+            rf_placeholder.dataframe(pd.DataFrame(rows), use_container_width=False, hide_index=True)
+
+        rf_progress.progress(1.0, text="DP-RF sweep complete.")
+        save_results(rf_results, dataset, "dp_rf_sweep", label=label_type)
+        save_combined_results(dataset, label=label_type)
+        st.success(f"DP-RF sweep complete. {len(rf_results)} model(s) trained and saved.")
+
+    except Exception as exc:
+        st.error(f"DP-RF training failed: {exc}")
+        st.exception(exc)
+
+st.divider()
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # Section 3: Phase 2 — DP-SGD (Opacus)
 # ═══════════════════════════════════════════════════════════════════════════════
-st.subheader("Phase 2: DP-SGD (Opacus)")
+st.subheader("DP-SGD Neural Network — ε Sweep (Opacus)")
 st.caption(
-    "Trains a 2-hidden-layer MLP (128 → 64) with DP-SGD via Opacus at each ε. "
-    "Hyperparameters are set under `dp_sgd` in `config.yaml`."
+    "Trains a 2-hidden-layer MLP (input → 128 → 64 → output) with "
+    "Differentially Private SGD via PyTorch Opacus at each ε value. "
+    "More expressive than DP-LR but requires more data and epochs to converge under noise."
 )
+with st.expander("How DP-SGD privacy works"):
+    st.markdown(
+        "**Per-sample gradient clipping**: During each mini-batch, the gradient for "
+        "every individual training sample is computed separately and clipped to a "
+        "maximum L2 norm (`max_grad_norm = 1.0`). This bounds the **sensitivity** — "
+        "how much any one record can change the gradient update.\n\n"
+        "**Gaussian noise addition**: After clipping, Gaussian noise is added to the "
+        "summed gradients. The noise scale is calibrated so that the total privacy cost "
+        "across all epochs satisfies the (ε, δ)-DP guarantee.\n\n"
+        "**RDP Accounting (Rényi DP)**: Opacus tracks the cumulative privacy cost "
+        "across all gradient steps using the Rényi DP accountant and stops training "
+        "when the target ε is reached. The **actual ε** spent may be ≤ target ε.\n\n"
+        "**Class imbalance**: A `WeightedRandomSampler` is used so attack samples are "
+        "seen more frequently during training. The weights are inversely proportional "
+        "to class frequency. This is compatible with DP accounting."
+    )
 
 dp_sgd_eps_values = DP_SGD_CFG.get("epsilon_values", [0.1, 0.5, 1.0, 2.0, 5.0, 10.0])
 

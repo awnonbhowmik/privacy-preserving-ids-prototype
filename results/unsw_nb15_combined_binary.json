@@ -3,7 +3,7 @@
     "model_name": "logistic_regression",
     "dataset": "unsw_nb15",
     "label_type": "binary",
-    "train_time_s": 91.89,
+    "train_time_s": 112.79,
     "epsilon": null,
     "metrics": {
       "val": {
@@ -56,7 +56,7 @@
     "model_name": "random_forest",
     "dataset": "unsw_nb15",
     "label_type": "binary",
-    "train_time_s": 3.48,
+    "train_time_s": 3.81,
     "epsilon": null,
     "metrics": {
       "val": {
@@ -109,7 +109,7 @@
     "model_name": "xgboost",
     "dataset": "unsw_nb15",
     "label_type": "binary",
-    "train_time_s": 2.43,
+    "train_time_s": 1.05,
     "epsilon": null,
     "metrics": {
       "val": {
@@ -164,7 +164,7 @@
     "label_type": "binary",
     "epsilon": 0.1,
     "data_norm": 20.8732,
-    "train_time_s": 0.75,
+    "train_time_s": 0.42,
     "metrics": {
       "val": {
         "accuracy": 0.8954815913598559,
@@ -218,7 +218,7 @@
     "label_type": "binary",
     "epsilon": 0.5,
     "data_norm": 20.8732,
-    "train_time_s": 1.89,
+    "train_time_s": 1.02,
     "metrics": {
       "val": {
         "accuracy": 0.96561609360156,
@@ -272,7 +272,7 @@
     "label_type": "binary",
     "epsilon": 1.0,
     "data_norm": 20.8732,
-    "train_time_s": 2.99,
+    "train_time_s": 1.66,
     "metrics": {
       "val": {
         "accuracy": 0.9748995816596944,
@@ -291,7 +291,7 @@
             2267
           ]
         ],
-        "roc_auc": 0.9662929884740312,
+        "roc_auc": 0.9662931365177554,
         "false_positive_rate": 0.016391721918023898,
         "detection_rate": 0.7993653032440057,
         "false_negative_rate": 0.20063469675599435
@@ -313,7 +313,7 @@
             2297
           ]
         ],
-        "roc_auc": 0.9690320738766712,
+        "roc_auc": 0.9690324254743657,
         "false_positive_rate": 0.016373941641592612,
         "detection_rate": 0.8099435825105783,
         "false_negative_rate": 0.19005641748942173
@@ -326,51 +326,51 @@
     "label_type": "binary",
     "epsilon": 2.0,
     "data_norm": 20.8732,
-    "train_time_s": 5.35,
+    "train_time_s": 2.52,
     "metrics": {
       "val": {
-        "accuracy": 0.9784996416606944,
-        "f1_macro": 0.8861948988421646,
-        "f1_weighted": 0.9789984477105326,
-        "precision_macro": 0.8691742593425306,
-        "recall_macro": 0.9051051663139237,
-        "mcc": 0.7734452785550519,
+        "accuracy": 0.9784829747162452,
+        "f1_macro": 0.8860885767548838,
+        "f1_weighted": 0.9789805461465281,
+        "precision_macro": 0.8691251103302888,
+        "recall_macro": 0.9049288616594808,
+        "mcc": 0.7732254800146569,
         "confusion_matrix": [
           [
             56372,
             791
           ],
           [
-            499,
-            2337
+            500,
+            2336
           ]
         ],
-        "roc_auc": 0.9795127779869444,
+        "roc_auc": 0.9793702797337988,
         "false_positive_rate": 0.013837622238161049,
-        "detection_rate": 0.8240479548660085,
-        "false_negative_rate": 0.17595204513399154
+        "detection_rate": 0.8236953455571228,
+        "false_negative_rate": 0.1763046544428773
       },
       "test": {
-        "accuracy": 0.9788,
-        "f1_macro": 0.887925436628519,
-        "f1_weighted": 0.9793045970424862,
-        "precision_macro": 0.8704077684816189,
-        "recall_macro": 0.9074409816745801,
-        "mcc": 0.7769666783332252,
+        "accuracy": 0.9788166666666667,
+        "f1_macro": 0.8879602092255089,
+        "f1_weighted": 0.979316090476332,
+        "precision_macro": 0.8705983854420766,
+        "recall_macro": 0.9072821705475321,
+        "mcc": 0.7770150959260956,
         "confusion_matrix": [
           [
-            56378,
-            786
+            56380,
+            784
           ],
           [
-            486,
-            2350
+            487,
+            2349
           ]
         ],
-        "roc_auc": 0.981881131432005,
-        "false_positive_rate": 0.013749912532363026,
-        "detection_rate": 0.8286318758815233,
-        "false_negative_rate": 0.17136812411847674
+        "roc_auc": 0.9817311904362664,
+        "false_positive_rate": 0.013714925477573298,
+        "detection_rate": 0.8282792665726375,
+        "false_negative_rate": 0.1717207334273625
       }
     }
   },
@@ -380,51 +380,51 @@
     "label_type": "binary",
     "epsilon": 5.0,
     "data_norm": 20.8732,
-    "train_time_s": 6.69,
+    "train_time_s": 2.71,
     "metrics": {
       "val": {
-        "accuracy": 0.9777329622160369,
-        "f1_macro": 0.8813065195316813,
-        "f1_weighted": 0.978175162659568,
-        "precision_macro": 0.8668162742515547,
-        "recall_macro": 0.8971627099472823,
-        "mcc": 0.7633760424181859,
+        "accuracy": 0.9776162936048934,
+        "f1_macro": 0.8806272672632645,
+        "f1_weighted": 0.9780556692095993,
+        "precision_macro": 0.866323004472779,
+        "recall_macro": 0.8962636928416443,
+        "mcc": 0.761998704789528,
         "confusion_matrix": [
           [
-            56371,
-            792
+            56369,
+            794
           ],
           [
-            544,
-            2292
+            549,
+            2287
           ]
         ],
-        "roc_auc": 0.9664610767017742,
-        "false_positive_rate": 0.013855116071584767,
-        "detection_rate": 0.8081805359661495,
-        "false_negative_rate": 0.1918194640338505
+        "roc_auc": 0.9662171746659585,
+        "false_positive_rate": 0.013890103738432203,
+        "detection_rate": 0.8064174894217208,
+        "false_negative_rate": 0.19358251057827927
       },
       "test": {
-        "accuracy": 0.9780666666666666,
-        "f1_macro": 0.8833449926290169,
-        "f1_weighted": 0.9785256811785201,
-        "precision_macro": 0.8680290118135222,
-        "recall_macro": 0.9001862505513298,
-        "mcc": 0.7675419215437409,
+        "accuracy": 0.9778,
+        "f1_macro": 0.8824149774363876,
+        "f1_weighted": 0.978308343569547,
+        "precision_macro": 0.8657695844201898,
+        "recall_macro": 0.9008840917858982,
+        "mcc": 0.7658490912789364,
         "confusion_matrix": [
           [
-            56375,
-            789
+            56354,
+            810
           ],
           [
-            527,
-            2309
+            522,
+            2314
           ]
         ],
-        "roc_auc": 0.9695296247088154,
-        "false_positive_rate": 0.013802393114547618,
-        "detection_rate": 0.8141748942172073,
-        "false_negative_rate": 0.18582510578279265
+        "roc_auc": 0.969281661976888,
+        "false_positive_rate": 0.01416975718983976,
+        "detection_rate": 0.8159379407616361,
+        "false_negative_rate": 0.18406205923836388
       }
     }
   },
@@ -434,51 +434,1131 @@
     "label_type": "binary",
     "epsilon": 10.0,
     "data_norm": 20.8732,
-    "train_time_s": 7.37,
+    "train_time_s": 3.18,
     "metrics": {
       "val": {
-        "accuracy": 0.9833497224953749,
-        "f1_macro": 0.9112037527892787,
-        "f1_weighted": 0.9836765551305955,
-        "precision_macro": 0.8957469652983875,
-        "recall_macro": 0.928092563080259,
-        "mcc": 0.823204306854188,
+        "accuracy": 0.9832497208286805,
+        "f1_macro": 0.9108988476790341,
+        "f1_weighted": 0.983598989831234,
+        "precision_macro": 0.8945355488689962,
+        "recall_macro": 0.9288778702686429,
+        "mcc": 0.8226969452822958,
         "confusion_matrix": [
           [
-            56541,
-            622
+            56530,
+            633
           ],
           [
-            377,
-            2459
+            372,
+            2464
           ]
         ],
-        "roc_auc": 0.9928380671589006,
-        "false_positive_rate": 0.010881164389552682,
-        "detection_rate": 0.8670662905500706,
-        "false_negative_rate": 0.13293370944992947
+        "roc_auc": 0.9939118406283647,
+        "false_positive_rate": 0.011073596557213582,
+        "detection_rate": 0.8688293370944993,
+        "false_negative_rate": 0.1311706629055007
       },
       "test": {
-        "accuracy": 0.9833666666666666,
-        "f1_macro": 0.9122065806252451,
-        "f1_weighted": 0.9837750421465593,
-        "precision_macro": 0.893033194112194,
-        "recall_macro": 0.9336308154135298,
-        "mcc": 0.8256665294111292,
+        "accuracy": 0.9834166666666667,
+        "f1_macro": 0.9126227170944979,
+        "f1_weighted": 0.983837442821844,
+        "precision_macro": 0.8928228344980864,
+        "recall_macro": 0.9348299609398402,
+        "mcc": 0.8265860821017498,
         "confusion_matrix": [
           [
-            56510,
-            654
+            56506,
+            658
           ],
           [
-            344,
-            2492
+            337,
+            2499
           ]
         ],
-        "roc_auc": 0.9943760715093949,
-        "false_positive_rate": 0.01144076691624099,
-        "detection_rate": 0.8787023977433004,
-        "false_negative_rate": 0.12129760225669958
+        "roc_auc": 0.9945381765516859,
+        "false_positive_rate": 0.011510741025820446,
+        "detection_rate": 0.8811706629055007,
+        "false_negative_rate": 0.11882933709449929
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.1,
+    "actual_epsilon": 0.0923,
+    "train_time_s": 218.15,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9830330505508426,
+        "f1_macro": 0.9192423463553685,
+        "f1_weighted": 0.9842317056957812,
+        "precision_macro": 0.868349828828584,
+        "recall_macro": 0.9897551768854793,
+        "mcc": 0.8494733323034437,
+        "confusion_matrix": [
+          [
+            56153,
+            1010
+          ],
+          [
+            8,
+            2828
+          ]
+        ],
+        "roc_auc": 0.9901535810530879,
+        "false_positive_rate": 0.01766877175795532,
+        "detection_rate": 0.997179125528914,
+        "false_negative_rate": 0.0028208744710860366
+      },
+      "test": {
+        "accuracy": 0.9827666666666667,
+        "f1_macro": 0.9182956607583999,
+        "f1_weighted": 0.9840125883914127,
+        "precision_macro": 0.8665108973316031,
+        "recall_macro": 0.9906207305553645,
+        "mcc": 0.8480986834215303,
+        "confusion_matrix": [
+          [
+            56132,
+            1032
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9916680413930907,
+        "false_positive_rate": 0.018053320271499546,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.5,
+    "actual_epsilon": 0.4967,
+    "train_time_s": 200.16,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9832497208286805,
+        "f1_macro": 0.920172314967777,
+        "f1_weighted": 0.9844241285989561,
+        "precision_macro": 0.8694947756114578,
+        "recall_macro": 0.9902040022781955,
+        "mcc": 0.8511822785411369,
+        "confusion_matrix": [
+          [
+            56164,
+            999
+          ],
+          [
+            6,
+            2830
+          ]
+        ],
+        "roc_auc": 0.9959799343509975,
+        "false_positive_rate": 0.01747633959029442,
+        "detection_rate": 0.9978843441466855,
+        "false_negative_rate": 0.0021156558533145277
+      },
+      "test": {
+        "accuracy": 0.9832,
+        "f1_macro": 0.9200582669490909,
+        "f1_weighted": 0.9843888511736387,
+        "precision_macro": 0.8689926103988603,
+        "recall_macro": 0.9908481464114978,
+        "mcc": 0.8511623554970474,
+        "confusion_matrix": [
+          [
+            56158,
+            1006
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9963123539389157,
+        "false_positive_rate": 0.017598488559233082,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 1.0,
+    "actual_epsilon": 0.9971,
+    "train_time_s": 200.83,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9846664111068518,
+        "f1_macro": 0.9260988657925431,
+        "f1_weighted": 0.9856686153720546,
+        "precision_macro": 0.8777066661925841,
+        "recall_macro": 0.9914501634118966,
+        "mcc": 0.8616820824923962,
+        "confusion_matrix": [
+          [
+            56246,
+            917
+          ],
+          [
+            3,
+            2833
+          ]
+        ],
+        "roc_auc": 0.9968811844494774,
+        "false_positive_rate": 0.016041845249549533,
+        "detection_rate": 0.9989421720733427,
+        "false_negative_rate": 0.0010578279266572638
+      },
+      "test": {
+        "accuracy": 0.9846666666666667,
+        "f1_macro": 0.9261200695345058,
+        "f1_weighted": 0.9856707234885992,
+        "precision_macro": 0.8776474667926596,
+        "recall_macro": 0.9916178616168717,
+        "mcc": 0.8617615449058653,
+        "confusion_matrix": [
+          [
+            56246,
+            918
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9967793774554472,
+        "false_positive_rate": 0.016059058148485062,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 2.0,
+    "actual_epsilon": 1.9947,
+    "train_time_s": 202.35,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9855997599959999,
+        "f1_macro": 0.9300365570480679,
+        "f1_weighted": 0.9864913650031877,
+        "precision_macro": 0.8834330237024575,
+        "recall_macro": 0.9919399907477606,
+        "mcc": 0.8686219848301626,
+        "confusion_matrix": [
+          [
+            56302,
+            861
+          ],
+          [
+            3,
+            2833
+          ]
+        ],
+        "roc_auc": 0.997196563845941,
+        "false_positive_rate": 0.015062190577821318,
+        "detection_rate": 0.9989421720733427,
+        "false_negative_rate": 0.0010578279266572638
+      },
+      "test": {
+        "accuracy": 0.9854666666666667,
+        "f1_macro": 0.9294702435038225,
+        "f1_weighted": 0.9863737203208326,
+        "precision_macro": 0.8826043663342091,
+        "recall_macro": 0.991870148383603,
+        "mcc": 0.8676212686213307,
+        "confusion_matrix": [
+          [
+            56295,
+            869
+          ],
+          [
+            3,
+            2833
+          ]
+        ],
+        "roc_auc": 0.9970700253811589,
+        "false_positive_rate": 0.015201875306136729,
+        "detection_rate": 0.9989421720733427,
+        "false_negative_rate": 0.0010578279266572638
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 5.0,
+    "actual_epsilon": 4.9924,
+    "train_time_s": 218.09,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9856664277737962,
+        "f1_macro": 0.930320233880738,
+        "f1_weighted": 0.9865503439480275,
+        "precision_macro": 0.8838487000277842,
+        "recall_macro": 0.9919749784146081,
+        "mcc": 0.869123595147766,
+        "confusion_matrix": [
+          [
+            56306,
+            857
+          ],
+          [
+            3,
+            2833
+          ]
+        ],
+        "roc_auc": 0.9973958121934091,
+        "false_positive_rate": 0.014992215244126446,
+        "detection_rate": 0.9989421720733427,
+        "false_negative_rate": 0.0010578279266572638
+      },
+      "test": {
+        "accuracy": 0.9856333333333334,
+        "f1_macro": 0.9301985764126521,
+        "f1_weighted": 0.9865228605717463,
+        "precision_macro": 0.8835772588530332,
+        "recall_macro": 0.9921251739113228,
+        "mcc": 0.8689488482562766,
+        "confusion_matrix": [
+          [
+            56304,
+            860
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9973114157035522,
+        "false_positive_rate": 0.015044433559582954,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 10.0,
+    "actual_epsilon": 9.9973,
+    "train_time_s": 220.99,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9858164302738379,
+        "f1_macro": 0.9309596956822495,
+        "f1_weighted": 0.9866831506793929,
+        "precision_macro": 0.8847872747952334,
+        "recall_macro": 0.9920537006650149,
+        "mcc": 0.8702551408220479,
+        "confusion_matrix": [
+          [
+            56315,
+            848
+          ],
+          [
+            3,
+            2833
+          ]
+        ],
+        "roc_auc": 0.9975089823679184,
+        "false_positive_rate": 0.014834770743312983,
+        "detection_rate": 0.9989421720733427,
+        "false_negative_rate": 0.0010578279266572638
+      },
+      "test": {
+        "accuracy": 0.9858,
+        "f1_macro": 0.9309086112306484,
+        "f1_weighted": 0.9866703795377039,
+        "precision_macro": 0.8846185079864599,
+        "recall_macro": 0.992212641548297,
+        "mcc": 0.870204784644121,
+        "confusion_matrix": [
+          [
+            56314,
+            850
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9974562307750081,
+        "false_positive_rate": 0.014869498285634315,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.01,
+    "actual_epsilon": 0.01,
+    "train_time_s": 0.0,
+    "metrics": {
+      "val": {
+        "accuracy": 0.3252220870347839,
+        "f1_macro": 0.28729433306401486,
+        "f1_weighted": 0.436163713164439,
+        "precision_macro": 0.5327316375051937,
+        "recall_macro": 0.6458723300036737,
+        "mcc": 0.13819754307104354,
+        "confusion_matrix": [
+          [
+            16677,
+            40486
+          ],
+          [
+            0,
+            2836
+          ]
+        ],
+        "roc_auc": 0.9819664207471239,
+        "false_positive_rate": 0.7082553399926526,
+        "detection_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "test": {
+        "accuracy": 0.3272833333333333,
+        "f1_macro": 0.28875327570874504,
+        "f1_weighted": 0.4386466499034198,
+        "precision_macro": 0.5328248339081924,
+        "recall_macro": 0.6469543768805541,
+        "mcc": 0.138906486719463,
+        "confusion_matrix": [
+          [
+            16801,
+            40363
+          ],
+          [
+            0,
+            2836
+          ]
+        ],
+        "roc_auc": 0.9828408851912381,
+        "false_positive_rate": 0.7060912462388916,
+        "detection_rate": 1.0,
+        "false_negative_rate": 0.0
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.05,
+    "actual_epsilon": 0.05,
+    "train_time_s": 0.0,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9827330455507591,
+        "f1_macro": 0.9179763174574219,
+        "f1_weighted": 0.9839671780139062,
+        "precision_macro": 0.8667333779536328,
+        "recall_macro": 0.9892626169092038,
+        "mcc": 0.8471810484319074,
+        "confusion_matrix": [
+          [
+            56137,
+            1026
+          ],
+          [
+            10,
+            2826
+          ]
+        ],
+        "roc_auc": 0.9873693720777248,
+        "false_positive_rate": 0.01794867309273481,
+        "detection_rate": 0.9964739069111425,
+        "false_negative_rate": 0.003526093088857546
+      },
+      "test": {
+        "accuracy": 0.9824166666666667,
+        "f1_macro": 0.916904529638451,
+        "f1_weighted": 0.9837115381878438,
+        "precision_macro": 0.8644806751030938,
+        "recall_macro": 0.9906046064084638,
+        "mcc": 0.8457325774792986,
+        "confusion_matrix": [
+          [
+            56110,
+            1054
+          ],
+          [
+            1,
+            2835
+          ]
+        ],
+        "roc_auc": 0.9892785865456861,
+        "false_positive_rate": 0.01843817787418655,
+        "detection_rate": 0.9996473906911142,
+        "false_negative_rate": 0.0003526093088857546
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.2,
+    "actual_epsilon": 0.2,
+    "train_time_s": 0.0,
+    "metrics": {
+      "val": {
+        "accuracy": 0.983133052217537,
+        "f1_macro": 0.9196730150384359,
+        "f1_weighted": 0.9843206446551366,
+        "precision_macro": 0.8688735208564861,
+        "recall_macro": 0.9899752161234815,
+        "mcc": 0.8502679180208702,
+        "confusion_matrix": [
+          [
+            56158,
+            1005
+          ],
+          [
+            7,
+            2829
+          ]
+        ],
+        "roc_auc": 0.9923009182634067,
+        "false_positive_rate": 0.01758130259083673,
+        "detection_rate": 0.9975317348377997,
+        "false_negative_rate": 0.002468265162200282
+      },
+      "test": {
+        "accuracy": 0.9828666666666667,
+        "f1_macro": 0.9187012856205414,
+        "f1_weighted": 0.9840993199420538,
+        "precision_macro": 0.8670806329845261,
+        "recall_macro": 0.9906732111375491,
+        "mcc": 0.8488029993653923,
+        "confusion_matrix": [
+          [
+            56138,
+            1026
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9935496781388347,
+        "false_positive_rate": 0.01794835910713036,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.75,
+    "actual_epsilon": 0.75,
+    "train_time_s": 0.0,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9843830730512175,
+        "f1_macro": 0.9248729648748223,
+        "f1_weighted": 0.9854161417830437,
+        "precision_macro": 0.876118180685599,
+        "recall_macro": 0.9909663503523329,
+        "mcc": 0.859444868440944,
+        "confusion_matrix": [
+          [
+            56231,
+            932
+          ],
+          [
+            5,
+            2831
+          ]
+        ],
+        "roc_auc": 0.9966507266343761,
+        "false_positive_rate": 0.016304252750905305,
+        "detection_rate": 0.9982369534555712,
+        "false_negative_rate": 0.001763046544428773
+      },
+      "test": {
+        "accuracy": 0.9842666666666666,
+        "f1_macro": 0.9244519420556638,
+        "f1_weighted": 0.9853198217040222,
+        "precision_macro": 0.8752470445096129,
+        "recall_macro": 0.9914079392881334,
+        "mcc": 0.8588349710309456,
+        "confusion_matrix": [
+          [
+            56222,
+            942
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9966028692444443,
+        "false_positive_rate": 0.016478902805961794,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 1.5,
+    "actual_epsilon": 1.5,
+    "train_time_s": 0.0,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9854664244404073,
+        "f1_macro": 0.9294701757672417,
+        "f1_weighted": 0.9863734922347054,
+        "precision_macro": 0.8826043658609347,
+        "recall_macro": 0.9918700154140658,
+        "mcc": 0.8676211508106677,
+        "confusion_matrix": [
+          [
+            56294,
+            869
+          ],
+          [
+            3,
+            2833
+          ]
+        ],
+        "roc_auc": 0.9970728147136315,
+        "false_positive_rate": 0.015202141245211064,
+        "detection_rate": 0.9989421720733427,
+        "false_negative_rate": 0.0010578279266572638
+      },
+      "test": {
+        "accuracy": 0.9853833333333334,
+        "f1_macro": 0.9291169122654523,
+        "f1_weighted": 0.9863001085498648,
+        "precision_macro": 0.8820882714261734,
+        "recall_macro": 0.9918264145651159,
+        "mcc": 0.8669973577420352,
+        "confusion_matrix": [
+          [
+            56290,
+            874
+          ],
+          [
+            3,
+            2833
+          ]
+        ],
+        "roc_auc": 0.9969799762769017,
+        "false_positive_rate": 0.015289342943111048,
+        "detection_rate": 0.9989421720733427,
+        "false_negative_rate": 0.0010578279266572638
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 3.0,
+    "actual_epsilon": 3.0,
+    "train_time_s": 0.0,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9855997599959999,
+        "f1_macro": 0.9300365570480679,
+        "f1_weighted": 0.9864913650031877,
+        "precision_macro": 0.8834330237024575,
+        "recall_macro": 0.9919399907477606,
+        "mcc": 0.8686219848301626,
+        "confusion_matrix": [
+          [
+            56302,
+            861
+          ],
+          [
+            3,
+            2833
+          ]
+        ],
+        "roc_auc": 0.9973014589931097,
+        "false_positive_rate": 0.015062190577821318,
+        "detection_rate": 0.9989421720733427,
+        "false_negative_rate": 0.0010578279266572638
+      },
+      "test": {
+        "accuracy": 0.9855166666666667,
+        "f1_macro": 0.9297027591185725,
+        "f1_weighted": 0.9864197029726934,
+        "precision_macro": 0.882851732426317,
+        "recall_macro": 0.9920639465654407,
+        "mcc": 0.8680726568833043,
+        "confusion_matrix": [
+          [
+            56297,
+            867
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9971725500351893,
+        "false_positive_rate": 0.015166888251347002,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      }
+    }
+  },
+  {
+    "model_name": "dp_sgd",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 7.0,
+    "actual_epsilon": 7.0,
+    "train_time_s": 0.0,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9857664294404906,
+        "f1_macro": 0.9307463585547298,
+        "f1_weighted": 0.9866388657259695,
+        "precision_macro": 0.8844739070007461,
+        "recall_macro": 0.9920274599148793,
+        "mcc": 0.8698775083082138,
+        "confusion_matrix": [
+          [
+            56312,
+            851
+          ],
+          [
+            3,
+            2833
+          ]
+        ],
+        "roc_auc": 0.9974568555557368,
+        "false_positive_rate": 0.014887252243584137,
+        "detection_rate": 0.9989421720733427,
+        "false_negative_rate": 0.0010578279266572638
+      },
+      "test": {
+        "accuracy": 0.9857,
+        "f1_macro": 0.9304823464834284,
+        "f1_weighted": 0.9865818468059833,
+        "precision_macro": 0.8839930812733807,
+        "recall_macro": 0.9921601609661125,
+        "mcc": 0.8694506235304694,
+        "confusion_matrix": [
+          [
+            56308,
+            856
+          ],
+          [
+            2,
+            2834
+          ]
+        ],
+        "roc_auc": 0.9973964961772325,
+        "false_positive_rate": 0.014974459450003499,
+        "detection_rate": 0.9992947813822285,
+        "false_negative_rate": 0.0007052186177715092
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.01,
+    "data_norm": 20.8732,
+    "train_time_s": 0.32,
+    "metrics": {
+      "val": {
+        "accuracy": 0.5545425757095952,
+        "f1_macro": 0.4188498028471758,
+        "f1_weighted": 0.673119300339472,
+        "precision_macro": 0.5270485532378614,
+        "recall_macro": 0.649600971581354,
+        "mcc": 0.12722405188098734,
+        "confusion_matrix": [
+          [
+            31132,
+            26031
+          ],
+          [
+            696,
+            2140
+          ]
+        ],
+        "roc_auc": 0.6849293703130437,
+        "false_positive_rate": 0.4553819778528069,
+        "detection_rate": 0.7545839210155149,
+        "false_negative_rate": 0.2454160789844852
+      },
+      "test": {
+        "accuracy": 0.55315,
+        "f1_macro": 0.4173693463227307,
+        "f1_weighted": 0.6720453812952384,
+        "precision_macro": 0.5260648466250866,
+        "recall_macro": 0.6441786056084495,
+        "mcc": 0.1226049467485402,
+        "confusion_matrix": [
+          [
+            31077,
+            26087
+          ],
+          [
+            724,
+            2112
+          ]
+        ],
+        "roc_auc": 0.6774130075750675,
+        "false_positive_rate": 0.4563536491498146,
+        "detection_rate": 0.7447108603667136,
+        "false_negative_rate": 0.2552891396332863
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.05,
+    "data_norm": 20.8732,
+    "train_time_s": 0.45,
+    "metrics": {
+      "val": {
+        "accuracy": 0.8209970166169436,
+        "f1_macro": 0.5949677639502178,
+        "f1_weighted": 0.8689351276776048,
+        "precision_macro": 0.5834229483467258,
+        "recall_macro": 0.8026749903345953,
+        "mcc": 0.3178052238999773,
+        "confusion_matrix": [
+          [
+            47040,
+            10123
+          ],
+          [
+            617,
+            2219
+          ]
+        ],
+        "roc_auc": 0.834016281651409,
+        "false_positive_rate": 0.17709007574829871,
+        "detection_rate": 0.7824400564174894,
+        "false_negative_rate": 0.21755994358251057
+      },
+      "test": {
+        "accuracy": 0.8229833333333333,
+        "f1_macro": 0.5963817500553281,
+        "f1_weighted": 0.8702169885349301,
+        "precision_macro": 0.5840241773993018,
+        "recall_macro": 0.8023769410536719,
+        "mcc": 0.31879130312197623,
+        "confusion_matrix": [
+          [
+            47168,
+            9996
+          ],
+          [
+            625,
+            2211
+          ]
+        ],
+        "roc_auc": 0.8254226463359473,
+        "false_positive_rate": 0.17486529983905955,
+        "detection_rate": 0.7796191819464033,
+        "false_negative_rate": 0.2203808180535966
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.2,
+    "data_norm": 20.8732,
+    "train_time_s": 0.67,
+    "metrics": {
+      "val": {
+        "accuracy": 0.93843230720512,
+        "f1_macro": 0.7541169697095724,
+        "f1_weighted": 0.9468768853951871,
+        "precision_macro": 0.7028801480022294,
+        "recall_macro": 0.8576034559771136,
+        "mcc": 0.5387045278248385,
+        "confusion_matrix": [
+          [
+            54126,
+            3037
+          ],
+          [
+            657,
+            2179
+          ]
+        ],
+        "roc_auc": 0.9097930726245514,
+        "false_positive_rate": 0.05312877210783199,
+        "detection_rate": 0.7683356840620592,
+        "false_negative_rate": 0.23166431593794076
+      },
+      "test": {
+        "accuracy": 0.9387,
+        "f1_macro": 0.7556328510310397,
+        "f1_weighted": 0.947146215992637,
+        "precision_macro": 0.7039148622245093,
+        "recall_macro": 0.8604247951530148,
+        "mcc": 0.5422028124085083,
+        "confusion_matrix": [
+          [
+            54127,
+            3037
+          ],
+          [
+            641,
+            2195
+          ]
+        ],
+        "roc_auc": 0.9036750064323873,
+        "false_positive_rate": 0.053127842698201665,
+        "detection_rate": 0.7739774330042313,
+        "false_negative_rate": 0.2260225669957687
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 0.75,
+    "data_norm": 20.8732,
+    "train_time_s": 1.36,
+    "metrics": {
+      "val": {
+        "accuracy": 0.971432857214287,
+        "f1_macro": 0.8545980400733348,
+        "f1_weighted": 0.9726146087068529,
+        "precision_macro": 0.8278220553641484,
+        "recall_macro": 0.886986508183228,
+        "mcc": 0.7123558450965939,
+        "confusion_matrix": [
+          [
+            56034,
+            1129
+          ],
+          [
+            585,
+            2251
+          ]
+        ],
+        "roc_auc": 0.9580425117177224,
+        "false_positive_rate": 0.01975053793537778,
+        "detection_rate": 0.7937235543018336,
+        "false_negative_rate": 0.20627644569816644
+      },
+      "test": {
+        "accuracy": 0.97185,
+        "f1_macro": 0.856958246816586,
+        "f1_weighted": 0.9730358167298977,
+        "precision_macro": 0.8295540384925554,
+        "recall_macro": 0.8902213920623699,
+        "mcc": 0.7172141539605609,
+        "confusion_matrix": [
+          [
+            56042,
+            1122
+          ],
+          [
+            567,
+            2269
+          ]
+        ],
+        "roc_auc": 0.9602494163725006,
+        "false_positive_rate": 0.019627737737037295,
+        "detection_rate": 0.8000705218617772,
+        "false_negative_rate": 0.19992947813822284
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 1.5,
+    "data_norm": 20.8732,
+    "train_time_s": 2.19,
+    "metrics": {
+      "val": {
+        "accuracy": 0.977282954715912,
+        "f1_macro": 0.8799645582772939,
+        "f1_weighted": 0.9778287764640405,
+        "precision_macro": 0.8626538615269509,
+        "recall_macro": 0.8992723515242964,
+        "mcc": 0.7610457544227739,
+        "confusion_matrix": [
+          [
+            56330,
+            833
+          ],
+          [
+            530,
+            2306
+          ]
+        ],
+        "roc_auc": 0.9746294601287038,
+        "false_positive_rate": 0.01457236324195721,
+        "detection_rate": 0.81311706629055,
+        "false_negative_rate": 0.18688293370944992
+      },
+      "test": {
+        "accuracy": 0.9775,
+        "f1_macro": 0.8813916536917434,
+        "f1_weighted": 0.9780658665825963,
+        "precision_macro": 0.8632483593103204,
+        "recall_macro": 0.901731997383817,
+        "mcc": 0.7640117510408578,
+        "confusion_matrix": [
+          [
+            56330,
+            834
+          ],
+          [
+            516,
+            2320
+          ]
+        ],
+        "roc_auc": 0.9775286727302999,
+        "false_positive_rate": 0.014589601847316494,
+        "detection_rate": 0.8180535966149506,
+        "false_negative_rate": 0.18194640338504936
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 3.0,
+    "data_norm": 20.8732,
+    "train_time_s": 3.48,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9801330022167036,
+        "f1_macro": 0.8939299387263147,
+        "f1_weighted": 0.9805123090833625,
+        "precision_macro": 0.8795122935959121,
+        "recall_macro": 0.9096486343817682,
+        "mcc": 0.7885852973589049,
+        "confusion_matrix": [
+          [
+            56448,
+            715
+          ],
+          [
+            477,
+            2359
+          ]
+        ],
+        "roc_auc": 0.983528158668921,
+        "false_positive_rate": 0.01250809089795847,
+        "detection_rate": 0.831805359661495,
+        "false_negative_rate": 0.16819464033850492
+      },
+      "test": {
+        "accuracy": 0.9804333333333334,
+        "f1_macro": 0.8963627503831224,
+        "f1_weighted": 0.980881377890877,
+        "precision_macro": 0.8791081237985747,
+        "recall_macro": 0.9155031538189826,
+        "mcc": 0.7937773518479979,
+        "confusion_matrix": [
+          [
+            56433,
+            731
+          ],
+          [
+            443,
+            2393
+          ]
+        ],
+        "roc_auc": 0.9851690201670517,
+        "false_positive_rate": 0.012787768525645511,
+        "detection_rate": 0.8437940761636107,
+        "false_negative_rate": 0.1562059238363893
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "unsw_nb15",
+    "label_type": "binary",
+    "epsilon": 7.0,
+    "data_norm": 20.8732,
+    "train_time_s": 3.0,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9811996866614443,
+        "f1_macro": 0.8989110640207261,
+        "f1_weighted": 0.9814945898220359,
+        "precision_macro": 0.8868253720525556,
+        "recall_macro": 0.9118840144286374,
+        "mcc": 0.7983161958118046,
+        "confusion_matrix": [
+          [
+            56502,
+            661
+          ],
+          [
+            467,
+            2369
+          ]
+        ],
+        "roc_auc": 0.986968670148145,
+        "false_positive_rate": 0.01156342389307769,
+        "detection_rate": 0.8353314527503526,
+        "false_negative_rate": 0.16466854724964738
+      },
+      "test": {
+        "accuracy": 0.9816666666666667,
+        "f1_macro": 0.9018962538495909,
+        "f1_weighted": 0.9819969300939738,
+        "precision_macro": 0.8879839115133232,
+        "recall_macro": 0.9169882037863197,
+        "mcc": 0.8044494126044996,
+        "confusion_matrix": [
+          [
+            56502,
+            662
+          ],
+          [
+            438,
+            2398
+          ]
+        ],
+        "roc_auc": 0.9884702541935364,
+        "false_positive_rate": 0.011580715135399901,
+        "detection_rate": 0.8455571227080395,
+        "false_negative_rate": 0.15444287729196052
       }
     }
   }

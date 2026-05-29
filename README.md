@@ -150,18 +150,22 @@ privacy-preserving-ids-prototype/
 │   └── config.toml                 # Streamlit theme settings
 │
 ├── app/                            # Streamlit application
-│   ├── main.py                     # Entry point — pipeline status home page
+│   ├── main.py                     # Entry point — navigation (5 pages)
+│   ├── glossary.py                 # Shared metric/concept definitions
 │   ├── _path_setup.py              # sys.path bootstrap for page imports
 │   └── pages/
 │       ├── 1_Data_Overview.py      # Dataset status + distribution charts
 │       ├── 2_Train_Models.py       # Baseline + DP training controls
-│       └── 3_Compare_Results.py    # Tradeoff curve, tables, confusion matrix
+│       ├── 3_Compare_Results.py    # Tradeoff curve, tables, confusion matrix
+│       └── 4_Attack_Evaluation.py  # Phase 3: MIA attack results
 │
 ├── scripts/                        # Terminal pipeline scripts
+│   ├── setup_data.py               # ONE COMMAND: extract zips + preprocess + sample
 │   ├── train_baseline.py           # Train LR, RF, XGBoost
 │   ├── train_private.py            # Run DP-LR epsilon sweep
-│   ├── train_dp_sgd.py          # Run DP-SGD (DP-SGD) epsilon sweep
-│   └── evaluate.py                 # Generate reports and CSV exports
+│   ├── train_dp_sgd.py             # Run DP-SGD epsilon sweep
+│   ├── evaluate.py                 # Generate reports and CSV exports
+│   └── run_membership_inference.py # Phase 3: MIA evaluation sweep
 │
 ├── src/                            # Core Python library
 │   ├── data/
@@ -172,14 +176,26 @@ privacy-preserving-ids-prototype/
 │   ├── models/
 │   │   ├── baseline.py             # LR, RF, XGBoost — training + persistence
 │   │   ├── dp_model.py             # DP-LR — training + epsilon sweep (diffprivlib)
-│   │   ├── dp_sgd_model.py      # DP-SGD MLP — DP-SGD via Opacus (Phase 2)
+│   │   ├── dp_rf_model.py          # DP-RF — training + epsilon sweep (diffprivlib, pure ε-DP)
+│   │   ├── dp_sgd_model.py         # DP-SGD MLP — training via Opacus (Phase 2)
 │   │   └── model_utils.py          # Pipeline status, model registry
+│   ├── attacks/
+│   │   ├── membership_inference.py # Phase 3: black-box MIA evaluation
+│   │   └── model_inversion.py      # Phase 3: deferred — developer notes only
 │   ├── evaluation/
 │   │   ├── metrics.py              # Model-agnostic metric computation
 │   │   └── results_store.py        # JSON persistence + comparison table builders
 │   └── utils/
 │       ├── config.py               # config.yaml loader + path resolver
 │       └── logger.py               # Centralised logging
+│
+├── tests/                          # Synthetic-data smoke tests (no dataset required)
+│   ├── test_membership_inference.py  # Phase 3 MIA module (38 tests)
+│   ├── test_dp_rf_model.py           # DP-RF model module (20 tests)
+│   ├── test_label_mapping.py         # Label taxonomy correctness (48 tests)
+│   └── test_metrics.py               # FPR/DR/MCC formula verification (19 tests)
+│
+├── conftest.py                     # pytest sys.path setup
 │
 ├── data/
 │   ├── raw/                        # Place dataset CSVs here — git-ignored
@@ -323,7 +339,7 @@ the noise multiplier to achieve the target ε in the given number of epochs.
 | 7.0 | Near-non-private |
 | 10.0 | Negligible noise; near-baseline utility expected |
 
-**DP-SGD sweep (6 values):** ε ∈ {0.1, 0.5, 1.0, 2.0, 5.0, 10.0}
+**DP-SGD sweep (13 values):** ε ∈ {0.01, 0.05, 0.1, 0.2, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 7.0, 10.0}
 
 The core experimental result is the **privacy–utility tradeoff curve**: F1 score
 plotted against ε (log scale), with non-private baseline performance as horizontal
@@ -344,7 +360,7 @@ to `.fit()`. The DP-SGD uses `WeightedRandomSampler` for the same effect.
 
 | Requirement | Minimum | Notes |
 |---|---|---|
-| Python | 3.10+ | Tested on 3.12 (conda env) |
+| Python | 3.10+ | Tested on 3.12 (conda) and 3.14 (pip). CPU-only on 3.14 — no CUDA PyTorch wheels yet. |
 | RAM | 16 GB | For full CIC-IDS2018 preprocessing |
 | Disk | 30 GB free | Raw data + Parquet + models |
 | OS | Windows / Linux / macOS | Tested on Windows 11 |
@@ -379,27 +395,71 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-**For GPU-accelerated DP-SGD training (CUDA 12.6):**
+**For GPU-accelerated DP-SGD training (requires Python 3.10–3.13 + CUDA 12.x driver):**
 ```bash
 pip uninstall torch -y
-pip install torch --index-url https://download.pytorch.org/whl/cu126
+pip install torch --index-url https://download.pytorch.org/whl/cu128
 ```
 
-**Note on scikit-learn compatibility:** diffprivlib requires scikit-learn ≤ 1.7.x.
-The requirements.txt pins `scikit-learn==1.7.2` which is the latest compatible version.
+> **Python 3.14 note:** PyTorch CUDA wheels do not yet exist for Python 3.14 (as of 2026-05).
+> DP-SGD will fall back to CPU on Python 3.14. Use Python 3.12 for GPU-accelerated training.
+> CPU training is fully functional but ~10 min/model (vs ~1 min on GPU).
 
-### Step 4 — Place raw datasets
+**scikit-learn compatibility:** diffprivlib 0.6.6 uses the `multi_class` parameter that was
+removed in scikit-learn 1.8. `requirements.txt` pins `scikit-learn==1.7.2`. Do not upgrade
+scikit-learn above 1.7.x without updating diffprivlib first.
+
+### Step 4 — Place datasets and run one-command setup
+
+**Option A — From ZIP files (recommended):**
+
+Drop the ZIP files anywhere in `data/` — the setup script finds them automatically
+by keyword (any zip with "CIC"/"IDS2018" in the name, and any with "UNSW"/"NB15"):
+
+```
+data/CSE-CIC-IDS2018 Cleaned.zip    ← any filename containing "CIC" or "IDS2018"
+data/UNSW-NB15 dataset.zip          ← any filename containing "UNSW" or "NB15"
+```
+
+Then run:
+```bash
+python scripts/setup_data.py
+```
+
+This single command extracts the correct CSVs, runs Stage A preprocessing, and
+runs Stage B sampling for both datasets. It is **fully idempotent**: run it again
+any time — it skips stages whose output files already exist.
 
 ```bash
-mkdir -p data/raw/cic_ids2018
-mkdir -p data/raw/unsw_nb15
+# Check status without running anything:
+python scripts/setup_data.py --status
 
-# Copy CIC-IDS2018 day-level CSV files
-cp /path/to/cic_ids2018_files/*.csv data/raw/cic_ids2018/
+# Force a full re-run (re-extract, re-preprocess, re-sample):
+python scripts/setup_data.py --force
 
-# Copy UNSW-NB15 files
-cp /path/to/UNSW-NB15_*.csv data/raw/unsw_nb15/
+# One dataset only:
+python scripts/setup_data.py --dataset cic_ids2018
+
+# One stage only:
+python scripts/setup_data.py --only extract
+python scripts/setup_data.py --only preprocess
+python scripts/setup_data.py --only sample
 ```
+
+**Option B — Raw CSVs already on disk:**
+
+If you extracted manually, place the files at:
+```
+data/raw/cic_ids2018/*.csv           (any .csv filenames accepted)
+data/raw/unsw_nb15/UNSW-NB15_1.csv  (must be UNSW-NB15_1.csv through _4.csv)
+```
+
+Then run `python scripts/setup_data.py` — extraction will be skipped, preprocessing
+and sampling will run automatically.
+
+> **UNSW-NB15 note:** Only `UNSW-NB15_1.csv` through `UNSW-NB15_4.csv` are used
+> (the 4 main flow-feature files, no header row). The zip also contains Argus/PCAP
+> files, per-day CSVs, and training/test split CSVs — these are all ignored.
 
 ### Step 5 — Verify the installation
 
@@ -419,53 +479,49 @@ print('Installation verified.')
 
 > Always activate the virtual environment first: `source .venv/bin/activate`
 
-### Step 1 — Preprocessing (Stage A)
+### Step 1 — Preprocess and sample (one command)
 
-Reads raw CSVs in chunks, cleans, normalises, and writes processed Parquet files.
-Run once per dataset. Safe to re-run — skips if output already exists.
-
-```bash
-python -c "
-from src.data.preprocessor import run_preprocessing_pipeline
-run_preprocessing_pipeline('cic_ids2018')
-run_preprocessing_pipeline('unsw_nb15')
-"
-```
-
-Runtime: 10–40 minutes per dataset depending on hardware.
-
-### Step 2 — Sampling (Stage B)
-
-Draws a stratified 300K-row subset and creates the fixed train/val/test split.
+After placing dataset files in `data/` (see Step 4 of Setup above), run:
 
 ```bash
-python -c "
-from src.data.sampler import run_sampling_pipeline
-run_sampling_pipeline('cic_ids2018')
-run_sampling_pipeline('unsw_nb15')
-"
+python scripts/setup_data.py
 ```
 
-### Step 3 — Train baseline models
+This covers Stage A (raw CSV → Parquet) and Stage B (Parquet → stratified 300k subset).
+Both stages are skipped automatically if their output already exists. Typical runtime:
+CIC-IDS2018 ~4 min, UNSW-NB15 ~1 min.
+
+To check status without running:
+```bash
+python scripts/setup_data.py --status
+```
+
+### Step 2 — Train baseline models
 
 ```bash
 python scripts/train_baseline.py --dataset cic_ids2018 --label binary
 python scripts/train_baseline.py --dataset unsw_nb15   --label binary
 ```
 
-### Step 4 — Run the DP-LR epsilon sweep
+### Step 3 — Run the DP-LR epsilon sweep (Phase 1)
 
 ```bash
 python scripts/train_private.py --dataset cic_ids2018 --label binary
 python scripts/train_private.py --dataset unsw_nb15   --label binary
 ```
 
-To run specific ε values only:
+### Step 3b — Run the DP-RF epsilon sweep (Phase 1b — pure ε-DP tree ensemble)
+
 ```bash
-python scripts/train_private.py --dataset cic_ids2018 --epsilon 0.1 1.0 10.0
+python scripts/train_dp_rf.py --dataset cic_ids2018 --label binary
+python scripts/train_dp_rf.py --dataset unsw_nb15   --label binary
 ```
 
-### Step 4b — Run the DP-SGD sweep (Phase 2 — requires torch + opacus)
+DP-RF uses IBM diffprivlib's `RandomForestClassifier` with random split selection
+and the PermuteAndFlip mechanism. Provides **pure ε-DP** (stronger than DP-SGD's
+(ε, δ)-DP). Same epsilon values as DP-LR.
+
+### Step 4 — Run the DP-SGD sweep (Phase 2 — requires torch + opacus)
 
 ```bash
 python scripts/train_dp_sgd.py --dataset cic_ids2018 --label binary
@@ -474,7 +530,7 @@ python scripts/train_dp_sgd.py --dataset unsw_nb15   --label binary
 
 GPU is used automatically when CUDA is available (check with `python -c "import torch; print(torch.cuda.is_available())"`).
 
-### Step 5 — Generate evaluation report
+### Step 5 — Generate evaluation report (optional — Streamlit shows the same data)
 
 ```bash
 python scripts/evaluate.py --dataset cic_ids2018 --export-csv --report
@@ -483,6 +539,32 @@ python scripts/evaluate.py --dataset unsw_nb15   --export-csv
 
 Exports Tables 1 and 2 as CSV to `results/` and prints a key findings summary
 including the convergence epsilon (where DP-LR F1 comes within 5% of the LR baseline).
+
+### Step 6 — Phase 3: Membership Inference Attack Evaluation
+
+Evaluates whether DP reduces susceptibility to black-box membership inference attacks.
+Run after baselines and DP models are trained.
+
+```bash
+# Full sweep (all available models, 5000 samples per model):
+python scripts/run_membership_inference.py --dataset cic_ids2018 --label binary
+python scripts/run_membership_inference.py --dataset unsw_nb15   --label binary
+
+# With summary table and CSV export:
+python scripts/run_membership_inference.py --dataset cic_ids2018 --label binary \
+    --summary --export-csv
+
+# Force re-run (overwrite existing attack results):
+python scripts/run_membership_inference.py --dataset cic_ids2018 --label binary --force
+```
+
+Results are saved to:
+- `results/{dataset}_mia_{label}.json` — per-model attack metrics
+- `results/{dataset}_mia_{label}.csv` — summary table
+
+**Interpreting MIA results:** Attack ROC-AUC near 0.5 = near-random guessing = strong privacy protection.
+Values well above 0.5 indicate the model leaks training membership. DP models should trend toward 0.5
+as ε decreases.
 
 ---
 
@@ -529,16 +611,31 @@ live-updating results table as each model completes.
 
 ### Experiment matrix
 
-| Group | Model | ε values | Datasets | Labels |
-|---|---|---|---|---|
-| Baselines | LR, RF, XGBoost | — | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
-| Phase 1 | DP-LR (diffprivlib) | 0.01, 0.05, 0.1, 0.2, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 7.0, 10.0 | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
-| Phase 2 | DP-SGD / MLP (Opacus) | 0.1, 0.5, 1.0, 2.0, 5.0, 10.0 | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
+| Group | Model | DP type | ε values | Datasets | Labels |
+|---|---|---|---|---|---|
+| Baselines | LR, RF, XGBoost | none (non-private) | — | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
+| Phase 1 | DP-LR (diffprivlib) | pure ε-DP | 0.01, 0.05, 0.1, 0.2, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0, 7.0, 10.0 | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
+| Phase 1b | DP-RF (diffprivlib) | pure ε-DP | same 13 values | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
+| Phase 2 | DP-SGD / MLP (Opacus) | (ε, δ)-DP | same 13 values | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
+| Phase 3 | MIA evaluation (black-box) | — | All trained models above | CIC-IDS2018, UNSW-NB15 | binary, multiclass |
 
-Total experiment runs: 3 baselines × 2 datasets × 2 labels
-                     + 13 DP-LR × 2 datasets × 2 labels
-                     + 6 DP-SGD × 2 datasets × 2 labels
-                     = **12 + 52 + 24 = 88 model evaluations**
+> **Why XGBoost but no DP-XGBoost?** XGBoost is the strongest non-private baseline
+> and sets the hardest performance ceiling. No DP-XGBoost library exists: XGBoost's
+> core advantage — data-driven split selection — requires the exponential mechanism or
+> noisy histograms to privatise, which is research-level work with no established
+> pip package. **DP-RF is the DP equivalent** for tree ensemble comparison.
+>
+> **DP-RF vs DP-LR/DP-SGD on privacy strength**: DP-LR and DP-RF both provide
+> **pure ε-DP** (no failure probability δ), which is formally stronger than
+> DP-SGD's **(ε, δ)-DP** with δ = 1×10⁻⁵.
+
+Total model training runs: 3 baselines × 2 datasets × 2 labels = **12**
+                          + 13 DP-LR × 2 datasets × 2 labels = **52**
+                          + 13 DP-RF × 2 datasets × 2 labels = **52**
+                          + 13 DP-SGD × 2 datasets × 2 labels = **52**
+                          = **168 model evaluations**
+
+Phase 3 MIA evaluation adds 168 attack runs (one per trained model).
 
 **Fixed across all runs:** dataset subset, split assignments, random seed (42),
 StandardScaler fitted on training split only.
@@ -559,6 +656,23 @@ StandardScaler fitted on training split only.
 > Statistical analysis: paired comparisons between baseline and DP model
 > performance across ε values support the quantitative evaluation component
 > of the DSR assessment, consistent with Hevner & Gregor (2013).
+
+### Testing
+
+Smoke tests run without any dataset download using synthetic data:
+
+```bash
+# Run all tests (125 total, ~7 seconds):
+python -m pytest tests/ -v
+
+# Run by module:
+python -m pytest tests/test_membership_inference.py -v   # 38 — Phase 3 MIA
+python -m pytest tests/test_dp_rf_model.py -v            # 20 — DP-RF model
+python -m pytest tests/test_label_mapping.py -v          # 48 — label taxonomy
+python -m pytest tests/test_metrics.py -v                # 19 — FPR/DR/MCC formulas
+```
+
+Expected: **125 passed** (takes ~7 seconds). No dataset download required.
 
 ---
 

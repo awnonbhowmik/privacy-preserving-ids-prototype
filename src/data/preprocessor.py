@@ -17,12 +17,44 @@ Pipeline stages handled here (in execution order):
 
 No sampling or train/test splitting happens here — that lives in sampler.py.
 
+Dataset-specific notes
+----------------------
+CIC-IDS2018 ("Cleaned" version, as distributed with this project):
+    - 79 columns: 78 flow features + 1 Label column (no Timestamp column).
+      If you use the original *uncleaned* CICFlowMeter output (which has a
+      "Timestamp" column in "DD/MM/YYYY HH:MM:SS" string format), it will be
+      coerced to all-NaN in step 6 and dropped in step 7 automatically.
+    - Encoding: latin-1 (Windows-1252). pandas raises UnicodeDecodeError with utf-8.
+    - Column names have leading/trailing spaces → step 1 strips them.
+    - ±Inf values appear in ratio columns (Flow Byts/s, Flow Pkts/s) → step 3.
+    - "Label" column spelling: "Infilteration" (typo in raw data) → handled in
+      label_mapping.py's CIC_IDS2018_LABEL_MAP.
+
+UNSW-NB15 (files UNSW-NB15_1.csv through UNSW-NB15_4.csv):
+    - No header row. Column names are assigned from UNSW_NB15_COLUMNS in loader.py,
+      matching the 49-column official UNSW feature specification.
+    - UNSW-NB15_1.csv begins with a UTF-8 BOM (\\ufeff byte) that appears as a
+      prefix on the first cell value. This affects srcip (col 0), which is
+      an IP address string and gets dropped anyway — no functional impact.
+    - 5 non-numeric columns are always dropped after coercion to NaN:
+        srcip, dstip  (IP address strings)
+        proto         (protocol name: "tcp", "udp", ...)
+        state         (connection state: "FIN", "INT", ...)
+        service       (application service: "http", "ftp", ...)
+    - attack_cat column may be empty/NaN for normal (benign) traffic.
+      The label_mapping handles this: empty → "BENIGN".
+
+pandas 3.x compatibility:
+    - pandas 3.x uses StringDtype (Arrow-backed) for string columns read from CSV
+      instead of the legacy object dtype. The coerce_feature_dtypes() function
+      uses pd.api.types.is_string_dtype() to catch both representations.
+      Using `dtype == object` alone would miss Arrow-backed strings and cause
+      a ValueError when trying to cast IP/protocol string columns to float32.
+
 Memory note:
     Chunks are accumulated in a Python list, then pd.concat() is called once.
-    For the full CIC-IDS2018 dataset (~80 float32 columns, ~16 M rows) this
-    may require ~5–8 GB RAM. If that is a constraint, reduce chunk_size so
-    fewer rows are held per chunk, or process day-files individually and
-    concatenate the Parquet files at the end.
+    For the full CIC-IDS2018 dataset (~80 float32 columns, ~8 M rows after dedup)
+    this requires ~3–5 GB RAM. Reduce chunk_size if memory is constrained.
 """
 
 from __future__ import annotations
@@ -229,12 +261,26 @@ def coerce_feature_dtypes(df: pd.DataFrame) -> pd.DataFrame:
 
     cast_count = 0
     for col in feature_cols:
-        if df[col].dtype == object:
-            # Try numeric conversion; non-parseable values become NaN
+        dtype = df[col].dtype
+        # pandas 3.x may use StringDtype (Arrow-backed) instead of object.
+        # Use pd.api.types helpers to catch both representations.
+        if pd.api.types.is_string_dtype(dtype) or pd.api.types.is_object_dtype(dtype):
+            # Convert string columns to numeric; non-parseable values become NaN.
+            # This handles several known cases:
+            #   - IP addresses (srcip, dstip in UNSW-NB15) → all NaN → dropped later
+            #   - Protocol/state/service strings (UNSW-NB15) → all NaN → dropped later
+            #   - Timestamp strings ("DD/MM/YYYY HH:MM:SS" in uncleaned CIC-IDS2018)
+            #     → all NaN → dropped later by drop_high_null_columns
+            #   - UTF-8 BOM prefix on UNSW-NB15_1.csv first cell → NaN → dropped
+            # Columns that become >60% NaN after this step are removed in the
+            # global pass by drop_high_null_columns(threshold=0.6).
             df[col] = pd.to_numeric(df[col], errors="coerce").astype("float32")
             cast_count += 1
-        elif df[col].dtype != np.float32:
-            df[col] = df[col].astype("float32")
+        elif dtype != np.float32:
+            try:
+                df[col] = df[col].astype("float32")
+            except (ValueError, TypeError):
+                df[col] = pd.to_numeric(df[col], errors="coerce").astype("float32")
             cast_count += 1
 
     log.debug("Coerced %d column(s) to float32", cast_count)

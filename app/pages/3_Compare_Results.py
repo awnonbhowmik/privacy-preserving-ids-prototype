@@ -46,6 +46,17 @@ from src.evaluation.results_store import (
 )
 
 st.title("📈 Compare Results")
+st.markdown(
+    "The central dissertation page. Compares non-private baseline classifiers against "
+    "differentially private models (DP-LR and DP-SGD) across all ε values. "
+    "The key research question: **how much detection performance must be sacrificed to "
+    "achieve a meaningful privacy guarantee?**"
+)
+
+from app.glossary import render_glossary
+render_glossary(sections=["ids", "dp"])
+
+st.divider()
 
 # ── Dataset and label selectors ───────────────────────────────────────────────
 col_ds, col_lb, col_split, _ = st.columns([2, 2, 2, 2])
@@ -93,12 +104,17 @@ dp_lr_results    = sorted(
      if r.get("epsilon") is not None and r.get("model_name") == "dp_logistic_regression"],
     key=lambda r: r["epsilon"],
 )
+dp_rf_results    = sorted(
+    [r for r in all_results
+     if r.get("epsilon") is not None and r.get("model_name") == "dp_random_forest"],
+    key=lambda r: r["epsilon"],
+)
 dp_nn_results    = sorted(
     [r for r in all_results
      if r.get("epsilon") is not None and r.get("model_name") == "dp_sgd"],
     key=lambda r: r["epsilon"],
 )
-dp_results = dp_lr_results + dp_nn_results
+dp_results = dp_lr_results + dp_rf_results + dp_nn_results
 
 # ── Metric selector (shared across sections) ──────────────────────────────────
 metric_key = st.selectbox(
@@ -131,6 +147,10 @@ if baseline_results or dp_results:
     best_bl   = max(baseline_results, key=lambda r: r["metrics"][eval_split].get(metric_key, 0)) if baseline_results else None
     best_bl_v = best_bl["metrics"][eval_split].get(metric_key, 0) if best_bl else None
 
+    # Best DP-RF
+    best_rf   = max(dp_rf_results, key=lambda r: r["metrics"][eval_split].get(metric_key, 0)) if dp_rf_results else None
+    best_rf_v = best_rf["metrics"][eval_split].get(metric_key, 0) if best_rf else None
+
     # Best DP-SGD
     best_nn   = max(dp_nn_results, key=lambda r: r["metrics"][eval_split].get(metric_key, 0)) if dp_nn_results else None
     best_nn_v = best_nn["metrics"][eval_split].get(metric_key, 0) if best_nn else None
@@ -148,64 +168,105 @@ if baseline_results or dp_results:
     best_lr   = max(dp_lr_results, key=lambda r: r["metrics"][eval_split].get(metric_key, 0)) if dp_lr_results else None
     best_lr_v = best_lr["metrics"][eval_split].get(metric_key, 0) if best_lr else None
 
-    cols = st.columns(4)
+    cols = st.columns(5)
     with cols[0]:
         with st.container(border=True):
             st.metric(
-                f"Best Baseline {METRIC_LABEL}",
+                f"Baseline ({METRIC_LABEL})",
                 f"{best_bl_v:.4f}" if best_bl_v is not None else "—",
-                help=best_bl["model_name"].replace("_", " ").title() if best_bl else "",
+                help=(
+                    "Best non-private baseline model — the performance ceiling with no privacy constraint. "
+                    "All DP models are compared against this value."
+                    + (f" Model: {best_bl['model_name'].replace('_', ' ').title()}" if best_bl else "")
+                ),
             )
             if best_bl:
-                st.caption(best_bl["model_name"].replace("_", " ").title())
+                st.caption(f"{best_bl['model_name'].replace('_', ' ').title()} · no DP")
     with cols[1]:
         with st.container(border=True):
             delta_lr = None
             if best_lr_v is not None and best_bl_v is not None and best_bl_v > 0:
                 delta_lr = f"{100*(best_lr_v - best_bl_v)/best_bl_v:+.1f}% vs baseline"
             st.metric(
-                f"Best DP-LR {METRIC_LABEL}",
+                f"DP-LR ({METRIC_LABEL})",
                 f"{best_lr_v:.4f}" if best_lr_v is not None else "—",
                 delta=delta_lr,
+                help="Differentially Private Logistic Regression (IBM diffprivlib). Pure ε-DP (no δ).",
             )
             if best_lr:
-                st.caption(f"At ε={best_lr['epsilon']}")
+                st.caption(f"ε={best_lr['epsilon']} · pure ε-DP")
     with cols[2]:
+        with st.container(border=True):
+            delta_rf = None
+            if best_rf_v is not None and best_bl_v is not None and best_bl_v > 0:
+                delta_rf = f"{100*(best_rf_v - best_bl_v)/best_bl_v:+.1f}% vs baseline"
+            st.metric(
+                f"DP-RF ({METRIC_LABEL})",
+                f"{best_rf_v:.4f}" if best_rf_v is not None else "—",
+                delta=delta_rf,
+                help="DP Random Forest (diffprivlib). Random splits + PermuteAndFlip. Pure ε-DP (stronger than DP-SGD).",
+            )
+            if best_rf:
+                st.caption(f"ε={best_rf['epsilon']} · pure ε-DP")
+            elif not dp_rf_results:
+                st.caption("Run: train_dp_rf.py")
+    with cols[3]:
         with st.container(border=True):
             delta_nn = None
             if best_nn_v is not None and best_bl_v is not None and best_bl_v > 0:
                 delta_nn = f"{100*(best_nn_v - best_bl_v)/best_bl_v:+.1f}% vs baseline"
             st.metric(
-                f"Best DP-SGD {METRIC_LABEL}",
+                f"DP-SGD ({METRIC_LABEL})",
                 f"{best_nn_v:.4f}" if best_nn_v is not None else "—",
                 delta=delta_nn,
+                help="DP-SGD MLP (PyTorch Opacus). (ε,δ)-DP with δ=1e-5. Per-sample gradient clipping.",
             )
             if best_nn:
-                st.caption(f"At ε={best_nn['epsilon']}")
-    with cols[3]:
+                st.caption(f"ε={best_nn['epsilon']} · (ε,δ)-DP")
+    with cols[4]:
         with st.container(border=True):
             st.metric(
                 "Min ε ≤ 5% F1 loss (DP-SGD)",
                 str(min_ok_eps) if min_ok_eps is not None else "—",
-                help="Smallest ε where DP-SGD is within 5% of best baseline on primary metric",
+                help=(
+                    "The smallest (strongest) privacy budget ε at which DP-SGD still "
+                    "achieves within 5% of the best non-private baseline. "
+                    "This is the dissertation's recommended operating point: "
+                    "maximum privacy protection while keeping detection performance acceptable."
+                ),
             )
-            st.caption("(DP-SGD, test split)")
+            st.caption("Recommended DP operating point")
 
     st.divider()
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # Section 1: Baseline Model Comparison
 # ═══════════════════════════════════════════════════════════════════════════════
-st.subheader("Table 1 — Baseline Model Comparison")
-st.caption(f"Evaluated on the **{eval_split}** split. All models trained on the same fixed train split.")
+st.subheader("Table 1 — Baseline Model Comparison (Non-Private)")
+st.caption(
+    f"Evaluated on the **{eval_split}** split. All models trained on the same fixed train split. "
+    "**Green = highest value in column, Red = lowest.** "
+    "These results are the privacy-free performance ceilings — "
+    "the best IDS detection rates achievable without any privacy constraint."
+)
+with st.expander("How to read this table"):
+    st.markdown(
+        "- **F1 (macro)**: Primary headline metric. Penalises models that sacrifice recall (missed attacks) or precision (false alarms).\n"
+        "- **ROC-AUC**: Threshold-independent. A model with AUC = 0.97 separates attack from benign traffic well across all operating points.\n"
+        "- **MCC**: Accounts for both classes fairly. Best single metric for imbalanced binary classification.\n"
+        "- **FPR**: False alarm rate. An operational IDS must keep this low to avoid alert fatigue.\n"
+        "- **Detection Rate**: Fraction of real attacks caught. The primary success criterion for an IDS.\n"
+        "- **Train Time**: How long the model took to fit. Relevant for operational deployment.\n\n"
+        "A good IDS model has: high F1 + high Detection Rate + low FPR."
+    )
 
 if baseline_results:
     baseline_df = build_comparison_table(baseline_results, split=eval_split)
     numeric_cols = baseline_df.select_dtypes(include=[float, int]).columns.tolist()
     styled = (
         baseline_df.style
-        .highlight_max(subset=numeric_cols, props="background-color: #d4edda")
-        .highlight_min(subset=numeric_cols, props="background-color: #f8d7da")
+        .highlight_max(subset=numeric_cols, props="background-color: #d4edda; color: #1a202c")
+        .highlight_min(subset=numeric_cols, props="background-color: #f8d7da; color: #1a202c")
         .format(precision=4, na_rep="—")
     )
     st.dataframe(styled, use_container_width=True, hide_index=True)
@@ -321,10 +382,23 @@ st.divider()
 st.subheader("Privacy–Utility Tradeoff Curve")
 st.caption(
     "The central dissertation result: classifier performance vs. privacy budget ε. "
-    "Smaller ε = stronger privacy guarantee = more noise injected."
+    "**Smaller ε = stronger privacy = more Gaussian noise injected into gradients = lower accuracy.** "
+    "Dotted horizontal lines show the non-private baselines as performance ceilings."
 )
+with st.expander("How to read this chart"):
+    st.markdown(
+        "- The **x-axis (log scale)** shows the privacy budget ε. Moving left = stronger privacy.\n"
+        "- The **y-axis** shows the selected performance metric (default: F1 macro).\n"
+        "- **DP-LR** (red line): Logistic regression with DP via diffprivlib.\n"
+        "- **DP-SGD** (orange line): Neural network MLP with DP via Opacus.\n"
+        "- **Dotted horizontal lines**: Non-private baseline performance (no DP). These are the ceilings.\n"
+        "- **Key question**: At what ε does the DP model come within 5% of the non-private baseline? "
+        "That ε is the recommended operating point for the dissertation.\n\n"
+        "A steep drop at low ε indicates the noise floor is the binding constraint. "
+        "A flat curve means the model is robust to privacy noise."
+    )
 
-if dp_lr_results or dp_nn_results:
+if dp_lr_results or dp_rf_results or dp_nn_results:
     fig = go.Figure()
 
     # ── DP-LR curve ───────────────────────────────────────────────────────────
@@ -333,10 +407,22 @@ if dp_lr_results or dp_nn_results:
             x=[r["epsilon"] for r in dp_lr_results],
             y=[r["metrics"][eval_split].get(metric_key) for r in dp_lr_results],
             mode="lines+markers",
-            name="DP-LR (diffprivlib)",
+            name="DP-LR (diffprivlib, pure ε-DP)",
             line=dict(color="#e74c3c", width=2.5),
             marker=dict(size=9, symbol="circle"),
             hovertemplate="ε=%{x}<br>" + METRIC_LABEL + "=%{y:.4f}<extra>DP-LR</extra>",
+        ))
+
+    # ── DP-RF curve ───────────────────────────────────────────────────────────
+    if dp_rf_results:
+        fig.add_trace(go.Scatter(
+            x=[r["epsilon"] for r in dp_rf_results],
+            y=[r["metrics"][eval_split].get(metric_key) for r in dp_rf_results],
+            mode="lines+markers",
+            name="DP-RF (diffprivlib, pure ε-DP)",
+            line=dict(color="#27ae60", width=2.5),
+            marker=dict(size=9, symbol="square"),
+            hovertemplate="ε=%{x}<br>" + METRIC_LABEL + "=%{y:.4f}<extra>DP-RF</extra>",
         ))
 
     # ── DP-SGD curve ───────────────────────────────────────────────────────────
@@ -345,7 +431,7 @@ if dp_lr_results or dp_nn_results:
             x=[r["epsilon"] for r in dp_nn_results],
             y=[r["metrics"][eval_split].get(metric_key) for r in dp_nn_results],
             mode="lines+markers",
-            name="DP-SGD / MLP (Opacus)",
+            name="DP-SGD / MLP (Opacus, (ε,δ)-DP)",
             line=dict(color="#f39c12", width=2.5),
             marker=dict(size=9, symbol="diamond"),
             hovertemplate="ε=%{x}<br>" + METRIC_LABEL + "=%{y:.4f}<extra>DP-SGD</extra>",
@@ -391,7 +477,7 @@ else:
     st.info("No DP results found. Run the ε sweep on the Train Models page.")
 
 # ── Multi-metric tradeoff subplots ────────────────────────────────────────────
-if dp_lr_results or dp_nn_results:
+if dp_lr_results or dp_rf_results or dp_nn_results:
     st.markdown("**Privacy–Utility Tradeoff — F1, AUC and MCC simultaneously**")
     st.caption("All three metrics plotted against ε to show whether the tradeoff is metric-dependent.")
     _sub_metrics = ["f1_macro",        "roc_auc",  "mcc"]
@@ -412,6 +498,17 @@ if dp_lr_results or dp_nn_results:
                 legendgroup="DP-LR",
                 line=dict(color="#e74c3c", width=2),
                 marker=dict(size=6),
+            ), row=1, col=_ci)
+        if dp_rf_results:
+            fig_sub.add_trace(go.Scatter(
+                x=[r["epsilon"] for r in dp_rf_results],
+                y=[r["metrics"][eval_split].get(_mk2) for r in dp_rf_results],
+                mode="lines+markers",
+                name="DP-RF",
+                showlegend=(_ci == 1),
+                legendgroup="DP-RF",
+                line=dict(color="#27ae60", width=2),
+                marker=dict(size=6, symbol="square"),
             ), row=1, col=_ci)
         if dp_nn_results:
             fig_sub.add_trace(go.Scatter(
@@ -439,9 +536,22 @@ st.divider()
 # Section 3: Privacy–Utility Tradeoff Table
 # ═══════════════════════════════════════════════════════════════════════════════
 st.subheader("Table 2 — Privacy–Utility Tradeoff")
-st.caption("F1 loss relative to non-private Logistic Regression baseline.")
+st.caption(
+    "Performance at each ε value vs the non-private Logistic Regression baseline. "
+    "**Green ≤ 5% loss** (acceptable), **Yellow 5–15%** (noticeable but manageable), **Red > 15%** (significant)."
+)
+with st.expander("How to read this table"):
+    st.markdown(
+        "Each row is one DP model at one ε value. "
+        "**Loss vs LR (%)** shows how much F1 dropped compared to the non-private LR baseline. "
+        "The colouring directly maps to the dissertation's acceptability thresholds:\n\n"
+        "- **Green (≤ 5% loss)**: The privacy cost is negligible — DP protection at very low utility cost.\n"
+        "- **Yellow (5–15% loss)**: Meaningful tradeoff — privacy is gained at a noticeable but defensible cost.\n"
+        "- **Red (> 15% loss)**: High privacy cost — the model is not yet useful enough for operational deployment.\n\n"
+        "The dissertation aims to identify the lowest ε that stays in the green band."
+    )
 
-if dp_results:
+if dp_lr_results or dp_rf_results or dp_nn_results:
     tradeoff_df = build_tradeoff_table(
         dataset, label=label_type, metric_key=metric_key, split=eval_split
     )
@@ -451,11 +561,11 @@ if dp_results:
             if val is None:
                 return [""] * len(row)
             if abs(val) <= 5.0:
-                return ["background-color: #d4edda"] * len(row)
+                return ["background-color: #d4edda; color: #1a202c"] * len(row)
             elif abs(val) <= 15.0:
-                return ["background-color: #fff3cd"] * len(row)
+                return ["background-color: #fff3cd; color: #1a202c"] * len(row)
             else:
-                return ["background-color: #f8d7da"] * len(row)
+                return ["background-color: #f8d7da; color: #1a202c"] * len(row)
 
         st.dataframe(
             tradeoff_df.style.apply(_highlight_loss, axis=1),
@@ -467,7 +577,7 @@ else:
     st.info("No DP results available yet.")
 
 # ── Epsilon degradation heatmap ───────────────────────────────────────────────
-if dp_results and baseline_results:
+if (dp_lr_results or dp_rf_results or dp_nn_results) and baseline_results:
     st.markdown("**Epsilon Degradation Heatmap — % Drop vs Best Baseline**")
     st.caption(
         "Each cell shows the percentage drop in that metric vs. the best non-private baseline. "
@@ -487,6 +597,13 @@ if dp_results and baseline_results:
             for mk in _deg_metrics
         ])
         _deg_ylabels.append(f"DP-LR  ε={r['epsilon']}")
+    for r in dp_rf_results:
+        m = r["metrics"][eval_split]
+        _deg_rows.append([
+            100 * (_bl_ref[mk] - (m.get(mk) or 0)) / _bl_ref[mk] if _bl_ref[mk] > 0 else 0
+            for mk in _deg_metrics
+        ])
+        _deg_ylabels.append(f"DP-RF  ε={r['epsilon']}")
     for r in dp_nn_results:
         m = r["metrics"][eval_split]
         _deg_rows.append([
@@ -519,7 +636,25 @@ st.divider()
 # Section 3b: DP-LR vs DP-SGD Head-to-Head
 # ═══════════════════════════════════════════════════════════════════════════════
 st.subheader("Table 3 — DP-LR vs DP-SGD Head-to-Head")
-st.caption("Side-by-side comparison at each shared ε. 🟢 = higher value, 🔴 = lower.")
+st.caption(
+    "Side-by-side comparison at each shared ε value. "
+    "**DP-LR** = differentially private logistic regression (linear model, diffprivlib). "
+    "**DP-SGD** = differentially private neural network (2-layer MLP, Opacus). "
+    "🟢 = higher primary metric at this ε. 🔴 = lower."
+)
+with st.expander("Why compare DP-LR vs DP-SGD?"):
+    st.markdown(
+        "Both models offer (ε, δ)-differential privacy, but they differ in expressiveness and "
+        "how noise is applied:\n\n"
+        "- **DP-LR** is a linear model. Simpler, faster, more theoretically tractable. "
+        "Noise is added directly to the objective.\n"
+        "- **DP-SGD (MLP)** is a non-linear neural network. More expressive, potentially better "
+        "at capturing complex attack patterns, but needs more training and is more sensitive to "
+        "noise at low ε.\n\n"
+        "At **high ε** (weak privacy), DP-SGD often wins because it can fit the data better. "
+        "At **low ε** (strong privacy), DP-LR sometimes wins because the simpler model is less "
+        "disrupted by heavy noise. This tradeoff is the dissertation's key empirical finding."
+    )
 
 if dp_lr_results and dp_nn_results:
     lr_by_eps = {r["epsilon"]: r["metrics"][eval_split] for r in dp_lr_results}
@@ -562,11 +697,11 @@ if dp_lr_results and dp_nn_results:
             lr_idx = cols.index(f"DP-LR {METRIC_LABEL}")
             nn_idx = cols.index(f"DP-SGD {METRIC_LABEL}")
             if winner == "DP-SGD":
-                styles[nn_idx] = "background-color: #d4edda"
-                styles[lr_idx] = "background-color: #f8d7da"
+                styles[nn_idx] = "background-color: #d4edda; color: #1a202c"
+                styles[lr_idx] = "background-color: #f8d7da; color: #1a202c"
             elif winner == "DP-LR":
-                styles[lr_idx] = "background-color: #d4edda"
-                styles[nn_idx] = "background-color: #f8d7da"
+                styles[lr_idx] = "background-color: #d4edda; color: #1a202c"
+                styles[nn_idx] = "background-color: #f8d7da; color: #1a202c"
             return styles
 
         st.dataframe(
@@ -604,9 +739,23 @@ st.divider()
 if dp_nn_results:
     st.subheader("Privacy Budget Analysis — DP-SGD (Opacus RDP Accountant)")
     st.caption(
-        "Opacus tracks the **actual ε** spent via Rényi Differential Privacy (RDP) accounting. "
-        "Actual ε ≤ target ε due to early stopping at the budget limit."
+        "Opacus tracks the **actual ε** consumed across all training epochs via "
+        "Rényi Differential Privacy (RDP) accounting. "
+        "Training stops when the target ε is exhausted, so actual ε ≤ target ε."
     )
+    with st.expander("What is RDP accounting and why does actual ε ≤ target ε?"):
+        st.markdown(
+            "Every gradient update in DP-SGD consumes a small fraction of the total privacy budget. "
+            "The Rényi DP (RDP) accountant tracks the cumulative privacy cost using "
+            "tighter composition bounds than naïve sequential composition.\n\n"
+            "**Target ε** is the maximum privacy cost you are willing to accept. "
+            "**Actual ε** is what Opacus reports at the end of training. "
+            "Actual ε ≤ target ε because:\n"
+            "- Training may stop before using the full budget (epoch limit reached first).\n"
+            "- The RDP→(ε,δ)-DP conversion is conservative.\n\n"
+            "A model with actual ε = 0.95 when target was 1.0 still provides a **(0.95, δ)-DP** guarantee, "
+            "which is slightly stronger than requested."
+        )
 
     budget_rows = []
     for r in dp_nn_results:
@@ -715,9 +864,25 @@ if dp_nn_results:
 # ═══════════════════════════════════════════════════════════════════════════════
 st.subheader("Detection Analysis — False Positive Rate vs. Detection Rate")
 st.caption(
-    "Each point is one model. Ideal position: bottom-right (low FPR, high DR). "
-    "Annotated by model type and ε value."
+    "Each point is one model. **Ideal position: bottom-right** (low FPR, high DR). "
+    "Annotated by model type and ε value. "
+    "FPR = fraction of benign traffic falsely flagged. DR = fraction of real attacks caught."
 )
+with st.expander("Why FPR vs Detection Rate matters for IDS"):
+    st.markdown(
+        "Accuracy alone is a poor metric for intrusion detection systems because the dataset "
+        "is heavily imbalanced — most traffic is benign. A model that labels everything as "
+        "benign achieves high accuracy but zero detection rate.\n\n"
+        "**False Positive Rate (FPR = FP / (FP + TN))**\n"
+        "In a real-world IDS, every false positive is an alert that a security analyst must "
+        "investigate. If FPR is 1%, in a network handling 1 million flows per hour that is "
+        "10,000 false alarms per hour — untenable. Low FPR is an **operational necessity**.\n\n"
+        "**Detection Rate (DR = TP / (TP + FN))**\n"
+        "Every false negative is an attack that slipped through undetected. "
+        "Low DR means the IDS is failing its primary purpose. High DR is the **security objective**.\n\n"
+        "**The ideal model** sits at the bottom-right of this chart: near-zero FPR with near-perfect DR. "
+        "DP models typically move up and to the right (higher FPR, lower DR) as ε decreases."
+    )
 
 fpr_dr_rows = []
 for r in baseline_results:
@@ -748,6 +913,20 @@ for r in dp_lr_results:
             "Label":  f"ε={r['epsilon']}",
         })
 
+for r in dp_rf_results:
+    m   = r["metrics"][eval_split]
+    fpr = m.get("false_positive_rate")
+    dr  = m.get("detection_rate")
+    if fpr is not None and dr is not None:
+        fpr_dr_rows.append({
+            "Model":  f"DP-RF ε={r['epsilon']}",
+            "FPR":    fpr,
+            "DR":     dr,
+            "Type":   "DP-RF",
+            "ε":      r["epsilon"],
+            "Label":  f"ε={r['epsilon']}",
+        })
+
 for r in dp_nn_results:
     m   = r["metrics"][eval_split]
     fpr = m.get("false_positive_rate")
@@ -764,8 +943,8 @@ for r in dp_nn_results:
 
 if fpr_dr_rows:
     fpr_df = pd.DataFrame(fpr_dr_rows)
-    color_map = {"Baseline": "#3498db", "DP-LR": "#e74c3c", "DP-SGD": "#f39c12"}
-    symbol_map = {"Baseline": "square", "DP-LR": "circle", "DP-SGD": "diamond"}
+    color_map  = {"Baseline": "#3498db", "DP-LR": "#e74c3c", "DP-RF": "#27ae60", "DP-SGD": "#f39c12"}
+    symbol_map = {"Baseline": "square",  "DP-LR": "circle",  "DP-RF": "square",  "DP-SGD": "diamond"}
 
     fig_fpr = go.Figure()
     for type_name, group in fpr_df.groupby("Type"):
@@ -845,6 +1024,12 @@ for r in dp_lr_results:
     if p is not None and rc is not None:
         _pr_rows.append({"Label": f"ε={r['epsilon']}",
                          "Precision": p, "Recall": rc, "Type": "DP-LR"})
+for r in dp_rf_results:
+    m = r["metrics"][eval_split]
+    p, rc = m.get("precision_macro"), m.get("recall_macro")
+    if p is not None and rc is not None:
+        _pr_rows.append({"Label": f"ε={r['epsilon']}",
+                         "Precision": p, "Recall": rc, "Type": "DP-RF"})
 for r in dp_nn_results:
     m = r["metrics"][eval_split]
     p, rc = m.get("precision_macro"), m.get("recall_macro")
@@ -854,8 +1039,8 @@ for r in dp_nn_results:
 
 if _pr_rows:
     _pr_df = pd.DataFrame(_pr_rows)
-    _pr_color = {"Baseline": "#3498db", "DP-LR": "#e74c3c", "DP-SGD": "#f39c12"}
-    _pr_sym   = {"Baseline": "square",  "DP-LR": "circle",  "DP-SGD": "diamond"}
+    _pr_color = {"Baseline": "#3498db", "DP-LR": "#e74c3c", "DP-RF": "#27ae60", "DP-SGD": "#f39c12"}
+    _pr_sym   = {"Baseline": "square",  "DP-LR": "circle",  "DP-RF": "square",  "DP-SGD": "diamond"}
     fig_pr = go.Figure()
     for _type, _grp in _pr_df.groupby("Type"):
         _ts = str(_type)
@@ -888,6 +1073,25 @@ st.divider()
 # Section 6: Confusion Matrix Viewer
 # ═══════════════════════════════════════════════════════════════════════════════
 st.subheader("Confusion Matrix")
+st.caption(
+    "Shows exactly where the model makes errors. "
+    "Each cell is a count of actual vs predicted class combinations. "
+    "For IDS: **False Positives = false alarms** (benign flagged as attack), "
+    "**False Negatives = missed attacks** (attack classified as benign)."
+)
+with st.expander("How to read the confusion matrix"):
+    st.markdown(
+        "For binary classification (Benign vs Attack):\n\n"
+        "| | **Predicted: Benign** | **Predicted: Attack** |\n"
+        "|---|---|---|\n"
+        "| **Actual: Benign** | ✅ True Negative (TN) | ❌ False Positive (FP) |\n"
+        "| **Actual: Attack** | ❌ False Negative (FN) | ✅ True Positive (TP) |\n\n"
+        "- **TN**: Benign traffic correctly passed through. Good.\n"
+        "- **FP**: Benign traffic falsely flagged. Causes alert fatigue.\n"
+        "- **FN**: Attack that slipped through undetected. Security failure.\n"
+        "- **TP**: Attack correctly detected. The primary success metric.\n\n"
+        "Tick **Normalise** to see row-percentages (fraction of each actual class that was predicted correctly or not)."
+    )
 
 all_model_options = []
 for r in baseline_results:
@@ -951,10 +1155,14 @@ if all_model_options:
             tn, fp, fn, tp = int(cm_arr[0,0]), int(cm_arr[0,1]), int(cm_arr[1,0]), int(cm_arr[1,1])
             total = tn + fp + fn + tp
             cmc1, cmc2, cmc3, cmc4 = st.columns(4)
-            cmc1.metric("True Negatives (TN)",  f"{tn:,}",  f"{100*tn/total:.1f}%")
-            cmc2.metric("False Positives (FP)", f"{fp:,}",  f"{100*fp/total:.1f}%")
-            cmc3.metric("False Negatives (FN)", f"{fn:,}",  f"{100*fn/total:.1f}%")
-            cmc4.metric("True Positives (TP)",  f"{tp:,}",  f"{100*tp/total:.1f}%")
+            cmc1.metric("True Negatives (TN)",  f"{tn:,}",  f"{100*tn/total:.1f}%",
+                        help="Benign traffic correctly classified as benign. Good — no false alarm.")
+            cmc2.metric("False Positives (FP)", f"{fp:,}",  f"{100*fp/total:.1f}%",
+                        help="Benign traffic incorrectly flagged as attacks. Causes alert fatigue. Lower is better.")
+            cmc3.metric("False Negatives (FN)", f"{fn:,}",  f"{100*fn/total:.1f}%",
+                        help="Actual attacks that slipped through undetected (classified as benign). Security failure. Lower is better.")
+            cmc4.metric("True Positives (TP)",  f"{tp:,}",  f"{100*tp/total:.1f}%",
+                        help="Attacks correctly detected and flagged. The primary success criterion. Higher is better.")
     else:
         st.info("Confusion matrix not available for this result.")
 else:
@@ -1011,7 +1219,7 @@ with st.expander("Show all model results"):
         numeric_cols = full_df.select_dtypes(include=[float, int]).columns.tolist()
         st.dataframe(
             full_df.style
-            .highlight_max(subset=numeric_cols, props="background-color: #d4edda")
+            .highlight_max(subset=numeric_cols, props="background-color: #d4edda; color: #1a202c")
             .format(precision=4, na_rep="—"),
             use_container_width=True,
             hide_index=True,

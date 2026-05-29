@@ -27,17 +27,19 @@ log = get_logger(__name__)
 SUPPORTED_DATASETS   = ["cic_ids2018", "unsw_nb15"]
 SUPPORTED_LABELS     = ["binary", "multiclass"]
 DP_SGD_MODEL_NAME = "dp_sgd"
+DP_RF_MODEL_NAME  = "dp_random_forest"
 
 
 def _dp_sgd_model_path(dataset_name: str, epsilon: float, label: str) -> Path:
-    """Construct the .joblib save path for a DP-SGD model at a given epsilon.
-
-    Defined here (mirroring the function in dp_sgd_model.py) so that
-    model_utils does not need to import torch at the top level — keeping the
-    module importable even when PyTorch is not installed.
-    """
+    """Construct the .joblib save path for a DP-SGD model at a given epsilon."""
     eps_str = f"{epsilon:.3f}".replace(".", "_")
     return PATHS["models"] / f"dp_sgd_{dataset_name}_{label}_eps{eps_str}.joblib"
+
+
+def _dp_rf_model_path(dataset_name: str, epsilon: float, label: str) -> Path:
+    """Construct the .joblib save path for a DP-RF model at a given epsilon."""
+    eps_str = f"{epsilon:.3f}".replace(".", "_")
+    return PATHS["models"] / f"dp_rf_{dataset_name}_{label}_eps{eps_str}.joblib"
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -96,11 +98,18 @@ def get_pipeline_status(dataset_name: str, label: str = "binary") -> dict[str, A
         for eps in dp_sgd_eps
     }
 
+    # DP-RF model status per epsilon value (same epsilon values as DP-LR)
+    dp_rf_trained = {
+        eps: _dp_rf_model_path(dataset_name, eps, label).exists()
+        for eps in epsilon_values
+    }
+
     # Results JSON status
     results_dir = PATHS["results"]
     results_exist = {
         "baselines":      (results_dir / f"{dataset_name}_baselines_{label}.json").exists(),
         "dp_sweep":       (results_dir / f"{dataset_name}_dp_sweep_{label}.json").exists(),
+        "dp_rf_sweep":    (results_dir / f"{dataset_name}_dp_rf_sweep_{label}.json").exists(),
         "dp_sgd_sweep":   (results_dir / f"{dataset_name}_dp_sgd_sweep_{label}.json").exists(),
         "combined":       (results_dir / f"{dataset_name}_combined_{label}.json").exists(),
     }
@@ -112,6 +121,7 @@ def get_pipeline_status(dataset_name: str, label: str = "binary") -> dict[str, A
         "subset_exists":      subset_path.exists(),
         "baselines_trained":  baselines_trained,
         "dp_trained":         dp_trained,
+        "dp_rf_trained":      dp_rf_trained,
         "dp_sgd_trained":     dp_sgd_trained,
         "results_exist":      results_exist,
     }
@@ -152,6 +162,10 @@ def load_model(
         if epsilon is None:
             raise ValueError("epsilon must be provided when loading a DP model.")
         path = _dp_model_path(dataset_name, epsilon, label)
+    elif model_name == DP_RF_MODEL_NAME:
+        if epsilon is None:
+            raise ValueError("epsilon must be provided when loading a DP-RF model.")
+        path = _dp_rf_model_path(dataset_name, epsilon, label)
     else:
         path = _baseline_path(dataset_name, model_name, label)
 
@@ -226,6 +240,18 @@ def list_trained_models(
         if path.exists():
             found.append({
                 "model_name": DP_MODEL_NAME,
+                "epsilon":    eps,
+                "label":      label,
+                "path":       str(path),
+                "size_kb":    round(path.stat().st_size / 1024, 1),
+            })
+
+    # Check DP-RF models across all configured epsilon values
+    for eps in sorted(PRIVACY_CFG.get("epsilon_values", [])):
+        path = _dp_rf_model_path(dataset_name, eps, label)
+        if path.exists():
+            found.append({
+                "model_name": DP_RF_MODEL_NAME,
                 "epsilon":    eps,
                 "label":      label,
                 "path":       str(path),

@@ -5,7 +5,7 @@
     "label_type": "binary",
     "epsilon": 0.1,
     "data_norm": 22.5009,
-    "train_time_s": 3.9,
+    "train_time_s": 2.25,
     "metrics": {
       "val": {
         "accuracy": 0.827163786063101,
@@ -59,27 +59,27 @@
     "label_type": "binary",
     "epsilon": 0.5,
     "data_norm": 22.5009,
-    "train_time_s": 8.42,
+    "train_time_s": 4.1,
     "metrics": {
       "val": {
-        "accuracy": 0.9298988316471941,
-        "f1_macro": 0.911308904173515,
-        "f1_weighted": 0.9300788498753058,
-        "precision_macro": 0.9092297288029463,
-        "recall_macro": 0.9134551062879352,
-        "mcc": 0.8226739840748705,
+        "accuracy": 0.9298821647027451,
+        "f1_macro": 0.9112895301695688,
+        "f1_weighted": 0.9300628925832009,
+        "precision_macro": 0.9092028785040036,
+        "recall_macro": 0.913443708198255,
+        "mcc": 0.822635655668037,
         "confusion_matrix": [
           [
-            41631,
-            2236
+            41630,
+            2237
           ],
           [
             1970,
             14162
           ]
         ],
-        "roc_auc": 0.9277412007185731,
-        "false_positive_rate": 0.050972257049718465,
+        "roc_auc": 0.92773607751325,
+        "false_positive_rate": 0.0509950532290788,
         "detection_rate": 0.8778824696255889,
         "false_negative_rate": 0.12211753037441112
       },
@@ -100,7 +100,7 @@
             14174
           ]
         ],
-        "roc_auc": 0.9259083102439434,
+        "roc_auc": 0.9259010491791404,
         "false_positive_rate": 0.051951308470867145,
         "detection_rate": 0.8786263327547731,
         "false_negative_rate": 0.12137366724522688
@@ -113,49 +113,49 @@
     "label_type": "binary",
     "epsilon": 1.0,
     "data_norm": 22.5009,
-    "train_time_s": 8.41,
+    "train_time_s": 6.3,
     "metrics": {
       "val": {
-        "accuracy": 0.9439157319288655,
-        "f1_macro": 0.928597776319948,
-        "f1_weighted": 0.9438854157158936,
-        "precision_macro": 0.9290626277369107,
-        "recall_macro": 0.928135913624943,
-        "mcc": 0.8571980404281407,
+        "accuracy": 0.9438657310955183,
+        "f1_macro": 0.9285383328454706,
+        "f1_weighted": 0.9438370477288719,
+        "precision_macro": 0.9289776172644372,
+        "recall_macro": 0.9281017193559025,
+        "mcc": 0.8570788890553863,
         "confusion_matrix": [
           [
-            42212,
-            1655
+            42209,
+            1658
           ],
           [
             1710,
             14422
           ]
         ],
-        "roc_auc": 0.9377882422993187,
-        "false_positive_rate": 0.037727676841361385,
+        "roc_auc": 0.9378058672278502,
+        "false_positive_rate": 0.037796065379442405,
         "detection_rate": 0.8939995040912472,
         "false_negative_rate": 0.1060004959087528
       },
       "test": {
-        "accuracy": 0.9426833333333333,
-        "f1_macro": 0.9271680619113237,
-        "f1_weighted": 0.9427074244997344,
-        "precision_macro": 0.9268098759380033,
-        "recall_macro": 0.9275280618358015,
-        "mcc": 0.8543376359078501,
+        "accuracy": 0.9426,
+        "f1_macro": 0.9270692989497821,
+        "f1_weighted": 0.9426269240700089,
+        "precision_macro": 0.9266697846398262,
+        "recall_macro": 0.9274710726865356,
+        "mcc": 0.8541404814734391,
         "confusion_matrix": [
           [
-            42127,
-            1741
+            42122,
+            1746
           ],
           [
             1698,
             14434
           ]
         ],
-        "roc_auc": 0.9361915599377987,
-        "false_positive_rate": 0.039687243548828306,
+        "roc_auc": 0.9362128330136138,
+        "false_positive_rate": 0.03980122184736026,
         "detection_rate": 0.8947433672204315,
         "false_negative_rate": 0.10525663277956857
       }
@@ -167,51 +167,51 @@
     "label_type": "binary",
     "epsilon": 2.0,
     "data_norm": 22.5009,
-    "train_time_s": 11.51,
+    "train_time_s": 8.2,
     "metrics": {
       "val": {
-        "accuracy": 0.9483824730412174,
-        "f1_macro": 0.934232744528946,
-        "f1_weighted": 0.9483341717760837,
-        "precision_macro": 0.9350499300448237,
-        "recall_macro": 0.9334245692993142,
-        "mcc": 0.8684729784014572,
+        "accuracy": 0.9483658060967682,
+        "f1_macro": 0.9342387040107616,
+        "f1_weighted": 0.9483282137506084,
+        "precision_macro": 0.9348737360374666,
+        "recall_macro": 0.9336091332833256,
+        "mcc": 0.8684819486227393,
         "confusion_matrix": [
           [
-            42366,
-            1501
+            42355,
+            1512
           ],
           [
-            1596,
-            14536
+            1586,
+            14546
           ]
         ],
-        "roc_auc": 0.9460587009758002,
-        "false_positive_rate": 0.03421706521986915,
-        "detection_rate": 0.9010662038184974,
-        "false_negative_rate": 0.09893379618150261
+        "roc_auc": 0.9460321593666485,
+        "false_positive_rate": 0.03446782319283288,
+        "detection_rate": 0.9016860897594843,
+        "false_negative_rate": 0.09831391024051575
       },
       "test": {
         "accuracy": 0.94755,
-        "f1_macro": 0.9332055594574301,
-        "f1_weighted": 0.9475144032944637,
-        "precision_macro": 0.9337959484135196,
-        "recall_macro": 0.932619910200588,
-        "mcc": 0.8664150604601372,
+        "f1_macro": 0.9332265703214556,
+        "f1_weighted": 0.9475226819326725,
+        "precision_macro": 0.9336792529611756,
+        "recall_macro": 0.9327766819381571,
+        "mcc": 0.8664554648034861,
         "confusion_matrix": [
           [
-            42329,
-            1539
+            42321,
+            1547
           ],
           [
-            1608,
-            14524
+            1600,
+            14532
           ]
         ],
-        "roc_auc": 0.9445706174663113,
-        "false_positive_rate": 0.03508252028813714,
-        "detection_rate": 0.9003223406893132,
-        "false_negative_rate": 0.09967765931068684
+        "roc_auc": 0.9445817376277335,
+        "false_positive_rate": 0.03526488556578827,
+        "detection_rate": 0.9008182494421026,
+        "false_negative_rate": 0.09918175055789735
       }
     }
   },
@@ -221,51 +221,51 @@
     "label_type": "binary",
     "epsilon": 5.0,
     "data_norm": 22.5009,
-    "train_time_s": 13.53,
+    "train_time_s": 8.45,
     "metrics": {
       "val": {
-        "accuracy": 0.9430990516508608,
-        "f1_macro": 0.92750813751352,
-        "f1_weighted": 0.9430486228180717,
-        "precision_macro": 0.9282699124389668,
-        "recall_macro": 0.9267543665211093,
-        "mcc": 0.8550229357928179,
+        "accuracy": 0.9403490058167636,
+        "f1_macro": 0.9248697680268543,
+        "f1_weighted": 0.9406337637712596,
+        "precision_macro": 0.9209318099506074,
+        "recall_macro": 0.9290476738935153,
+        "mcc": 0.8499407365860171,
         "confusion_matrix": [
           [
-            42205,
-            1662
+            41827,
+            2040
           ],
           [
-            1752,
-            14380
+            1539,
+            14593
           ]
         ],
-        "roc_auc": 0.9434089786174947,
-        "false_positive_rate": 0.03788725009688376,
-        "detection_rate": 0.8913959831391024,
-        "false_negative_rate": 0.1086040168608976
+        "roc_auc": 0.9434390112978781,
+        "false_positive_rate": 0.04650420589509198,
+        "detection_rate": 0.9045995536821225,
+        "false_negative_rate": 0.09540044631787752
       },
       "test": {
-        "accuracy": 0.9428333333333333,
-        "f1_macro": 0.9272204113574494,
-        "f1_weighted": 0.9428029951618078,
-        "precision_macro": 0.9276752998885907,
-        "recall_macro": 0.9267683977478498,
-        "mcc": 0.8544432163456739,
+        "accuracy": 0.94035,
+        "f1_macro": 0.9248874116814922,
+        "f1_weighted": 0.9406413825738307,
+        "precision_macro": 0.9208604804051749,
+        "recall_macro": 0.9291657827437183,
+        "mcc": 0.8499856881124158,
         "confusion_matrix": [
           [
-            42180,
-            1688
+            41822,
+            2046
           ],
           [
-            1742,
-            14390
+            1533,
+            14599
           ]
         ],
-        "roc_auc": 0.9421168071364647,
-        "false_positive_rate": 0.03847907358438953,
-        "detection_rate": 0.8920158690800892,
-        "false_negative_rate": 0.10798413091991074
+        "roc_auc": 0.9422487830124733,
+        "false_positive_rate": 0.04663991975927784,
+        "detection_rate": 0.9049714852467146,
+        "false_negative_rate": 0.0950285147532854
       }
     }
   },
@@ -275,51 +275,429 @@
     "label_type": "binary",
     "epsilon": 10.0,
     "data_norm": 22.5009,
-    "train_time_s": 8.76,
+    "train_time_s": 7.57,
     "metrics": {
       "val": {
-        "accuracy": 0.9475991266521109,
-        "f1_macro": 0.9330349200738712,
-        "f1_weighted": 0.9474710828074218,
-        "precision_macro": 0.9351817822003081,
-        "recall_macro": 0.930948834554798,
-        "mcc": 0.866120273076904,
+        "accuracy": 0.9473157885964766,
+        "f1_macro": 0.9326768436906007,
+        "f1_weighted": 0.9471886435678066,
+        "precision_macro": 0.9347950562547966,
+        "recall_macro": 0.9306178935786509,
+        "mcc": 0.8654028686406153,
         "confusion_matrix": [
           [
-            42418,
-            1449
+            42408,
+            1459
           ],
           [
-            1695,
-            14437
+            1702,
+            14430
           ]
         ],
-        "roc_auc": 0.9546973789950057,
-        "false_positive_rate": 0.03303166389313151,
-        "detection_rate": 0.8949293330027275,
-        "false_negative_rate": 0.10507066699727251
+        "roc_auc": 0.9535993130928396,
+        "false_positive_rate": 0.033259625686734906,
+        "detection_rate": 0.8944954128440367,
+        "false_negative_rate": 0.10550458715596331
       },
       "test": {
-        "accuracy": 0.9459166666666666,
-        "f1_macro": 0.9310603768683605,
-        "f1_weighted": 0.9458542609686665,
-        "precision_macro": 0.9320619903096843,
-        "recall_macro": 0.930072380769656,
-        "mcc": 0.862132075293715,
+        "accuracy": 0.9458333333333333,
+        "f1_macro": 0.9309609606622437,
+        "f1_weighted": 0.9457735191370118,
+        "precision_macro": 0.9319190030197587,
+        "recall_macro": 0.9300153916203902,
+        "mcc": 0.861932292542355,
         "confusion_matrix": [
           [
-            42304,
-            1564
+            42299,
+            1569
           ],
           [
             1681,
             14451
           ]
         ],
-        "roc_auc": 0.9526198176161829,
-        "false_positive_rate": 0.035652411780796936,
+        "roc_auc": 0.9517526202460591,
+        "false_positive_rate": 0.03576639007932889,
         "detection_rate": 0.8957971733201091,
         "false_negative_rate": 0.1042028266798909
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.01,
+    "data_norm": 22.5009,
+    "train_time_s": 0.97,
+    "metrics": {
+      "val": {
+        "accuracy": 0.6483274721245355,
+        "f1_macro": 0.5896217968983859,
+        "f1_weighted": 0.661370878218496,
+        "precision_macro": 0.5879432854846158,
+        "recall_macro": 0.6021623587813288,
+        "mcc": 0.18957313611467366,
+        "confusion_matrix": [
+          [
+            30796,
+            13071
+          ],
+          [
+            8029,
+            8103
+          ]
+        ],
+        "roc_auc": 0.657024244316122,
+        "false_positive_rate": 0.2979688604189938,
+        "detection_rate": 0.5022935779816514,
+        "false_negative_rate": 0.49770642201834864
+      },
+      "test": {
+        "accuracy": 0.6455833333333333,
+        "f1_macro": 0.586519166454878,
+        "f1_weighted": 0.6587599272495526,
+        "precision_macro": 0.5850477441785951,
+        "recall_macro": 0.5988349744814092,
+        "mcc": 0.18336511800877356,
+        "confusion_matrix": [
+          [
+            30706,
+            13162
+          ],
+          [
+            8103,
+            8029
+          ]
+        ],
+        "roc_auc": 0.6563801304054173,
+        "false_positive_rate": 0.3000364730555302,
+        "detection_rate": 0.49770642201834864,
+        "false_negative_rate": 0.5022935779816514
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.05,
+    "data_norm": 22.5009,
+    "train_time_s": 2.01,
+    "metrics": {
+      "val": {
+        "accuracy": 0.7831963866064434,
+        "f1_macro": 0.7340466552096548,
+        "f1_weighted": 0.786896955690015,
+        "precision_macro": 0.7272243613333087,
+        "recall_macro": 0.7433078340667179,
+        "mcc": 0.4702572368531956,
+        "confusion_matrix": [
+          [
+            36392,
+            7475
+          ],
+          [
+            5533,
+            10599
+          ]
+        ],
+        "roc_auc": 0.8142025804608051,
+        "false_positive_rate": 0.17040144071853558,
+        "detection_rate": 0.6570171088519713,
+        "false_negative_rate": 0.34298289114802877
+      },
+      "test": {
+        "accuracy": 0.7831166666666667,
+        "f1_macro": 0.7342308455959294,
+        "f1_weighted": 0.7869218312259753,
+        "precision_macro": 0.7272499231202898,
+        "recall_macro": 0.743801488205572,
+        "mcc": 0.47076053127393125,
+        "confusion_matrix": [
+          [
+            36360,
+            7508
+          ],
+          [
+            5505,
+            10627
+          ]
+        ],
+        "roc_auc": 0.8154919833266225,
+        "false_positive_rate": 0.1711498130755904,
+        "detection_rate": 0.6587527894867344,
+        "false_negative_rate": 0.34124721051326556
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.2,
+    "data_norm": 22.5009,
+    "train_time_s": 3.3,
+    "metrics": {
+      "val": {
+        "accuracy": 0.8940982349705828,
+        "f1_macro": 0.8667059220143223,
+        "f1_weighted": 0.894638044513013,
+        "precision_macro": 0.8630910752590394,
+        "recall_macro": 0.8705711709352771,
+        "mcc": 0.7336241133302287,
+        "confusion_matrix": [
+          [
+            40422,
+            3445
+          ],
+          [
+            2909,
+            13223
+          ]
+        ],
+        "roc_auc": 0.8983072726125905,
+        "false_positive_rate": 0.07853283789636857,
+        "detection_rate": 0.8196751797669228,
+        "false_negative_rate": 0.1803248202330771
+      },
+      "test": {
+        "accuracy": 0.89285,
+        "f1_macro": 0.8654169724616823,
+        "f1_weighted": 0.8935052168340393,
+        "precision_macro": 0.8611262037367828,
+        "recall_macro": 0.8700699652097423,
+        "mcc": 0.7311414682623262,
+        "confusion_matrix": [
+          [
+            40330,
+            3538
+          ],
+          [
+            2891,
+            13241
+          ]
+        ],
+        "roc_auc": 0.8964999160861978,
+        "false_positive_rate": 0.08065104404121455,
+        "detection_rate": 0.8207909744606993,
+        "false_negative_rate": 0.17920902553930076
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 0.75,
+    "data_norm": 22.5009,
+    "train_time_s": 4.69,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9382656377606293,
+        "f1_macro": 0.9214091403977503,
+        "f1_weighted": 0.9382340928704695,
+        "precision_macro": 0.9218411248137826,
+        "recall_macro": 0.9209797983853443,
+        "mcc": 0.8428204830798859,
+        "confusion_matrix": [
+          [
+            42041,
+            1826
+          ],
+          [
+            1878,
+            14254
+          ]
+        ],
+        "roc_auc": 0.9338492025443702,
+        "false_positive_rate": 0.041625823511979396,
+        "detection_rate": 0.883585420282668,
+        "false_negative_rate": 0.11641457971733202
+      },
+      "test": {
+        "accuracy": 0.9378833333333333,
+        "f1_macro": 0.9210254795637962,
+        "f1_weighted": 0.9378924552195043,
+        "precision_macro": 0.9209019331152984,
+        "recall_macro": 0.9211492450210899,
+        "mcc": 0.8420511418184177,
+        "confusion_matrix": [
+          [
+            41997,
+            1871
+          ],
+          [
+            1856,
+            14276
+          ]
+        ],
+        "roc_auc": 0.9321063479530854,
+        "false_positive_rate": 0.04265067931065925,
+        "detection_rate": 0.8849491693528391,
+        "false_negative_rate": 0.11505083064716093
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 1.5,
+    "data_norm": 22.5009,
+    "train_time_s": 7.71,
+    "metrics": {
+      "val": {
+        "accuracy": 0.947415790263171,
+        "f1_macro": 0.9330432538589127,
+        "f1_weighted": 0.9473832170638952,
+        "precision_macro": 0.9335817274289625,
+        "recall_macro": 0.9325087294020651,
+        "mcc": 0.8660897921630368,
+        "confusion_matrix": [
+          [
+            42321,
+            1546
+          ],
+          [
+            1609,
+            14523
+          ]
+        ],
+        "roc_auc": 0.9427537813494594,
+        "false_positive_rate": 0.03524289329108441,
+        "detection_rate": 0.9002603520952145,
+        "false_negative_rate": 0.09973964790478553
+      },
+      "test": {
+        "accuracy": 0.9470333333333333,
+        "f1_macro": 0.9325648321449127,
+        "f1_weighted": 0.9470041797615663,
+        "precision_macro": 0.9330425719613097,
+        "recall_macro": 0.9320902092703736,
+        "mcc": 0.8651322570376003,
+        "confusion_matrix": [
+          [
+            42307,
+            1561
+          ],
+          [
+            1617,
+            14515
+          ]
+        ],
+        "roc_auc": 0.9414214307089608,
+        "false_positive_rate": 0.03558402480167776,
+        "detection_rate": 0.899764443342425,
+        "false_negative_rate": 0.10023555665757501
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 3.0,
+    "data_norm": 22.5009,
+    "train_time_s": 8.2,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9476157935965599,
+        "f1_macro": 0.9333895002936656,
+        "f1_weighted": 0.9476193850583718,
+        "precision_macro": 0.9333300982145337,
+        "recall_macro": 0.9334489509803632,
+        "mcc": 0.8667790410463496,
+        "confusion_matrix": [
+          [
+            42292,
+            1575
+          ],
+          [
+            1568,
+            14564
+          ]
+        ],
+        "roc_auc": 0.9494323073049783,
+        "false_positive_rate": 0.03590398249253425,
+        "detection_rate": 0.9028018844532606,
+        "false_negative_rate": 0.0971981155467394
+      },
+      "test": {
+        "accuracy": 0.9464333333333333,
+        "f1_macro": 0.9319637432092078,
+        "f1_weighted": 0.9464678469924657,
+        "precision_macro": 0.9314092501215454,
+        "recall_macro": 0.9325225354850928,
+        "mcc": 0.8639310683018488,
+        "confusion_matrix": [
+          [
+            42228,
+            1640
+          ],
+          [
+            1574,
+            14558
+          ]
+        ],
+        "roc_auc": 0.9474490796228372,
+        "false_positive_rate": 0.03738488191848272,
+        "detection_rate": 0.9024299528886685,
+        "false_negative_rate": 0.09757004711133152
+      }
+    }
+  },
+  {
+    "model_name": "dp_logistic_regression",
+    "dataset": "cic_ids2018",
+    "label_type": "binary",
+    "epsilon": 7.0,
+    "data_norm": 22.5009,
+    "train_time_s": 7.01,
+    "metrics": {
+      "val": {
+        "accuracy": 0.9471157852630877,
+        "f1_macro": 0.9326586016000273,
+        "f1_weighted": 0.9470819824955302,
+        "precision_macro": 0.9332138033350637,
+        "recall_macro": 0.9321076017141303,
+        "mcc": 0.8653206979809768,
+        "confusion_matrix": [
+          [
+            42313,
+            1554
+          ],
+          [
+            1619,
+            14513
+          ]
+        ],
+        "roc_auc": 0.9493338168444616,
+        "false_positive_rate": 0.035425262725967126,
+        "detection_rate": 0.8996404661542277,
+        "false_negative_rate": 0.10035953384577238
+      },
+      "test": {
+        "accuracy": 0.9452833333333334,
+        "f1_macro": 0.9304555476727565,
+        "f1_weighted": 0.9452999246112788,
+        "precision_macro": 0.9301949744134266,
+        "recall_macro": 0.9307170689310227,
+        "mcc": 0.86091188503402,
+        "confusion_matrix": [
+          [
+            42211,
+            1657
+          ],
+          [
+            1626,
+            14506
+          ]
+        ],
+        "roc_auc": 0.9474762996075214,
+        "false_positive_rate": 0.037772408133491385,
+        "detection_rate": 0.8992065459955368,
+        "false_negative_rate": 0.10079345400446318
       }
     }
   }

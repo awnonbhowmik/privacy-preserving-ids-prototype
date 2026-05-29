@@ -1,47 +1,56 @@
 # ── Core data ──────────────────────────────────────────────────────────────────
-pandas
-numpy
-pyarrow                   # Parquet read/write
+pandas==3.0.3
+numpy==2.4.6
+pyarrow==24.0.0              # Parquet read/write
 
 # ── Machine learning ───────────────────────────────────────────────────────────
-scikit-learn
-xgboost                   # GPU-accelerated automatically when CUDA is present
-imbalanced-learn          # Handle class imbalance in IDS datasets
+# IMPORTANT: scikit-learn must be <=1.7.x for diffprivlib 0.6.6 compatibility.
+# The 'multi_class' parameter was removed from LogisticRegression in sklearn 1.8,
+# which breaks diffprivlib's DP logistic regression. Pin to 1.7.2.
+scikit-learn==1.7.2
+xgboost==3.2.0               # GPU-accelerated automatically when CUDA is present
+imbalanced-learn==0.14.1     # Handle class imbalance in IDS datasets
 
 # ── Differential privacy ───────────────────────────────────────────────────────
-diffprivlib               # IBM DP library — sklearn-compatible (DP-LR)
+diffprivlib==0.6.6           # IBM DP library — sklearn-compatible (DP-LR)
 
-# PyTorch is installed as CPU-only by default via pip.
-# For GPU-accelerated DP-SGD training, install the CUDA build manually:
+# PyTorch: install CPU-only by default via pip.
+# For GPU-accelerated DP-SGD, install a CUDA build manually after pip install:
 #
-#   Windows / Linux (CUDA 12.x):
-#     pip install torch --index-url https://download.pytorch.org/whl/cu121
+#   Windows / Linux with CUDA 12.x driver:
+#     pip install torch --index-url https://download.pytorch.org/whl/cu128
+#
+#   Note: Python 3.14 does NOT yet have CUDA PyTorch wheels (as of 2026-05).
+#         CUDA DP-SGD training requires Python 3.11 or 3.12 with a CUDA build.
 #
 #   macOS (Apple Silicon — MPS backend):
 #     pip install torch          (MPS is included in the standard macOS wheel)
 #
-#   CPU-only fallback (all platforms):
-#     pip install torch
+#   CPU-only fallback (all platforms, including Python 3.14):
+#     pip install torch --index-url https://download.pytorch.org/whl/cpu
 #
 # The training code detects the available device automatically (CUDA → MPS → CPU).
-torch
-opacus                    # DP-SGD for PyTorch — per-sample gradient clipping + noise
+torch==2.12.0
+opacus==1.6.0                # DP-SGD — per-sample gradient clipping + Gaussian noise
 
 # ── Explainability ─────────────────────────────────────────────────────────────
-shap
+shap==0.52.0
 
 # ── Frontend ───────────────────────────────────────────────────────────────────
-streamlit
+streamlit==1.58.0
 
 # ── Visualisation ──────────────────────────────────────────────────────────────
-plotly
-matplotlib
-seaborn
+plotly==6.7.0
+matplotlib==3.10.9
+seaborn==0.13.2
 
 # ── Persistence & config ───────────────────────────────────────────────────────
-joblib
-pyyaml
+joblib==1.5.3
+pyyaml==6.0.3
+
+# ── Testing ────────────────────────────────────────────────────────────────────
+pytest==9.0.3
 
 # ── Dev utilities ──────────────────────────────────────────────────────────────
-ipykernel                 # Jupyter support for notebooks/
-tqdm                      # Progress bars during preprocessing
+ipykernel                    # Jupyter support for notebooks/
+tqdm==4.67.3                 # Progress bars during preprocessing

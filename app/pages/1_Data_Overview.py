@@ -28,6 +28,16 @@ from src.models.model_utils import get_pipeline_status, get_subset_stats, SUPPOR
 from src.utils.config import PATHS
 
 st.title("📊 Data Overview")
+st.markdown(
+    "This page shows the status of the two IDS datasets used in the dissertation, "
+    "controls for running the preprocessing pipeline, and summary statistics for the "
+    "working data subset that all models are trained and evaluated on."
+)
+
+from app.glossary import render_glossary
+render_glossary(sections=["data"])
+
+st.divider()
 
 # ── Dataset selector ──────────────────────────────────────────────────────────
 dataset = st.selectbox(
@@ -43,6 +53,11 @@ status = get_pipeline_status(dataset)
 # ── Stage A: Preprocessing ────────────────────────────────────────────────────
 with st.container(border=True):
     st.markdown("#### Stage A — Raw CSV → Processed Parquet")
+    st.caption(
+        "Reads all raw CSV files, normalises column names, drops duplicates, "
+        "replaces infinite values with NaN, maps raw labels to the dissertation taxonomy, "
+        "and saves a single cleaned Parquet file. Run once per dataset."
+    )
 
     raw_dir = PATHS["raw_data"] / dataset
     raw_files = sorted(raw_dir.glob("*.csv")) if raw_dir.exists() else []
@@ -86,6 +101,12 @@ st.divider()
 # ── Stage B: Sampling ─────────────────────────────────────────────────────────
 with st.container(border=True):
     st.markdown("#### Stage B — Processed Parquet → Stratified Subset")
+    st.caption(
+        "Draws a stratified sample of ~300,000 rows (proportional by attack category) "
+        "and assigns each row to train / val / test (60% / 20% / 20%) using stratified splitting. "
+        "This fixed subset is the single data source used by all models in the experiment — "
+        "ensuring fair comparison between baseline and DP models."
+    )
 
     if not status["processed_exists"]:
         st.info("Complete Stage A first.")

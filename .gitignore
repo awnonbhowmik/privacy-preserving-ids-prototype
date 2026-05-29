@@ -7,6 +7,8 @@ env/
 data/raw/
 data/processed/
 data/subsets/
+# dataset archives — too large to push (3.37 GB + 586 MB)
+data/*.zip
 !data/.gitkeep
 
 # ── Saved models and results ───────────────────────────────────────────────────

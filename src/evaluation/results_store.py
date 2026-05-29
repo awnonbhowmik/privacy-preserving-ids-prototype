@@ -169,8 +169,9 @@ def save_combined_results(
     """
     baselines  = load_results(dataset_name, "baselines",     label)
     dp_sweep   = load_results(dataset_name, "dp_sweep",      label)
+    dp_rf      = load_results(dataset_name, "dp_rf_sweep",   label)
     dp_sgd     = load_results(dataset_name, "dp_sgd_sweep",  label)
-    combined   = baselines + dp_sweep + dp_sgd
+    combined   = baselines + dp_sweep + dp_rf + dp_sgd
 
     if not combined:
         log.warning(
@@ -181,8 +182,8 @@ def save_combined_results(
 
     path = save_results(combined, dataset_name, "combined", label)
     log.info(
-        "Combined results written (%d baseline + %d DP-LR + %d DP-SGD = %d total)",
-        len(baselines), len(dp_sweep), len(dp_sgd), len(combined)
+        "Combined results written (%d baseline + %d DP-LR + %d DP-RF + %d DP-SGD = %d total)",
+        len(baselines), len(dp_sweep), len(dp_rf), len(dp_sgd), len(combined)
     )
     return path
 
@@ -372,6 +373,7 @@ def _display_name(model_name: str) -> str:
         "random_forest":          "Random Forest",
         "xgboost":                "XGBoost",
         "dp_logistic_regression": "DP-LR",
+        "dp_random_forest":       "DP-RF",
         "dp_sgd":                 "DP-SGD",
     }
     return display_map.get(model_name, model_name)
