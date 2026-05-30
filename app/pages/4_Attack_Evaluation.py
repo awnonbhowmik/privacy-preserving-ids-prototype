@@ -29,19 +29,10 @@ _root = Path(__file__).resolve().parent.parent.parent
 if str(_root) not in sys.path:
     sys.path.insert(0, str(_root))
 
+from app._path_setup import setup_path
+setup_path()
+
 import streamlit as st
-
-st.set_page_config(
-    page_title="Attack Evaluation — Privacy-Preserving IDS",
-    page_icon="🔍",
-    layout="wide",
-)
-
-try:
-    from app._path_setup import setup_path
-    setup_path()
-except ImportError:
-    pass
 
 from src.attacks.membership_inference import (
     build_combined_dissertation_table,

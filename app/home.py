@@ -5,6 +5,7 @@ import streamlit as st
 import pandas as pd
 from src.models.model_utils import get_pipeline_status, get_subset_stats, SUPPORTED_DATASETS
 from src.evaluation.results_store import load_results
+from src.utils.config import PATHS
 
 DS_DISPLAY = {"cic_ids2018": "CIC-IDS2018", "unsw_nb15": "UNSW-NB15"}
 
@@ -158,12 +159,7 @@ for ds in SUPPORTED_DATASETS:
             st.markdown("**DP-SGD (Opacus)**")
             st.markdown(f"{'✅' if dp_sgd_done == dp_total else '🔄'} {dp_sgd_done}/{dp_total} ε values trained")
             dp_sgd_res = status["results_exist"].get("dp_sgd_sweep", False)
-            mia_res    = (
-                __import__('pathlib').Path(
-                    __import__('src.utils.config', fromlist=['PATHS']).PATHS['results']
-                    / f'{ds}_mia_{label_type}.json'
-                ).exists()
-            )
+            mia_res    = (PATHS["results"] / f"{ds}_mia_{label_type}.json").exists()
             st.markdown(f"{'✅' if dp_sgd_res else '❌'} Results saved")
             st.markdown(f"{'✅' if mia_res else '❌'} MIA evaluation")
 

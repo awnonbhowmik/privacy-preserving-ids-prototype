@@ -301,7 +301,6 @@ def run_dp_rf_sweep(
     log.info("=" * 70)
 
     # Compute bounds once (same training data for all ε)
-    seed = int(SAMPLING_CFG.get("random_seed", 42))
     splits = get_split_arrays(dataset_name, label=label)
     X_train, _ = splits["train"]
     bounds = estimate_feature_bounds(X_train)
